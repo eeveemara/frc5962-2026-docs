@@ -4,13 +4,13 @@ AdvantageScope is a log replay and visualization tool for FRC robots. While Elas
 
 **The key difference:** Elastic = live instrument panel during the match. AdvantageScope = detective tool after the match.
 
-We have 11 AdvantageScope layouts stored in `ref/dashboards/advantagescope/`.
+We have 11 AdvantageScope layouts stored in `dashboards/advantagescope/`.
 
 ## How to Open a Log and Load a Layout
 
 1. Open AdvantageScope
 2. **File > Open Log** and select a `.wpilog` file (saved to the roboRIO's USB stick or your computer during sim)
-3. **File > Import Layout** and pick a JSON file from `ref/dashboards/advantagescope/`
+3. **File > Import Layout** and pick a JSON file from `dashboards/advantagescope/`
 4. Use the timeline bar at the bottom to scrub through the match
 
 The sidebar on the left lists every signal in the log. You can drag signals directly onto graph tabs or click to expand categories.

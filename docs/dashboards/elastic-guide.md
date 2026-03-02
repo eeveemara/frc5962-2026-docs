@@ -2,13 +2,13 @@
 
 Elastic is a real-time FRC dashboard that connects to your robot over NetworkTables. It shows live sensor data, boolean states, camera streams, and lets you adjust tunable values on the fly. Think of it as the cockpit instrument panel for the robot.
 
-We have 4 Elastic layouts, each designed for a specific situation. You load them from `ref/dashboards/elastic/`.
+We have 4 Elastic layouts, each designed for a specific situation. You load them from `dashboards/elastic/`.
 
 ## How to Load a Layout
 
 1. Open Elastic Dashboard
 2. Go to **File > Open Layout**
-3. Navigate to `ref/dashboards/elastic/` and pick the JSON file you need
+3. Navigate to `dashboards/elastic/` and pick the JSON file you need
 4. Done. The tabs and widgets will populate automatically.
 
 To save changes: **File > Save Layout As** (saves as JSON).

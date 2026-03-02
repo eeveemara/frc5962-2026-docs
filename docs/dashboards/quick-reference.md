@@ -76,16 +76,16 @@ These values can be adjusted live through SmartDashboard during testing. They ar
 
 ## Layout File Locations
 
-All layouts live in `ref/dashboards/`:
+All layouts live in `dashboards/`:
 
 ```
-ref/dashboards/elastic/
+dashboards/elastic/
     rebuilt_driver_competition.json
     rebuilt_pit_diagnostic.json
     rebuilt_tuning_session.json
     rebuilt_feedback_test.json
 
-ref/dashboards/advantagescope/
+dashboards/advantagescope/
     match_review.json
     cycle_and_strategy.json
     mechanism_debug.json

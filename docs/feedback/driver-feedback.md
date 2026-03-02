@@ -118,7 +118,7 @@ A tunable brightness slider (`LED/brightness`) lets drivers adjust for different
 
 ## Jam Protection (JamProtection)
 
-JamProtection is a reusable state machine that lives on the intake, indexer, and agitator. When a ball gets stuck, the robot automatically detects it and tries to reverse the motor to clear the jam, without any driver intervention needed.
+JamProtection is a reusable state machine that lives on the intake, indexer, and agitator. When a ball gets stuck, the robot automatically detects it and tries to reverse the motor to clear the jam, without the driver doing anything.
 
 ### State Machine
 

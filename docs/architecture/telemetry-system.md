@@ -127,7 +127,7 @@ For every motor on the robot, we log: velocity, temperature, applied output, out
 
 On top of that, we log derived states: jam detection with JamProtection state machines on 3 subsystems, ReadyToShoot with all 6 sub-conditions and edge detection, vision confidence with hysteresis thresholds, match phase tracking, hub shift timing, network bandwidth, CAN bus health, shot trajectory visualization, driver feedback state, LED state, and per-class execution timing.
 
-All of these signals are append-only documented in the SIGNALS.md contract file.
+All of these are documented in SIGNALS.md, which is append-only (we never remove entries).
 
 ## How to Add a New Signal
 

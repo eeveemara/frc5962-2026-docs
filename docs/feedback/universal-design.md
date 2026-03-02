@@ -2,21 +2,21 @@
 
 ## Why This Matters
 
-FRC matches are loud, bright, and chaotic. There are hundreds of people cheering, buzzers going off, robots crashing into each other, and flashing lights everywhere. If your feedback system only uses one sense, like a screen the driver has to read, or a sound they have to hear, it's going to fail in that environment. You simply cannot rely on a single channel when the arena is working against you.
+FRC matches are loud, bright, and chaotic. There are hundreds of people cheering, buzzers going off, robots crashing into each other, and flashing lights everywhere. If your feedback system only uses one sense, like a screen the driver has to read, or a sound they have to hear, it's going to fail in that environment. You can't rely on a single channel when the arena is working against you.
 
 We designed our feedback system around the idea that every critical piece of information should reach the operator through at least two independent senses. That way, if one channel is drowned out (you can't hear over the crowd, you can't see because of the lights), the other one still gets through.
 
 ## Mace's 7 Universal Design Principles
 
-Ronald Mace's Universal Design framework gives us a clear way to think about making our robot interface work for everyone. Here is how we apply each principle:
+Ronald Mace's Universal Design framework gives us a clear way to think about making our robot interface work for everyone. Here's how we apply each one:
 
-1. **Equitable Use**: The same feedback system works for any operator, regardless of sensory differences. No special mode is needed.
+1. **Equitable Use**: The same feedback system works for any operator, regardless of sensory differences. No special mode needed.
 2. **Flexibility in Use**: Operators can rely on whichever channel they perceive best (haptic, LED, or dashboard).
 3. **Simple and Intuitive**: Patterns are obvious. Stronger rumble = closer to target. Blue LED = ready. No manual to memorize.
-4. **Perceptible Information**: Every signal reaches at least 2 senses (touch + sight). No information is locked behind a single channel.
-5. **Tolerance for Error**: Stale timeouts auto-clear haptic feedback. FMS lockout prevents accidental tuning during a match.
-6. **Low Physical Effort**: The copilot does not need to press extra buttons or check a screen. The controller tells them what they need to know.
-7. **Size and Space for Approach**: Standard Xbox HID layout means any controller, including the Xbox Adaptive Controller, works without modification.
+4. **Perceptible Information**: Every signal reaches at least 2 senses (touch + sight), so no information is locked behind a single channel.
+5. **Tolerance for Error**: Stale timeouts auto-clear haptic feedback, and FMS lockout prevents accidental tuning during a match. Even if something goes wrong, the system recovers gracefully.
+6. **Low Physical Effort**: The copilot doesn't need to press extra buttons or check a screen. The controller tells them what they need to know.
+7. **Size and Space for Approach**: We use standard Xbox HID layout, so any controller works, including the Xbox Adaptive Controller.
 
 ## Multi-Sensory Redundancy
 
@@ -30,7 +30,7 @@ Every critical robot state reaches the operator through multiple channels:
 | Flywheel spinning up | Left-motor proportional rumble on driver | Blue progress bar fills left to right | Shooter RPM bar rises |
 | Vision confidence low | Spin-up rumble amplified (0.7 vs 0.4) | Orange breathing (WARNING state) | AMDA Mode shows LOW |
 
-If any single channel fails or the operator can't perceive it in that moment, the information still gets through on the others.
+If one channel fails or the operator can't perceive it, the info still gets through on the others.
 
 ## Colorblind-Safe LED Palette
 
@@ -51,7 +51,7 @@ Each LED state is distinguishable through three independent cues:
 | Match over | White | Breathing (3s cycle) | Full |
 | Autonomous | Rainbow | Scrolling | Full |
 
-Even under simulated protanopia (no red cones) or deuteranopia (no green cones), every state remains distinguishable because the differentiation comes from animation pattern and brightness level, not just hue.
+Even under simulated protanopia (no red cones) or deuteranopia (no green cones), every state is still easy to tell apart because we differentiate by animation pattern and brightness, not just hue.
 
 ## Configurable Sensitivity
 
@@ -73,7 +73,7 @@ Our entire feedback system works without any audio cues. This was a deliberate c
 
 ## Controller Compatibility
 
-We use the standard Xbox HID rumble protocol for all haptic feedback. This means our system works with any HID-compliant controller, including the Xbox Adaptive Controller. The Adaptive Controller is designed for operators with mobility differences and supports external buttons, switches, joysticks, and mounts. Because our software uses the same HID interface regardless of hardware, an operator using an Adaptive Controller receives identical haptic feedback to someone on a standard Xbox controller.
+We use the standard Xbox HID rumble protocol for all haptic feedback. This means our system works with any HID-compliant controller, including the Xbox Adaptive Controller. The Adaptive Controller is designed for operators with mobility differences and supports external buttons, switches, joysticks, and mounts. Because our software uses the same HID interface regardless of hardware, an operator on an Adaptive Controller gets the same haptic feedback as someone on a regular Xbox controller.
 
 ## Channel-to-Principle Mapping
 

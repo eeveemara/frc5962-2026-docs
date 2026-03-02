@@ -62,11 +62,11 @@ We have 34 FMEA entries covering mechanical failures, software bugs, sensor drop
 | Flywheel jam during match | 8 | 3 | 4 | 96 | JamProtection auto-reverse state machine (MONITORING, JAM_CONFIRMING, REVERSING, COOLDOWN) | Much lower: jam is detected in <200ms and cleared automatically |
 | Progressive aim sticks on | 6 | 4 | 5 | 120 | 250ms stale timeout auto-clears the haptic pattern | Lower: worst case is 250ms of stale feedback |
 
-The key insight is that FMEA happens at design time, not after something breaks on the field. We'd rather spend 20 minutes thinking about failure modes than lose a qualification match to a preventable bug.
+The point is that FMEA happens at design time, not after something breaks on the field. We'd rather spend 20 minutes thinking about failure modes than lose a qualification match to a preventable bug.
 
 ## Iteration Evidence
 
-We don't just build and ship. We measure, find weaknesses, and improve. Some concrete examples:
+We don't just build and ship. We measure, find weaknesses, and improve. A few real examples:
 
 - **DriverFeedback mutation kill rate**: Started at 40%, meaning our tests only caught 40% of artificial bugs injected into the code. After writing targeted mutation-catching tests, it climbed to 64%. That's 24% more bugs our test suite would catch before they reach the field.
 - **Overall PITest kill rate**: Went from 49% to 53% across 10 target classes by adding tests specifically designed to catch mutants that survived.
