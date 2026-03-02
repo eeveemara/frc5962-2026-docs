@@ -36,13 +36,10 @@ We keep a log of everything that breaks. Every sensor glitch, every logic error,
 | # | Component | What Went Wrong | Found By | Fix | Severity |
 |---|-----------|----------------|----------|-----|----------|
 | 19 | Shooter | Clicking noise after every shot (PID-to-zero through gear backlash) | Pit crew heard it | Duty-cycle coast instead of PID to 0 RPM | High |
-| 20 | Indexer | Motor kept running after shot sequence (same PID-to-zero issue) | Pit Dx | Duty-cycle coast in MoveIndexer.end() | High |
-| 21 | DriverFeedback | Controller keeps vibrating after driver stops aiming (no timeout) | Driver Feedback | Added 250ms auto-clear timeout | High |
-| 22 | Telemetry | Dashboard jam/stall alerts freeze after CAN hiccup | Test | Added missing booleans to setDefaultValues() + staleness detector | High |
-| 23 | Build system | Real test failures hidden behind BUILD SUCCESSFUL (ignoreFailures mask) | Test | XML-parsing quality gate that only ignores HAL crash | Critical |
-| 24 | PITest | Mutation testing can't reach 6/8 classes (HAL JNI conflict) | PITest setup | Under investigation, constructor injection pattern works | Open |
+| 20 | Indexer | Motor kept running after shot sequence (same PID-to-zero issue) | Pit crew noticed it. | Duty-cycle coast in MoveIndexer.end() | High |
+| 21 | Electrical | RoboRIO brownouts | Driver During Match | Lower brownout voltage to 6.3V. | Critical |
 
-Entries 21-23 led to our Bug Prevention Framework (14 bug families, 12 new lint rules, 6 runtime monitors). Entry 21 uncovered a pattern we call "if it turns on, prove it turns off." We wrote 21 new deactivation tests across our feedback system after that.
+
 
 ## Post-Competition Code Review (Feb 27 to Mar 1)
 
@@ -50,6 +47,9 @@ After Week-0 we went through the whole codebase with fresh eyes. Found a bunch o
 
 | # | Component | What Went Wrong | Found By | Fix | Severity |
 |---|-----------|----------------|----------|-----|----------|
+| 22 | Telemetry | Dashboard jam/stall alerts freeze after CAN hiccup | Test | Added missing booleans to setDefaultValues() + staleness detector | High |
+| 23 | Build system | Real test failures hidden behind BUILD SUCCESSFUL (ignoreFailures mask) | Test | XML-parsing quality gate that only ignores HAL crash | Critical |
+| 24 | PITest | Mutation testing can't reach 6/8 classes (HAL JNI conflict) | PITest setup | Constructor injection pattern | High |
 | 25 | DriverInputShaper | Deadband after curve killed 46% of stick travel | Code review | Moved deadband before curve | High |
 | 26 | HubShiftEngine | initializeTeleop() never called, hub timing was disabled | Code review | One-line fix in Robot.teleopInit() | High |
 | 27 | ShootOnTheMove | Distance field stored time-of-flight (seconds vs meters) | Code review | Changed to getSolvedDistance() | Medium |
