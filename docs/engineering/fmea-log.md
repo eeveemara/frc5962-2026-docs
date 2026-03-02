@@ -22,11 +22,11 @@ We keep a log of everything that breaks. Every sensor glitch, every logic error,
 | 8 | ReadyToShoot | WPILib Debouncer gave wrong initial state (true instead of false) | Unit testing | Replaced with manual time-based debounce | High |
 | 9 | PostMatchSummary | Same issue counted multiple times when value oscillates near threshold | Log replay | Per-issue dedup flags, each type logged once per match | Medium |
 | 10 | DriverFeedback | Entire haptic system silently dead (controller field was null) | Code review | Added initialize() call and null-state test | Critical |
-| 11 | DriverFeedback | Endgame haptic blocked all scoring feedback for 1.6 seconds | Match review | Shortened to 0.5s, cut from 13 patterns to 6 | High |
-| 12 | LEDStatusDisplay | Endgame LED state blocked scoring LEDs for 30 seconds | Match review | Removed ENDGAME LED state (arena timer is enough) | High |
+| 11 | DriverFeedback | Endgame haptic blocked all scoring feedback for 1.6 seconds | Match testing | Shortened to 0.5s, cut from 13 patterns to 6 | High |
+| 12 | LEDStatusDisplay | Endgame LED state blocked scoring LEDs for 30 seconds | Sim testing | Removed ENDGAME LED state (arena timer is enough) | High |
 | 13 | VisionFilter | Stale camera data accepted after coprocessor restart | Sim testing | Timestamp freshness check, reject poses > 1 second old | High |
 | 14 | VisionFilter | Dashboard showed wrong camera's blend weight (loop overwrite) | Debugging | Changed to Math.max() aggregation | Low |
-| 15 | AlertManager | Battery warnings during every normal match (threshold too high) | Competition | Context-aware: WARNING only when disabled, CRITICAL always | Medium |
+| 15 | AlertManager | Battery warnings during every normal match (threshold too high) | Driver feedback | Context-aware: WARNING only when disabled, CRITICAL always | Medium |
 | 16 | ReadyToShoot | Flickered off during rapid-fire from brief RPM dips | Match testing | 200ms hold timer on composite boolean | Medium |
 | 17 | PredictiveAlerts | BatteryAtRisk false positives in sim from startup voltage sag | Sim testing | 150-sample window in sim vs 50 on hardware | Low |
 | 18 | ChannelCoordinator | Haptic and LED flickering when vision confidence near 50% | Driver feedback | Asymmetric hysteresis: drops at 40%, recovers at 55% | Medium |
@@ -36,10 +36,10 @@ We keep a log of everything that breaks. Every sensor glitch, every logic error,
 | # | Component | What Went Wrong | Found By | Fix | Severity |
 |---|-----------|----------------|----------|-----|----------|
 | 19 | Shooter | Clicking noise after every shot (PID-to-zero through gear backlash) | Pit crew heard it | Duty-cycle coast instead of PID to 0 RPM | High |
-| 20 | Indexer | Motor kept running after shot sequence (same PID-to-zero issue) | Match video | Duty-cycle coast in MoveIndexer.end() | High |
-| 21 | DriverFeedback | Controller keeps vibrating after driver stops aiming (no timeout) | Competition | Added 250ms auto-clear timeout | High |
-| 22 | Telemetry | Dashboard jam/stall alerts freeze after CAN hiccup | Competition | Added missing booleans to setDefaultValues() + staleness detector | High |
-| 23 | Build system | Real test failures hidden behind BUILD SUCCESSFUL (ignoreFailures mask) | Post-match analysis | XML-parsing quality gate that only ignores HAL crash | Critical |
+| 20 | Indexer | Motor kept running after shot sequence (same PID-to-zero issue) | Pit Dx | Duty-cycle coast in MoveIndexer.end() | High |
+| 21 | DriverFeedback | Controller keeps vibrating after driver stops aiming (no timeout) | Driver Feedback | Added 250ms auto-clear timeout | High |
+| 22 | Telemetry | Dashboard jam/stall alerts freeze after CAN hiccup | Test | Added missing booleans to setDefaultValues() + staleness detector | High |
+| 23 | Build system | Real test failures hidden behind BUILD SUCCESSFUL (ignoreFailures mask) | Test | XML-parsing quality gate that only ignores HAL crash | Critical |
 | 24 | PITest | Mutation testing can't reach 6/8 classes (HAL JNI conflict) | PITest setup | Under investigation, constructor injection pattern works | Open |
 
 Entries 21-23 led to our Bug Prevention Framework (14 bug families, 12 new lint rules, 6 runtime monitors). Entry 21 uncovered a pattern we call "if it turns on, prove it turns off." We wrote 21 new deactivation tests across our feedback system after that.
