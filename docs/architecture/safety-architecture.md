@@ -82,9 +82,7 @@ Commands, driver feedback, and fire control all need telemetry values, but they 
 
 ## Why This Matters
 
-During development and sim testing, we've had individual subsystem telemetry classes throw exceptions from bad sensor reads, null references, and CAN bus glitches. Each time, the crash stayed contained in the layer that caught it and the rest of the system kept running. At our Week-0 event, we used AdvantageScope to diagnose a shooter clicking issue by looking at the command and torque signals. We traced it to orphaned commands holding a PID target through gear backlash. That kind of detective work is only possible because the logging pipeline never crashed, even when individual things went wrong.
-
-That's the point. The robot keeps working. The data keeps flowing. And when something does break, you can see exactly what, when, and where.
+During development and sim testing, we've had individual subsystem telemetry classes throw exceptions from bad sensor reads, null references, and CAN bus glitches. Each time, the crash stayed contained in the layer that caught it and the rest of the system kept running. That's the point. The robot keeps working. The data keeps flowing. And when something does break, you can see exactly what, when, and where.
 
 ---
 **Related:** [Telemetry System](telemetry-system.md) | [System Overview](system-overview.md)
