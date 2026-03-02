@@ -38,6 +38,19 @@ flowchart LR
     VL[Vision locked] --> RT
     BL[Ball present] --> RT
     RT --> |true| CP[Copilot pulls trigger]
+
+    style V fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style O fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style SC fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style CF fill:#0891b2,stroke:#0e7490,color:#fff
+    style HS fill:#db2777,stroke:#be185d,color:#fff
+    style FA fill:#d97706,stroke:#b45309,color:#fff
+    style SH fill:#059669,stroke:#047857,color:#fff
+    style IX fill:#059669,stroke:#047857,color:#fff
+    style VL fill:#059669,stroke:#047857,color:#fff
+    style BL fill:#059669,stroke:#047857,color:#fff
+    style RT fill:#dc2626,stroke:#b91c1c,color:#fff
+    style CP fill:#f87171,stroke:#ef4444,color:#fff
 ```
 
 ## ShotCalculator: Newton's Method Solver
@@ -107,6 +120,14 @@ stateDiagram-v2
     state "Both Active (30s)" as Endgame
 
     note right of Window1 : 5s transition\nbetween each window
+
+    classDef hubA fill:#2563eb,stroke:#1d4ed8,color:#fff
+    classDef hubB fill:#dc2626,stroke:#b91c1c,color:#fff
+    classDef both fill:#059669,stroke:#047857,color:#fff
+
+    class Window1,Window3 hubA
+    class Window2,Window4 hubB
+    class Endgame both
 ```
 
 `Scoring/TimeToNextShiftSec` counts down to the next shift so the driver feedback system can warn operators before it happens.

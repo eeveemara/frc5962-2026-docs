@@ -34,6 +34,18 @@ stateDiagram-v2
     REVERSING --> COOLDOWN : reverse time\nelapsed
     COOLDOWN --> MONITORING : cooldown done\n(re-arms startup ignore)
     DISABLED --> MONITORING : driver manual\nreset button
+
+    classDef green fill:#059669,stroke:#047857,color:#fff
+    classDef yellow fill:#d97706,stroke:#b45309,color:#fff
+    classDef red fill:#dc2626,stroke:#b91c1c,color:#fff
+    classDef blue fill:#2563eb,stroke:#1d4ed8,color:#fff
+    classDef gray fill:#6b7280,stroke:#4b5563,color:#fff
+
+    class MONITORING green
+    class JAM_CONFIRMING yellow
+    class REVERSING red
+    class COOLDOWN blue
+    class DISABLED gray
 ```
 
 If a jam won't clear after multiple auto-reverse attempts, the motor goes to DISABLED. The driver has to press a button to reset it. This prevents the robot from endlessly reversing if something is physically stuck.

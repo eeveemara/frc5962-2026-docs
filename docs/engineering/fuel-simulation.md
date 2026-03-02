@@ -61,6 +61,16 @@ flowchart TD
     BOUNCE --> PHYSICS
     ROLL --> PHYSICS
     BALLBOUNCE --> PHYSICS
+
+    style SHOT fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style LAUNCH fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style PHYSICS fill:#0891b2,stroke:#0e7490,color:#fff
+    style COLLISION fill:#d97706,stroke:#b45309,color:#fff
+    style BOUNCE fill:#f87171,stroke:#ef4444,color:#fff
+    style SCORE fill:#34d399,stroke:#10b981,color:#000
+    style ROLL fill:#fbbf24,stroke:#f59e0b,color:#000
+    style BALLBOUNCE fill:#f472b6,stroke:#ec4899,color:#fff
+    style INTAKE fill:#059669,stroke:#047857,color:#fff
 ```
 
 **Hub scoring**: The ball must pass through the hub opening at the correct height and speed. When it does, FuelSim registers a score and disperses the ball so it doesn't interfere with the next shot.

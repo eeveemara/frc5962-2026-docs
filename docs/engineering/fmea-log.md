@@ -70,32 +70,33 @@ gantt
     title Failure Discovery Across Build Season
     dateFormat YYYY-MM-DD
     axisFormat %b %d
+    todayMarker off
 
     section Crash Isolation
-    Signal crash propagation       :done, c1, 2026-02-07, 3d
-    SafeLog 4-layer isolation      :done, c2, 2026-02-10, 3d
+    Signal crash propagation       :active, c1, 2026-02-07, 3d
+    SafeLog 4-layer isolation      :active, c2, 2026-02-10, 3d
 
     section Simulation Bugs
-    Battery sim override found     :done, s1, 2026-02-07, 2d
-    HAL race condition found       :done, s2, 2026-02-09, 3d
-    Debouncer wrong initial state  :done, s3, 2026-02-11, 2d
+    Battery sim override found     :active, s1, 2026-02-07, 2d
+    HAL race condition found       :active, s2, 2026-02-09, 3d
+    Debouncer wrong initial state  :active, s3, 2026-02-11, 2d
 
     section Detection Hardening
-    False JAM from startup current :done, h1, 2026-02-08, 2d
-    Haptic system silently dead    :done, h2, 2026-02-12, 2d
-    Priority conflicts found       :done, h3, 2026-02-12, 3d
-    Vision stale data rejected     :done, h4, 2026-02-13, 2d
-    Hysteresis for flickering      :done, h5, 2026-02-17, 2d
+    False JAM from startup current :active, h1, 2026-02-08, 2d
+    Haptic system silently dead    :active, h2, 2026-02-12, 2d
+    Priority conflicts found       :active, h3, 2026-02-12, 3d
+    Vision stale data rejected     :active, h4, 2026-02-13, 2d
+    Hysteresis for flickering      :active, h5, 2026-02-17, 2d
 
     section Week-0 Competition
-    Shooter clicking (PID-to-zero) :done, w1, 2026-02-22, 1d
-    Haptic timeout missing         :done, w2, 2026-02-24, 2d
-    Build gate ignoring failures   :done, w3, 2026-02-24, 2d
+    Shooter clicking (PID-to-zero) :crit, w1, 2026-02-22, 1d
+    Haptic timeout missing         :crit, w2, 2026-02-24, 2d
+    Build gate ignoring failures   :crit, w3, 2026-02-24, 2d
 
     section Post-Comp Review
-    Deadband and fire control      :done, cr1, 2026-02-27, 2d
-    NN coordinate frame fix        :done, cr2, 2026-02-28, 1d
-    isRedAlliance always false     :done, cr3, 2026-02-28, 1d
+    Deadband and fire control      :active, cr1, 2026-02-27, 2d
+    NN coordinate frame fix        :active, cr2, 2026-02-28, 1d
+    isRedAlliance always false     :active, cr3, 2026-02-28, 1d
 ```
 
 ## Patterns We Found

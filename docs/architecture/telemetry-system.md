@@ -83,6 +83,17 @@ flowchart TD
     G --> H[Check signal staleness]
     H --> I[SafeLog.logAndReset]
     I --> J[Log TelemetryManager health]
+
+    style A fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style B fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style C fill:#d97706,stroke:#b45309,color:#fff
+    style D fill:#059669,stroke:#047857,color:#fff
+    style E fill:#0891b2,stroke:#0e7490,color:#fff
+    style F fill:#db2777,stroke:#be185d,color:#fff
+    style G fill:#dc2626,stroke:#b91c1c,color:#fff
+    style H fill:#f87171,stroke:#ef4444,color:#fff
+    style I fill:#34d399,stroke:#10b981,color:#000
+    style J fill:#fbbf24,stroke:#f59e0b,color:#000
 ```
 
 The split between `update()` and `log()` is intentional. `update()` captures all hardware readings and runs derived logic (stall detection, jam detection, etc.). `log()` writes the captured values to the log. This way, if logging fails for one signal, the state is still correct for other classes that depend on it.

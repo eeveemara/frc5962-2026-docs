@@ -37,6 +37,13 @@ flowchart TB
     TM["TelemetryManager"] -->|"ReadyToShoot, hub state,<br/>jams, spinup %"| HAP
     TM -->|"battery, stalls, vision lock,<br/>shooter speed %"| LED
     TM -->|"pose confidence"| CC
+
+    style CC fill:#db2777,stroke:#be185d,color:#fff
+    style HAP fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style LED fill:#34d399,stroke:#10b981,color:#000
+    style HUD fill:#fbbf24,stroke:#f59e0b,color:#000
+    style DASH fill:#d97706,stroke:#b45309,color:#fff
+    style TM fill:#2563eb,stroke:#1d4ed8,color:#fff
 ```
 
 ## Haptic Feedback (DriverFeedback)
@@ -126,6 +133,18 @@ stateDiagram-v2
     REVERSING --> COOLDOWN : reverseTimeSec\nelapsed
     COOLDOWN --> MONITORING : cooldownSec elapsed\n(re-arms startup ignore)
     DISABLED --> MONITORING : manual reset\n(driver button)
+
+    classDef green fill:#059669,stroke:#047857,color:#fff
+    classDef yellow fill:#d97706,stroke:#b45309,color:#fff
+    classDef red fill:#dc2626,stroke:#b91c1c,color:#fff
+    classDef blue fill:#2563eb,stroke:#1d4ed8,color:#fff
+    classDef gray fill:#6b7280,stroke:#4b5563,color:#fff
+
+    class MONITORING green
+    class JAM_CONFIRMING yellow
+    class REVERSING red
+    class COOLDOWN blue
+    class DISABLED gray
 ```
 
 ### Three-Layer Detection

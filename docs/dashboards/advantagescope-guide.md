@@ -96,6 +96,18 @@ flowchart TD
     SHOOTER -->|yes| ST[Load shooter_tuning.json]
     POWER -->|yes| PH[Load system_overview.json]
     VISION -->|yes| VD[Load vision_debug.json]
+
+    style START fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style LOAD fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style SCRUB fill:#0891b2,stroke:#0e7490,color:#fff
+    style SCORING fill:#059669,stroke:#047857,color:#fff
+    style FIELD fill:#34d399,stroke:#10b981,color:#000
+    style SHOOTER fill:#d97706,stroke:#b45309,color:#fff
+    style POWER fill:#d97706,stroke:#b45309,color:#fff
+    style VISION fill:#d97706,stroke:#b45309,color:#fff
+    style ST fill:#dc2626,stroke:#b91c1c,color:#fff
+    style PH fill:#db2777,stroke:#be185d,color:#fff
+    style VD fill:#f472b6,stroke:#ec4899,color:#fff
 ```
 
 1. Open the `.wpilog` in AdvantageScope

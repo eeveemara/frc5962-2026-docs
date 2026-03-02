@@ -179,6 +179,12 @@ flowchart LR
     T --> P[PITest]
     P --> S[Simulation]
     S --> R[Robot Deploy]
+
+    style B fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style T fill:#059669,stroke:#047857,color:#fff
+    style P fill:#d97706,stroke:#b45309,color:#fff
+    style S fill:#db2777,stroke:#be185d,color:#fff
+    style R fill:#dc2626,stroke:#b91c1c,color:#fff
 ```
 
 | Gate | Command | What It Checks |

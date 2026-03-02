@@ -41,6 +41,18 @@ flowchart LR
     ACC --> KF[Kalman Filter]
     KF --> ODO[Fused Odometry]
     ODO --> SC[ShotCalculator]
+
+    style RAW fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style G1 fill:#dc2626,stroke:#b91c1c,color:#fff
+    style G2 fill:#d97706,stroke:#b45309,color:#fff
+    style G3 fill:#fbbf24,stroke:#f59e0b,color:#000
+    style G4 fill:#059669,stroke:#047857,color:#fff
+    style G5 fill:#0891b2,stroke:#0e7490,color:#fff
+    style G6 fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style ACC fill:#34d399,stroke:#10b981,color:#000
+    style KF fill:#db2777,stroke:#be185d,color:#fff
+    style ODO fill:#f472b6,stroke:#ec4899,color:#fff
+    style SC fill:#f87171,stroke:#ef4444,color:#fff
 ```
 
 | Gate | Threshold | What it catches |

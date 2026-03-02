@@ -19,6 +19,14 @@ flowchart LR
     DP --> C[Compete]
     C --> L[Learn]
     L --> D
+
+    style D fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style I fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style T fill:#059669,stroke:#047857,color:#fff
+    style V fill:#0891b2,stroke:#0e7490,color:#fff
+    style DP fill:#d97706,stroke:#b45309,color:#fff
+    style C fill:#dc2626,stroke:#b91c1c,color:#fff
+    style L fill:#db2777,stroke:#be185d,color:#fff
 ```
 
 **Design**: We write a design spec before touching code. The spec defines what the feature does, why it exists, what signals it produces, what can go wrong, and how we'll test it. We have 28 design specs covering both robot code and our analytics platform.

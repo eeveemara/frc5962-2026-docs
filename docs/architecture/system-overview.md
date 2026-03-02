@@ -45,6 +45,24 @@ flowchart LR
     SL --> AK
     AK --> NT & LOG
     NT --> EL & AS
+
+    style S1 fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style S2 fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style S3 fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style S4 fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style S5 fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style TM fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style T1 fill:#0891b2,stroke:#0e7490,color:#fff
+    style T2 fill:#0891b2,stroke:#0e7490,color:#fff
+    style T3 fill:#0891b2,stroke:#0e7490,color:#fff
+    style T4 fill:#0891b2,stroke:#0e7490,color:#fff
+    style T5 fill:#0891b2,stroke:#0e7490,color:#fff
+    style SL fill:#059669,stroke:#047857,color:#fff
+    style AK fill:#d97706,stroke:#b45309,color:#fff
+    style NT fill:#dc2626,stroke:#b91c1c,color:#fff
+    style LOG fill:#db2777,stroke:#be185d,color:#fff
+    style EL fill:#f472b6,stroke:#ec4899,color:#fff
+    style AS fill:#f472b6,stroke:#ec4899,color:#fff
 ```
 
 ## Feedback Loop: Sensors to Operators
@@ -82,6 +100,18 @@ flowchart TB
     LED --> DRIVER & COPILOT
     HUD --> DRIVER
     DASH --> DRIVER & COPILOT
+
+    style TEL fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style SC fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style CONF fill:#0891b2,stroke:#0e7490,color:#fff
+    style RTS fill:#059669,stroke:#047857,color:#fff
+    style CC fill:#db2777,stroke:#be185d,color:#fff
+    style DF fill:#f472b6,stroke:#ec4899,color:#fff
+    style LED fill:#34d399,stroke:#10b981,color:#000
+    style HUD fill:#fbbf24,stroke:#f59e0b,color:#000
+    style DASH fill:#d97706,stroke:#b45309,color:#fff
+    style DRIVER fill:#dc2626,stroke:#b91c1c,color:#fff
+    style COPILOT fill:#f87171,stroke:#ef4444,color:#fff
 ```
 
 ## Key Architectural Decisions
@@ -152,6 +182,13 @@ flowchart LR
     SC2 --> CONF2
     CONF2 -->|>= 50%| RTS2
     RTS2 -->|all 6 true| FIRE[Shot Authorized]
+
+    style HS fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style ZG fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style SC2 fill:#0891b2,stroke:#0e7490,color:#fff
+    style CONF2 fill:#059669,stroke:#047857,color:#fff
+    style RTS2 fill:#d97706,stroke:#b45309,color:#fff
+    style FIRE fill:#dc2626,stroke:#b91c1c,color:#fff
 ```
 
 **Layer 1, Hub Timing:** The REBUILT game has shifting hubs. HubShiftEngine tracks which hub is active and when shifts happen, so we don't shoot into a deactivated hub.

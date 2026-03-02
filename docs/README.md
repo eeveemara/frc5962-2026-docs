@@ -36,6 +36,32 @@ graph TD
     ENG --> E3[FMEA Log]
     ENG --> E4[Ball Physics Simulation]
     ENG --> E5[What We Learned]
+
+    style HOME fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style ARCH fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style FB fill:#059669,stroke:#047857,color:#fff
+    style DASH fill:#d97706,stroke:#b45309,color:#fff
+    style OPS fill:#dc2626,stroke:#b91c1c,color:#fff
+    style ENG fill:#db2777,stroke:#be185d,color:#fff
+    style A1 fill:#60a5fa,stroke:#3b82f6,color:#fff
+    style A2 fill:#60a5fa,stroke:#3b82f6,color:#fff
+    style A3 fill:#60a5fa,stroke:#3b82f6,color:#fff
+    style A4 fill:#60a5fa,stroke:#3b82f6,color:#fff
+    style A5 fill:#60a5fa,stroke:#3b82f6,color:#fff
+    style F1 fill:#34d399,stroke:#10b981,color:#000
+    style F2 fill:#34d399,stroke:#10b981,color:#000
+    style F3 fill:#34d399,stroke:#10b981,color:#000
+    style D1 fill:#fbbf24,stroke:#f59e0b,color:#000
+    style D2 fill:#fbbf24,stroke:#f59e0b,color:#000
+    style D3 fill:#fbbf24,stroke:#f59e0b,color:#000
+    style O1 fill:#f87171,stroke:#ef4444,color:#fff
+    style O2 fill:#f87171,stroke:#ef4444,color:#fff
+    style O3 fill:#f87171,stroke:#ef4444,color:#fff
+    style E1 fill:#f472b6,stroke:#ec4899,color:#fff
+    style E2 fill:#f472b6,stroke:#ec4899,color:#fff
+    style E3 fill:#f472b6,stroke:#ec4899,color:#fff
+    style E4 fill:#f472b6,stroke:#ec4899,color:#fff
+    style E5 fill:#f472b6,stroke:#ec4899,color:#fff
 ```
 
 ## By the Numbers
@@ -88,6 +114,18 @@ graph LR
     CC --> LED_OUT[LED Status]
     CC --> HUD[Camera HUD]
     CC --> DASH
+
+    style SUB fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style TM fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style SL fill:#059669,stroke:#047857,color:#fff
+    style AK fill:#0891b2,stroke:#0e7490,color:#fff
+    style NT fill:#d97706,stroke:#b45309,color:#fff
+    style LOG fill:#d97706,stroke:#b45309,color:#fff
+    style DASH fill:#dc2626,stroke:#b91c1c,color:#fff
+    style CC fill:#db2777,stroke:#be185d,color:#fff
+    style HAP fill:#f472b6,stroke:#ec4899,color:#fff
+    style LED_OUT fill:#34d399,stroke:#10b981,color:#000
+    style HUD fill:#fbbf24,stroke:#f59e0b,color:#000
 ```
 
 ---

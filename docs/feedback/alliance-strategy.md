@@ -34,6 +34,15 @@ flowchart TD
     KEEP --> AIM_FEED
     AIM_HUB --> TOGGLE
     AIM_FEED --> TOGGLE
+
+    style START fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style DEFAULT fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style TOGGLE fill:#d97706,stroke:#b45309,color:#fff
+    style SWITCH fill:#db2777,stroke:#be185d,color:#fff
+    style KEEP fill:#059669,stroke:#047857,color:#fff
+    style CHECK fill:#0891b2,stroke:#0e7490,color:#fff
+    style AIM_HUB fill:#dc2626,stroke:#b91c1c,color:#fff
+    style AIM_FEED fill:#34d399,stroke:#10b981,color:#000
 ```
 
 Key details:

@@ -107,6 +107,23 @@ flowchart TD
     N --> H
     O --> H
     P --> H
+
+    style A fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style B fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style C fill:#0891b2,stroke:#0e7490,color:#fff
+    style D fill:#059669,stroke:#047857,color:#fff
+    style E fill:#d97706,stroke:#b45309,color:#fff
+    style F fill:#dc2626,stroke:#b91c1c,color:#fff
+    style G fill:#34d399,stroke:#10b981,color:#000
+    style H fill:#db2777,stroke:#be185d,color:#fff
+    style I fill:#f472b6,stroke:#ec4899,color:#fff
+    style J fill:#fbbf24,stroke:#f59e0b,color:#000
+    style K fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style L fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style M fill:#d97706,stroke:#b45309,color:#fff
+    style N fill:#dc2626,stroke:#b91c1c,color:#fff
+    style O fill:#059669,stroke:#047857,color:#fff
+    style P fill:#34d399,stroke:#10b981,color:#000
 ```
 
 ## Emergency: Something Broke Right Before a Match
