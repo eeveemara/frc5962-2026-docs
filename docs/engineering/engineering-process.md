@@ -70,7 +70,7 @@ We don't just build and ship. We measure, find weaknesses, and improve. Some con
 
 - **DriverFeedback mutation kill rate**: Started at 40%, meaning our tests only caught 40% of artificial bugs injected into the code. After writing targeted mutation-catching tests, it climbed to 64%. That's 24% more bugs our test suite would catch before they reach the field.
 - **Overall PITest kill rate**: Went from 49% to 53% across 10 target classes by adding tests specifically designed to catch mutants that survived.
-- **Week-0 root cause analysis**: Our robot won finals at Week-0, but we noticed the shooter clicking intermittently. Post-match log review traced it to orphaned commands holding PID targets through backlash oscillation. Root cause identified, fix deployed in 2 days. That bug would have cost us matches if we hadn't caught it.
+- **Week-0 root cause analysis**: Our robot played in Week-0, but we noticed the shooter clicking intermittently. Post-match log review traced it to orphaned commands holding PID targets through backlash oscillation. Root cause identified, fix deployed in 2 days. That bug would have cost us matches if we hadn't caught it.
 - **Deadband ordering fix**: Code review found that our stick input deadband was applied after the response curve instead of before it. With a cubic curve (k=3), this killed 46% of stick travel range. A one-line reorder fixed it.
 
 ## Testing Pyramid
