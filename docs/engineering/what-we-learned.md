@@ -49,12 +49,6 @@ Finding a bug in the lab takes 5 minutes to fix. Finding the same bug at competi
 
 PITest mutation testing answers that question. It changes the code (flips a > to >=, removes a line, changes a constant) and checks if any test fails. If no test catches the change, we have a blind spot. Our kill rate (~53%) tells us what percentage of real mutations we'd catch. That's a more honest metric than code coverage, which only measures "did the line execute" not "did we verify it's correct." For the full deep dive, see [Testing & Quality](testing-and-quality.md).
 
-### 8. Why We Studied 33 Other Teams' Code
-
-We analyzed codebases from 33 FRC teams, including some of the best in the world. We weren't copying, we were learning patterns. Some things we adopted (like polar velocity limiting, which prevents the swerve drive from exceeding physical limits). Others we documented and passed on because they didn't fit our architecture or weren't worth the risk this close to competition.
-
-The analysis lives in our reference docs and fed directly into our improvement backlog. It's how we found ideas like flywheel slew rate limiting, zone-aware auto-aim, and typed CAN device IDs. Even the ideas we didn't adopt taught us something about the tradeoffs.
-
 ## What We'd Do Differently Next Season
 
 - **Start two-controller routing earlier.** We added it mid-season and it works great, but the driver and copilot would've benefited from more practice time with the split controls.
@@ -64,7 +58,7 @@ The analysis lives in our reference docs and fed directly into our improvement b
 
 ## What We're Proudest Of
 
-The moment it all clicked was during our Week-0 event when the copilot said "I can feel when the shot is ready." That's exactly the point. The robot assesses conditions using physics, the copilot receives that assessment through progressive haptic feedback, and the driver flies the robot into position. Nobody has to stare at a screen during a match. The information just flows to the right person through the right channel at the right time.
+The moment it all clicked was during our test when the copilot said "I can feel when the shot is ready." That's exactly the point. The robot assesses conditions using physics, the copilot receives that assessment through progressive haptic feedback, and the driver flies the robot into position. Nobody has to stare at a screen during a match. The information just flows to the right person through the right channel at the right time.
 
 The crash isolation architecture also proved itself: during testing, we deliberately injected faults into individual telemetry classes, and every time, the rest of the system kept running. That's the kind of reliability that matters when you're on the field and something unexpected happens.
 
