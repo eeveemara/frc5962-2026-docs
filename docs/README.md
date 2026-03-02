@@ -11,57 +11,19 @@ Welcome to our control system docs for the 2026 FRC season (game: REBUILT). This
 ## Site Map
 
 ```mermaid
-graph TD
-    HOME[Documentation Home] --> ARCH[Architecture]
-    HOME --> FB[Driver Feedback]
-    HOME --> DASH[Dashboards]
-    HOME --> OPS[Operations]
-    HOME --> ENG[Engineering]
-    ARCH --> A1[System Overview]
-    ARCH --> A2[Telemetry System]
-    ARCH --> A3[Fire Control Pipeline]
-    ARCH --> A4[Vision System]
-    ARCH --> A5[Safety Architecture]
-    FB --> F1[AMDA Feedback System]
-    FB --> F2[Alliance Strategy]
-    FB --> F3[Universal Design]
-    DASH --> D1[Elastic Guide]
-    DASH --> D2[AdvantageScope Guide]
-    DASH --> D3[Quick Reference]
-    OPS --> O1[Competition Playbook]
-    OPS --> O2[Tuning Reference]
-    OPS --> O3[Troubleshooting]
-    ENG --> E1[Testing & Quality]
-    ENG --> E2[Engineering Process]
-    ENG --> E3[FMEA Log]
-    ENG --> E4[Ball Physics Simulation]
-    ENG --> E5[What We Learned]
+graph LR
+    HOME[Documentation Home] --> ARCH["Architecture<br/>System design, telemetry, vision,<br/>fire control, crash isolation"]
+    HOME --> FB["Driver Feedback<br/>Universal design, AMDA system,<br/>alliance strategy"]
+    HOME --> OPS["Operations<br/>Competition playbook,<br/>tuning, troubleshooting"]
+    HOME --> DASH["Dashboards<br/>Elastic, AdvantageScope,<br/>quick reference"]
+    HOME --> ENG["Engineering<br/>Process, testing, simulation,<br/>FMEA log, lessons learned"]
 
     style HOME fill:#7c3aed,stroke:#5b21b6,color:#fff
     style ARCH fill:#2563eb,stroke:#1d4ed8,color:#fff
     style FB fill:#059669,stroke:#047857,color:#fff
-    style DASH fill:#d97706,stroke:#b45309,color:#fff
     style OPS fill:#dc2626,stroke:#b91c1c,color:#fff
+    style DASH fill:#d97706,stroke:#b45309,color:#fff
     style ENG fill:#db2777,stroke:#be185d,color:#fff
-    style A1 fill:#60a5fa,stroke:#3b82f6,color:#fff
-    style A2 fill:#60a5fa,stroke:#3b82f6,color:#fff
-    style A3 fill:#60a5fa,stroke:#3b82f6,color:#fff
-    style A4 fill:#60a5fa,stroke:#3b82f6,color:#fff
-    style A5 fill:#60a5fa,stroke:#3b82f6,color:#fff
-    style F1 fill:#34d399,stroke:#10b981,color:#000
-    style F2 fill:#34d399,stroke:#10b981,color:#000
-    style F3 fill:#34d399,stroke:#10b981,color:#000
-    style D1 fill:#fbbf24,stroke:#f59e0b,color:#000
-    style D2 fill:#fbbf24,stroke:#f59e0b,color:#000
-    style D3 fill:#fbbf24,stroke:#f59e0b,color:#000
-    style O1 fill:#f87171,stroke:#ef4444,color:#fff
-    style O2 fill:#f87171,stroke:#ef4444,color:#fff
-    style O3 fill:#f87171,stroke:#ef4444,color:#fff
-    style E1 fill:#f472b6,stroke:#ec4899,color:#fff
-    style E2 fill:#f472b6,stroke:#ec4899,color:#fff
-    style E3 fill:#f472b6,stroke:#ec4899,color:#fff
-    style E4 fill:#f472b6,stroke:#ec4899,color:#fff
-    style E5 fill:#f472b6,stroke:#ec4899,color:#fff
 ```
 
 ## By the Numbers
