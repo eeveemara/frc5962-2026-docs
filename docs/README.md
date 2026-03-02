@@ -2,7 +2,7 @@
   <img src="team_logo.png" alt="Team 5962 perSEVERE" width="150">
 </p>
 
-# Team 5962 perSEVERE | Control System Documentation
+# Control System Documentation
 
 > *The robot assesses. The copilot fires. The driver flies.*
 
