@@ -121,6 +121,4 @@ StrategyTelemetry (the 21st telemetry class) logs 14 signals. The key ones to wa
 
 ---
 
-**Related:** [Fire Control Pipeline](../architecture/fire-control-pipeline.md) | [Driver Feedback](driver-feedback.md)
-
-[Back to Documentation Home](../README.md)
+**Related:** [Fire Control Pipeline](../architecture/fire-control-pipeline.md) | [Driver Feedback](driver-feedback.md)[Back to Documentation Home](../README.md)

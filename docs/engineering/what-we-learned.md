@@ -51,10 +51,10 @@ PITest mutation testing answers that question. It changes the code (flips a > to
 
 ## What We'd Do Differently Next Season
 
-- **Start two-controller routing earlier.** We added it mid-season and it works great, but the driver and copilot would've benefited from more practice time with the split controls.
+- **Start two-controller routing earlier.** We added it later in the build season and it works great, but the driver and copilot would've benefited from more practice time with the split controls.
 - **Lock down the signal contract sooner.** Adding signals late in the season means dashboard layouts need updating, verification tools need re-running, and there's always a chance of naming conflicts.
 - **Build the log analytics platform earlier.** We designed it thoroughly but only got ~40% implemented. Starting earlier would've given us automated post-match analysis at competition instead of manual AdvantageScope review.
-- **Get mechanical measurements on day one.** Three placeholder constants (exit height, launch angle, wheel diameter) blocked our neural network training pipeline for weeks. A 10-minute measurement session with the mechanical team would've unblocked it immediately.
+- **Get mechanical measurements on day one.** Three placeholder constants (exit height, launch angle, wheel diameter) blocked our neural network training pipeline for 2 weeks. A 10-minute measurement session with the mechanical team would've unblocked it immediately.
 
 ## What We're Proudest Of
 

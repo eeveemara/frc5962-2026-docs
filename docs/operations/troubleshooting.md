@@ -27,9 +27,9 @@ When a jam is detected, the robot automatically reverses the motor to try to cle
 ```mermaid
 stateDiagram-v2
     [*] --> MONITORING
-    MONITORING --> JAM_CONFIRMING : high current +\nlow velocity\n(after 0.5s startup ignore)
+    MONITORING --> JAM_CONFIRMING : high current +low velocity(after 0.5s startup ignore)
     JAM_CONFIRMING --> MONITORING : conditions clear
-    JAM_CONFIRMING --> REVERSING : sustained jam\nconfirmed
+    JAM_CONFIRMING --> REVERSING : sustained jamconfirmed
     JAM_CONFIRMING --> DISABLED : max attempts\nreached
     REVERSING --> COOLDOWN : reverse time\nelapsed
     COOLDOWN --> MONITORING : cooldown done\n(re-arms startup ignore)
@@ -85,6 +85,4 @@ These are the most important signals to check when diagnosing issues:
 
 ---
 
-**Related:** [Competition Playbook](competition-playbook.md) | [Tuning Reference](tuning-reference.md) | [FMEA Log](../engineering/fmea-log.md)
-
-[Back to Documentation Home](../README.md)
+**Related:** [Competition Playbook](competition-playbook.md) | [Tuning Reference](tuning-reference.md) | [FMEA Log](../engineering/fmea-log.md)[Back to Documentation Home](../README.md)

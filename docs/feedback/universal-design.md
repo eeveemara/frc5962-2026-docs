@@ -86,6 +86,4 @@ We use the standard Xbox HID rumble protocol for all haptic feedback. This means
 
 ---
 
-**Related:** [Driver Feedback & AMDA](driver-feedback.md) | [Alliance Strategy](alliance-strategy.md)
-
-[Back to Documentation Home](../README.md)
+**Related:** [Driver Feedback & AMDA](driver-feedback.md) | [Alliance Strategy](alliance-strategy.md)[Back to Documentation Home](../README.md)

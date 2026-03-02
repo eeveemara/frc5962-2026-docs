@@ -8,7 +8,7 @@
 
 We keep a log of everything that breaks. Every sensor glitch, every logic error, every "why is it doing that?" moment gets written down with the root cause and the fix. We started this in early February and honestly we're kind of obsessed with it now. As of March 1 we have 34 entries, and the patterns we found changed how we write code.
 
-## Development Failures (Feb 7 to Feb 17)
+## Development Failures (Feb 7 to March 1)
 
 | # | Component | What Went Wrong | Found By | Fix | Severity |
 |---|-----------|----------------|----------|-----|----------|
@@ -21,32 +21,18 @@ We keep a log of everything that breaks. Every sensor glitch, every logic error,
 | 7 | EventMarker | Event log grew forever during rapid-fire, no size limit | Memory monitoring | Bounded buffer: max 100 events rolling window | Medium |
 | 8 | ReadyToShoot | WPILib Debouncer gave wrong initial state (true instead of false) | Unit testing | Replaced with manual time-based debounce | High |
 | 9 | PostMatchSummary | Same issue counted multiple times when value oscillates near threshold | Log replay | Per-issue dedup flags, each type logged once per match | Medium |
-| 10 | DriverFeedback | Entire haptic system silently dead (controller field was null) | Code review | Added initialize() call and null-state test | Critical |
-| 11 | DriverFeedback | Endgame haptic blocked all scoring feedback for 1.6 seconds | Match testing | Shortened to 0.5s, cut from 13 patterns to 6 | High |
+| 10 | DriverFeedback | Entire haptic system silently dead (controller field was null) | Driver feedback | Added initialize() call and null-state test | Critical |
+| 11 | DriverFeedback | Endgame haptic blocked all scoring feedback for 1.6 seconds | Driver feedback | Shortened to 0.5s, cut from 13 patterns to 6 | High |
 | 12 | LEDStatusDisplay | Endgame LED state blocked scoring LEDs for 30 seconds | Sim testing | Removed ENDGAME LED state (arena timer is enough) | High |
 | 13 | VisionFilter | Stale camera data accepted after coprocessor restart | Sim testing | Timestamp freshness check, reject poses > 1 second old | High |
-| 14 | VisionFilter | Dashboard showed wrong camera's blend weight (loop overwrite) | Debugging | Changed to Math.max() aggregation | Low |
+| 14 | VisionFilter | Dashboard showed wrong camera's blend weight (loop overwrite) | Sim Testing | Changed to Math.max() aggregation | Low |
 | 15 | AlertManager | Battery warnings during every normal match (threshold too high) | Driver feedback | Context-aware: WARNING only when disabled, CRITICAL always | Medium |
 | 16 | ReadyToShoot | Flickered off during rapid-fire from brief RPM dips | Match testing | 200ms hold timer on composite boolean | Medium |
 | 17 | PredictiveAlerts | BatteryAtRisk false positives in sim from startup voltage sag | Sim testing | 150-sample window in sim vs 50 on hardware | Low |
 | 18 | ChannelCoordinator | Haptic and LED flickering when vision confidence near 50% | Driver feedback | Asymmetric hysteresis: drops at 40%, recovers at 55% | Medium |
-
-## Competition Entries (Week-0, Feb 22)
-
-| # | Component | What Went Wrong | Found By | Fix | Severity |
-|---|-----------|----------------|----------|-----|----------|
 | 19 | Shooter | Clicking noise after every shot (PID-to-zero through gear backlash) | Pit crew heard it | Duty-cycle coast instead of PID to 0 RPM | High |
-| 20 | Indexer | Motor kept running after shot sequence (same PID-to-zero issue) | Pit crew noticed it. | Duty-cycle coast in MoveIndexer.end() | High |
-| 21 | Electrical | RoboRIO brownouts | Driver During Match | Lower brownout voltage to 6.3V. | Critical |
-
-
-
-## Post-Competition Code Review (Feb 27 to Mar 1)
-
-After Week-0 we went through the whole codebase with fresh eyes. Found a bunch of stuff we missed during the rush to get ready.
-
-| # | Component | What Went Wrong | Found By | Fix | Severity |
-|---|-----------|----------------|----------|-----|----------|
+| 20 | Indexer | Motor kept running after shot sequence (same PID-to-zero issue) | Pit crew heard it | Duty-cycle coast in MoveIndexer.end() | High |
+| 21 | Electrical | RoboRIO brownouts | Week0-Match | Lower brownout voltage to 6.3V. | Critical |
 | 22 | Telemetry | Dashboard jam/stall alerts freeze after CAN hiccup | Test | Added missing booleans to setDefaultValues() + staleness detector | High |
 | 23 | Build system | Real test failures hidden behind BUILD SUCCESSFUL (ignoreFailures mask) | Test | XML-parsing quality gate that only ignores HAL crash | Critical |
 | 24 | PITest | Mutation testing can't reach 6/8 classes (HAL JNI conflict) | PITest setup | Constructor injection pattern | High |
@@ -61,7 +47,7 @@ After Week-0 we went through the whole codebase with fresh eyes. Found a bunch o
 | 33 | NNLiveReceiver | NN gives garbage predictions on red alliance side | Integration testing | Alliance-aware coordinate frame flip | High |
 | 34 | Utilities | isRedAlliance() always returning false on both sides | Sim testing | Fixed alliance detection, added both-side tests | High |
 
-Entry 29 (zone gate) became the 4th layer of our fire control pipeline, and entry 33 taught us that ML models only work on inputs that look like their training data.
+
 
 ## Discovery Timeline
 
@@ -89,11 +75,14 @@ gantt
     Hysteresis for flickering      :active, h5, 2026-02-17, 2d
 
     section Week-0 Competition
+    Brownouts					   :crit, w1, 2026-02-22, 1d
     Shooter clicking (PID-to-zero) :crit, w1, 2026-02-22, 1d
-    Haptic timeout missing         :crit, w2, 2026-02-24, 2d
-    Build gate ignoring failures   :crit, w3, 2026-02-24, 2d
+    Channel coordinator :crit, w1, 2026-02-22, 1d
+  
 
     section Post-Comp Review
+    Haptic timeout missing         :active, w2, 2026-02-24, 2d
+    Build gate ignoring failures   :active, w3, 2026-02-24, 2d
     Deadband and fire control      :active, cr1, 2026-02-27, 2d
     NN coordinate frame fix        :active, cr2, 2026-02-28, 1d
     isRedAlliance always false     :active, cr3, 2026-02-28, 1d
@@ -104,21 +93,12 @@ gantt
 After writing everything down, we noticed the same types of bugs kept showing up. These aren't just individual fixes anymore, they're categories we now prevent by design:
 
 1. **Silent failures are the scariest** (entries 1, 2, 10). Three systems were broken with zero error messages. We had no idea until we specifically went looking.
-
 2. **Startup is weird** (entries 4, 17, 31). The first 0.5s of any motor command gives garbage readings. Just ignore it. We extended this from individual motors to the entire alert system with a 45-second warmup gate.
-
 3. **Threshold flickering** (entries 9, 15, 16, 18). Values hovering near a threshold cause rapid toggling. Hysteresis or debounce fixes this every time. We now have a rule: any boolean from a continuous number needs a deadband or debounce.
-
 4. **High priority blocks what matters** (entries 11, 12). Both haptic and LED had the same bug where endgame alerts blocked scoring feedback during the most important part of the match. We cut patterns down so there are fewer conflicts.
-
 5. **Wrap ALL of the library** (entry 6). Our SafeLog wrapper didn't cover every type. We audited every overload and found two more missing types.
-
 6. **Never PID to zero** (entries 19, 20). Using closed-loop PID to stop a motor causes gear clicking from backlash. Just cut power and let it coast. We wrote a lint rule for this.
-
 7. **If it turns on, prove it turns off** (entries 21, 22). We had 274 passing tests and none checked "does the vibration stop?" Now every feedback boolean gets 3 tests: on, off, and never-on-when-it-shouldn't.
-
-8. **ML models need alliance symmetry** (entries 33, 34). Our NN was trained with distance always positive. On red alliance the coordinates flip. Two separate bugs from not testing both alliance sides.
-
 9. **Test both alliance sides, always** (entries 33, 34). We found two bugs that only showed up on red alliance. Most of our testing was on blue (the default). Now we run every sim scenario on both sides.
 
 ## Connection to Automated Checking
@@ -131,6 +111,4 @@ On top of that, we run mutation testing (PITest) to check if our tests would act
 
 ---
 
-**Related:** [Testing & Quality](testing-and-quality.md) | [Engineering Process](engineering-process.md) | [What We Learned](what-we-learned.md)
-
-[Back to Documentation Home](../README.md)
+**Related:** [Testing & Quality](testing-and-quality.md) | [Engineering Process](engineering-process.md) | [What We Learned](what-we-learned.md) [Back to Documentation Home](../README.md)

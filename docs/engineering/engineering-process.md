@@ -29,7 +29,7 @@ flowchart LR
     style L fill:#db2777,stroke:#be185d,color:#fff
 ```
 
-**Design**: We write a design spec before touching code. The spec defines what the feature does, why it exists, what signals it produces, what can go wrong, and how we'll test it. We have 28 design specs covering both robot code and our analytics platform.
+**Design**: We write a design spec before touching code. The spec defines what the feature does, why it exists, what signals it produces, what can go wrong, and how we'll test it. We have 14 design specs covering both robot code and our analytics platform.
 
 **Implement**: Code follows strict patterns. Subsystems handle motors only. Telemetry classes handle all detection logic and logging. SafeLog wraps every log call with crash isolation. This separation means a bug in stall detection can't crash motor control.
 
@@ -86,11 +86,7 @@ We test at four levels:
 
 The tests run on every build (`./gradlew build` includes test). Mutation testing runs separately (`./gradlew pitest`) because it takes longer. For the full deep dive, see [Testing & Quality](testing-and-quality.md).
 
-## Learning From Other Teams
 
-We analyzed codebases from 33 other FRC teams to find patterns worth adopting and anti-patterns to avoid. This isn't about copying code. It's about learning what problems other teams have solved and deciding which solutions fit our architecture.
-
-We documented everything in a ranked improvements list: what we found, which team had the best implementation, why it matters, estimated effort, and whether we adopted it. Out of 122 catalogued improvements, we adopted the highest-impact ones that fit our timeline: things like deadband ordering fixes, trajectory visualization, and targeted test improvements.
 
 ## Custom Code Linter
 

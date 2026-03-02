@@ -106,6 +106,4 @@ FuelSim.java is designed to be shareable. It's a single file with an MIT license
 
 ---
 
-**Related:** [Fire Control Pipeline](../architecture/fire-control-pipeline.md) | [Testing & Quality](testing-and-quality.md)
-
-[Back to Documentation Home](../README.md)
+**Related:** [Fire Control Pipeline](../architecture/fire-control-pipeline.md) | [Testing & Quality](testing-and-quality.md) [Back to Documentation Home](../README.md)
