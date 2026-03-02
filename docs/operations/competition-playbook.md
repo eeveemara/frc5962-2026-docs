@@ -136,4 +136,4 @@ flowchart TD
 
 ---
 
-**Related:** [Troubleshooting](troubleshooting.md) | [Tuning Reference](tuning-reference.md) | [Alliance Strategy](../feedback/alliance-strategy.md)[Back to Documentation Home](../README.md)
+**Related:** [Troubleshooting](troubleshooting.md) | [Tuning Reference](tuning-reference.md) | [Alliance Strategy](../feedback/alliance-strategy.md)

@@ -111,4 +111,4 @@ On top of that, we run mutation testing (PITest) to check if our tests would act
 
 ---
 
-**Related:** [Testing & Quality](testing-and-quality.md) | [Engineering Process](engineering-process.md) | [What We Learned](what-we-learned.md) [Back to Documentation Home](../README.md)
+**Related:** [Testing & Quality](testing-and-quality.md) | [Engineering Process](engineering-process.md) | [What We Learned](what-we-learned.md)

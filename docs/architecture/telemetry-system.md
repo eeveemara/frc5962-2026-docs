@@ -145,6 +145,5 @@ TelemetryManager also monitors signals that shouldn't stay true forever. For exa
 Other parts of the codebase (commands, driver feedback, fire control) access telemetry values through TelemetryManager's `getSafely()` wrapper methods like `isReadyToShoot()`, `getShooterVelocityRPM()`, `isAnyJamIntervening()`. Each of these wraps the underlying call in a try-catch that returns a safe default value on failure, so a crash in one telemetry class can never propagate to the command scheduler or driver feedback system.
 
 ---
-**Related:** [Safety Architecture](safety-architecture.md) | [Fire Control Pipeline](fire-control-pipeline.md) | [System Overview](system-overview.md)
 
-[Back to Documentation Home](../README.md)
+**Related:** [Safety Architecture](safety-architecture.md) | [Fire Control Pipeline](fire-control-pipeline.md) | [System Overview](system-overview.md)

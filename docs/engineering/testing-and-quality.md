@@ -197,6 +197,3 @@ flowchart LR
 
 Each gate catches a different category of bug. Build catches syntax errors. Tests catch logic errors. PITest catches test gaps. Simulation catches integration issues. And the robot deploy catches anything that only shows up on real hardware.
 
----
-
-[Back to Documentation Home](../README.md)

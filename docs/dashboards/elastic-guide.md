@@ -115,5 +115,3 @@ Simulates hub shift timing so drivers can practice reacting. Shows shift label, 
 ---
 
 **See also:** [AdvantageScope Guide](advantagescope-guide.md) | [Dashboard Quick Reference](quick-reference.md)
-
-[Back to Documentation Home](../README.md)

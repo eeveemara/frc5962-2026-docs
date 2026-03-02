@@ -221,5 +221,3 @@ The rest of this documentation goes deeper into each piece:
 - [Vision System](vision-system.md) for the 6-gate filtering pipeline
 - [Driver Feedback & AMDA](../feedback/driver-feedback.md) for the 4 feedback channels and role-based routing
 
----
-[Back to Documentation Home](../README.md)

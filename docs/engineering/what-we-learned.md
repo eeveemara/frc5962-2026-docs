@@ -62,6 +62,3 @@ The moment it all clicked was during our test when the copilot said "I can feel 
 
 The crash isolation architecture also proved itself: during testing, we deliberately injected faults into individual telemetry classes, and every time, the rest of the system kept running. That's the kind of reliability that matters when you're on the field and something unexpected happens.
 
----
-
-[Back to Documentation Home](../README.md)

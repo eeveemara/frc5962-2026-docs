@@ -137,5 +137,3 @@ flowchart TD
 ---
 
 **See also:** [Elastic Guide](elastic-guide.md) | [Dashboard Quick Reference](quick-reference.md)
-
-[Back to Documentation Home](../README.md)

@@ -99,6 +99,3 @@ Use this if shots are consistently landing high or low. If you're adding more th
 - The `ifChanged()` helper method only runs the PID update callback when a value actually changes, so there's zero overhead during matches.
 - Never tune at competition with `TUNING_MODE = true` and FMS disconnected. The FMS lock only works when FMS is attached. If you're in practice mode without FMS, someone could accidentally drag a slider.
 
----
-
-[Back to Documentation Home](../README.md)

@@ -30,10 +30,10 @@ stateDiagram-v2
     MONITORING --> JAM_CONFIRMING : high current +low velocity(after 0.5s startup ignore)
     JAM_CONFIRMING --> MONITORING : conditions clear
     JAM_CONFIRMING --> REVERSING : sustained jamconfirmed
-    JAM_CONFIRMING --> DISABLED : max attempts\nreached
-    REVERSING --> COOLDOWN : reverse time\nelapsed
-    COOLDOWN --> MONITORING : cooldown done\n(re-arms startup ignore)
-    DISABLED --> MONITORING : driver manual\nreset button
+    JAM_CONFIRMING --> DISABLED : max attempts reached
+    REVERSING --> COOLDOWN : reverse time elapsed
+    COOLDOWN --> MONITORING : cooldown done (re-arms startup ignore)
+    DISABLED --> MONITORING : driver manual reset button
 
     classDef green fill:#059669,stroke:#047857,color:#fff
     classDef yellow fill:#d97706,stroke:#b45309,color:#fff
@@ -85,4 +85,4 @@ These are the most important signals to check when diagnosing issues:
 
 ---
 
-**Related:** [Competition Playbook](competition-playbook.md) | [Tuning Reference](tuning-reference.md) | [FMEA Log](../engineering/fmea-log.md)[Back to Documentation Home](../README.md)
+**Related:** [Competition Playbook](competition-playbook.md) | [Tuning Reference](tuning-reference.md) | [FMEA Log](../engineering/fmea-log.md)

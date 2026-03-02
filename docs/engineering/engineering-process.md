@@ -105,6 +105,3 @@ Our process isn't about doing things because "that's what good teams do." Each l
 
 The cycle keeps going. Every match, every log review, every test failure makes the system a little more reliable.
 
----
-
-[Back to Documentation Home](../README.md)

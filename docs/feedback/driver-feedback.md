@@ -126,13 +126,13 @@ JamProtection is a reusable state machine that lives on the intake, indexer, and
 stateDiagram-v2
     [*] --> MONITORING
 
-    MONITORING --> JAM_CONFIRMING : current high +\nvelocity low\n(after startup ignore)
-    JAM_CONFIRMING --> MONITORING : jam criteria\nno longer met
-    JAM_CONFIRMING --> REVERSING : sustained for\njamConfirmSec
-    JAM_CONFIRMING --> DISABLED : max attempts\nexceeded
-    REVERSING --> COOLDOWN : reverseTimeSec\nelapsed
-    COOLDOWN --> MONITORING : cooldownSec elapsed\n(re-arms startup ignore)
-    DISABLED --> MONITORING : manual reset\n(driver button)
+    MONITORING --> JAM_CONFIRMING : current high + velocity low (after startup ignore)
+    JAM_CONFIRMING --> MONITORING : jam criteria no longer met
+    JAM_CONFIRMING --> REVERSING : sustained for jamConfirmSec
+    JAM_CONFIRMING --> DISABLED : max attempts exceeded
+    REVERSING --> COOLDOWN : reverseTimeSec elapsed
+    COOLDOWN --> MONITORING : cooldownSec elapsed (re-arms startup ignore)
+    DISABLED --> MONITORING : manual reset (driver button)
 
     classDef green fill:#059669,stroke:#047857,color:#fff
     classDef yellow fill:#d97706,stroke:#b45309,color:#fff
@@ -163,6 +163,3 @@ When any JamProtection instance enters REVERSING (i.e., `isIntervening()` return
 
 Both DriverFeedback and LEDStatusDisplay have Elastic dashboard sliders for testing each pattern/state individually. These are TunableNumber-based: set the slider to a pattern number to trigger it. All test controls are automatically locked out when FMS is attached so they cannot fire during competition. A combined test dashboard layout is available in the [Elastic Guide](../dashboards/elastic-guide.md).
 
----
-
-[Back to Documentation Home](../README.md)

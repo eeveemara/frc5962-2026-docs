@@ -102,5 +102,3 @@ ref/dashboards/advantagescope/
 ---
 
 **Full guides:** [Elastic Guide](elastic-guide.md) | [AdvantageScope Guide](advantagescope-guide.md)
-
-[Back to Documentation Home](../README.md)

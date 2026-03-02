@@ -103,5 +103,3 @@ Common patterns:
 - **POSE_JUMP at match start**: Expected. The 2-second auto grace period exists for this reason.
 - **High std devs during fast driving**: Working as intended. The robot relies more on odometry when moving fast.
 
----
-[Back to Documentation Home](../README.md)

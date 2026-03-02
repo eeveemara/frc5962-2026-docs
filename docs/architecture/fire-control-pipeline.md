@@ -119,7 +119,7 @@ stateDiagram-v2
     state "Hub B Active" as Window4
     state "Both Active (30s)" as Endgame
 
-    note right of Window1 : 5s transition\nbetween each window
+    note right of Window1 : 5s transition between each window
 
     classDef hubA fill:#2563eb,stroke:#1d4ed8,color:#fff
     classDef hubB fill:#dc2626,stroke:#b91c1c,color:#fff
@@ -161,6 +161,5 @@ So the full pipeline is four layers:
 All four must pass before a ball leaves the robot.
 
 ---
-**Related:** [Vision System](vision-system.md) | [Driver Feedback](../feedback/driver-feedback.md) | [Alliance Strategy](../feedback/alliance-strategy.md)
 
-[Back to Documentation Home](../README.md)
+**Related:** [Vision System](vision-system.md) | [Driver Feedback](../feedback/driver-feedback.md) | [Alliance Strategy](../feedback/alliance-strategy.md)
