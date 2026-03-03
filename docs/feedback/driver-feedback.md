@@ -92,7 +92,7 @@ The right motor gets 2.5x the left motor intensity. This makes the pattern feel 
 
 ## LED Status Display
 
-### 10 LED States (priority order, highest first)
+### 11 LED States (priority order, highest first)
 
 | State | Color/Pattern | Trigger |
 |-------|--------------|---------|
@@ -100,6 +100,7 @@ The right motor gets 2.5x the left motor intensity. This makes the pattern feel 
 | **READY_TO_SHOOT** | Solid blue | All 6 scoring conditions met |
 | **AIM_PROGRESS** | Blue pulse, speed varies with error | Progressive aim active, pulse faster = closer to target |
 | **SHOOTER_SPINUP** | Blue progress bar (fills left to right) | Flywheel spinning up, bar = % of target speed |
+| **FEEDING** | Green pulse | Robot in FEEDER role, actively collecting or ejecting balls |
 | **WARNING** | Orange breathing (1.5s cycle) | Jam, stall, low battery, CAN error, or low vision confidence |
 | **AUTO_RUNNING** | Rainbow scroll | Autonomous period active |
 | **VISION_LOCKED** | Blue breathing (2s cycle) | Vision has a target lock in teleop |

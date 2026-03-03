@@ -114,6 +114,19 @@ It basically feels like a "warmer/colder" game. The copilot does not need to int
 
 Our entire feedback system works without any audio cues. This was a deliberate choice, not an oversight. FRC arenas regularly exceed 90 dB during matches. Speakers, even loud ones, are unreliable in that environment. By building our system around touch (haptic) and sight (LED + dashboard), the feedback still works even in the loudest venues.
 
+## Accessibility as an Engineering Consequence
+
+We didn't set out to build an accessible system. We set out to minimize attention cost. But when you design for the cheapest channel first, you naturally build redundant paths that work for any driver. Every design choice that made the system faster to use also made it more inclusive.
+
+| Design Choice | Engineering Reason | Accessibility Consequence |
+|--------------|-------------------|--------------------------|
+| Blue/orange/white LED palette | Maximize contrast under pit lights | Works for red-green colorblind drivers (~8% of males) |
+| LED states encoded in rhythm + brightness | Redundancy, not relying on one signal dimension | Colorblind drivers read the same info as anyone |
+| Haptic delivers scoring readiness without vision | Lowest attention cost for most critical info | Eyes-free operation for any driver |
+| Configurable vibration intensity (TunableNumber) | Different drivers, different preferences | Adjustable for reduced hand sensitivity |
+| 4 independent channels for every state | Any channel can fail, system still works | Redundancy = accessibility by default |
+| Compatible with Xbox Adaptive Controller | Standard WPILib API, no custom hardware | Works with accessibility peripherals |
+
 ## Controller Compatibility
 
 We use the standard Xbox HID rumble protocol for all haptic feedback. This means our system works with any HID-compliant controller, including the Xbox Adaptive Controller. The Adaptive Controller is designed for operators with mobility differences and supports external buttons, switches, joysticks, and mounts. Because our software uses the same HID interface regardless of hardware, an operator on an Adaptive Controller gets the same haptic feedback as someone on a regular Xbox controller.
