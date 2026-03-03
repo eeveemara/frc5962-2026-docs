@@ -32,13 +32,13 @@ flowchart TB
         V[Vision System] ~~~ O[Odometry + Velocity]
     end
 
-    V & O --> SC[ShotCalculator\nNewton TOF solver, 5 iterations]
-    SC -->|distance, TOF, RPM| CF[ShotConfidence\n5-component weighted score]
+    V & O --> SC[ShotCalculator<br/>Newton TOF solver, 5 iterations]
+    SC -->|distance, TOF, RPM| CF[ShotConfidence<br/>5-component weighted score]
     CF -->|confidence >= 50%| FA[FireAuthorization]
 
-    HS[HubShiftEngine\nscoring window tracker] --> FA
+    HS[HubShiftEngine<br/>scoring window tracker] --> FA
 
-    FA -->|authorized| RT[ReadyToShoot\n6 conditions + debounce]
+    FA -->|authorized| RT[ReadyToShoot<br/>6 conditions + debounce]
 
     subgraph Conditions ["Subsystem Conditions"]
         direction LR

@@ -14,11 +14,11 @@ Welcome to our control system docs for the 2026 FRC season (game: REBUILT). This
 flowchart TB
     HOME[Documentation Home]
 
-    ARCH["Architecture\nSystem design, telemetry, vision,\nfire control, crash isolation"]
-    FB["Driver Feedback\nUniversal design, AMDA system,\nalliance strategy"]
-    OPS["Operations\nCompetition playbook,\ntuning, troubleshooting"]
-    DASH["Dashboards\nElastic, AdvantageScope,\nquick reference"]
-    ENG["Engineering\nProcess, testing, simulation,\nFMEA log, lessons learned"]
+    ARCH["Architecture<br/>System design, telemetry, vision,<br/>fire control, crash isolation"]
+    FB["Driver Feedback<br/>Universal design, AMDA system,<br/>alliance strategy"]
+    OPS["Operations<br/>Competition playbook,<br/>tuning, troubleshooting"]
+    DASH["Dashboards<br/>Elastic, AdvantageScope,<br/>quick reference"]
+    ENG["Engineering<br/>Process, testing, simulation,<br/>FMEA log, lessons learned"]
 
     HOME --> ARCH & FB & OPS & DASH & ENG
 

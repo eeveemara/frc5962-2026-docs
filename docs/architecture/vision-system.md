@@ -35,18 +35,18 @@ flowchart TB
 
     subgraph GATES ["6-Gate Rejection Pipeline"]
         direction TB
-        G1[Gate 1: Ambiguity\nReject if PnP solver confidence too low]
-        G2[Gate 2: Z-Height\nReject if robot appears airborne or underground]
-        G3[Gate 3: Roll/Pitch\nReject if tilt exceeds 12 degrees]
-        G4[Gate 4: Field Bounds\nReject if pose is outside field walls]
-        G5[Gate 5: Heading Divergence\nReject if heading disagrees with gyro by 30+ degrees]
-        G6[Gate 6: Pose Jump\nReject if pose teleports more than 2m]
+        G1[Gate 1: Ambiguity<br/>Reject if PnP solver confidence too low]
+        G2[Gate 2: Z-Height<br/>Reject if robot appears airborne or underground]
+        G3[Gate 3: Roll/Pitch<br/>Reject if tilt exceeds 12 degrees]
+        G4[Gate 4: Field Bounds<br/>Reject if pose is outside field walls]
+        G5[Gate 5: Heading Divergence<br/>Reject if heading disagrees with gyro by 30+ degrees]
+        G6[Gate 6: Pose Jump<br/>Reject if pose teleports more than 2m]
         G1 --> G2 --> G3 --> G4 --> G5 --> G6
     end
 
-    ACC[Accepted Pose\nstd devs scaled by distance, speed, and tag count]
-    KF[Kalman Filter\nfuses vision with wheel odometry + gyro]
-    SC[ShotCalculator\nuses fused position for RPM and heading]
+    ACC[Accepted Pose<br/>std devs scaled by distance, speed, and tag count]
+    KF[Kalman Filter<br/>fuses vision with wheel odometry + gyro]
+    SC[ShotCalculator<br/>uses fused position for RPM and heading]
 
     RAW --> G1
     G6 --> ACC --> KF --> SC

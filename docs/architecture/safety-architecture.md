@@ -37,19 +37,19 @@ flowchart TB
     FAIL[Something fails]
 
     FAIL --> Q1{Subsystem reference is null?}
-    Q1 -->|yes| R1[Layer 1 catches it\nRe-acquire reference or set defaults]
+    Q1 -->|yes| R1[Layer 1 catches it<br/>Re-acquire reference or set defaults]
     R1 --> OK1([Other 20 telemetry classes unaffected])
 
     Q1 -->|no| Q2{Hardware read throws?}
-    Q2 -->|yes| R2[Layer 2 catches it\nSet deviceConnected = false, zero readings]
+    Q2 -->|yes| R2[Layer 2 catches it<br/>Set deviceConnected = false, zero readings]
     R2 --> OK2([Other motors and sensors keep reporting])
 
     Q2 -->|no| Q3{Single log call throws?}
-    Q3 -->|yes| R3[Layer 3 catches it\nSafeLog records failure, skips that signal]
+    Q3 -->|yes| R3[Layer 3 catches it<br/>SafeLog records failure, skips that signal]
     R3 --> OK3([Other ~499 signals log normally])
 
     Q3 -->|no| Q4{Whole telemetry class throws?}
-    Q4 -->|yes| R4[Layer 4 catches it\nTelemetryManager logs which class failed]
+    Q4 -->|yes| R4[Layer 4 catches it<br/>TelemetryManager logs which class failed]
     R4 --> OK4([Other 20 classes still update and log])
 
     style FAIL fill:#dc2626,stroke:#b91c1c,color:#fff

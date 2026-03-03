@@ -29,23 +29,23 @@ flowchart TB
         RTS[ReadyToShoot] ~~~ JAM[Jam Detected] ~~~ HUB[Hub Shift] ~~~ SPIN[Flywheel Spinning] ~~~ VIS[Vision Confidence]
     end
 
-    CC[ChannelCoordinator\nroutes by priority and role]
+    CC[ChannelCoordinator<br/>routes by priority and role]
 
     subgraph Touch ["Touch (Haptic)"]
-        HAP[Controller rumble\nworks in any lighting or noise]
+        HAP[Controller rumble<br/>works in any lighting or noise]
     end
 
     subgraph Sight1 ["Sight (LED Strip)"]
-        LED[Colorblind-safe palette\nanimation + brightness + hue]
+        LED[Colorblind-safe palette<br/>animation + brightness + hue]
     end
 
     subgraph Sight2 ["Sight (Dashboard)"]
-        DASH[Elastic / AdvantageScope\nnumerical readouts and graphs]
+        DASH[Elastic / AdvantageScope<br/>numerical readouts and graphs]
     end
 
     subgraph Roles ["Role-Based Routing"]
         direction LR
-        DRIVER[Driver\ngets awareness signals] ~~~ COPILOT[Copilot\ngets scoring signals]
+        DRIVER[Driver<br/>gets awareness signals] ~~~ COPILOT[Copilot<br/>gets scoring signals]
     end
 
     Sources --> CC

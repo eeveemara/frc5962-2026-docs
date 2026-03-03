@@ -153,20 +153,20 @@ Shooting isn't just "spin up and launch." Our fire control pipeline has four lay
 ```mermaid
 flowchart TB
     subgraph L1 ["Layer 1: Hub Timing"]
-        HS[HubShiftEngine\nTracks which hub is active and when shifts happen]
+        HS[HubShiftEngine<br/>Tracks which hub is active and when shifts happen]
     end
 
     subgraph L2 ["Layer 2: Zone Legality"]
-        ZG[Zone Gate\nBlocks shots outside alliance zone]
+        ZG[Zone Gate<br/>Blocks shots outside alliance zone]
     end
 
     subgraph L3 ["Layer 3: Shot Quality"]
-        SC2[ShotCalculator\nNewton TOF solver, 5 iterations, warm start]
-        SC2 --> CONF2[ShotConfidence\n5-component weighted score, 0 to 100%]
+        SC2[ShotCalculator<br/>Newton TOF solver, 5 iterations, warm start]
+        SC2 --> CONF2[ShotConfidence<br/>5-component weighted score, 0 to 100%]
     end
 
     subgraph L4 ["Layer 4: Scoring Readiness"]
-        RTS2[ReadyToShoot\n6 conditions + debounce]
+        RTS2[ReadyToShoot<br/>6 conditions + debounce]
     end
 
     FIRE([Shot Authorized])
