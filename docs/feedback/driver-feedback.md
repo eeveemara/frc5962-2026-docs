@@ -54,7 +54,7 @@ We use two Xbox controllers: port 0 for the driver (movement), port 1 for the co
 
 - **COPILOT gets scoring signals**: progressive aim feedback, ready-to-shoot confirmation, hub activation/deactivation, jam alerts. The copilot controls when to fire, so they need to feel the robot's scoring readiness.
 - **DRIVER gets awareness signals**: shooter spin-up rumble (left motor only, so they can feel the flywheel winding up without it being confused for a scoring cue).
-- **BOTH get match events**: teleop start, endgame warning, hub shift warning, role switch confirmation.
+- **BOTH get match events**: auto result (won/lost), endgame warning, hub shift warning, role switch confirmation.
 
 If the copilot controller is not plugged in, all COPILOT-targeted patterns gracefully fall back to the driver controller. No signals are lost.
 
@@ -62,16 +62,16 @@ If the copilot controller is not plugged in, all COPILOT-targeted patterns grace
 
 | # | Pattern | Priority | Target | Feel |
 |---|---------|----------|--------|------|
-| 1 | **Teleop Start** | CRITICAL | BOTH | Strong full buzz (1.0/1.0 for 0.3s) |
-| 2 | **Endgame Warning** | CRITICAL | BOTH | Two quick pulses at 30s remaining |
-| 3 | **Ready to Shoot** | HIGH | COPILOT | Gentle right-side tap (0/0.3 for 0.25s) |
-| 4 | **Hub Activated** | HIGH | COPILOT | Two right pings, hub is live |
-| 5 | **Hub Deactivated** | HIGH | COPILOT | Left thump, hub went offline |
-| 6 | **Hub Shift Warning** | MEDIUM | BOTH | Three quick taps when shift is 2.5s away |
-| 7 | **Jam Detected** | HIGH | COPILOT | Three strong pulses (0.8 intensity), auto-reverse active |
-| 8 | **Progressive Aim** | (continuous) | COPILOT | Intensity scales with aim error (see below) |
-| 9 | **Spin-Up Rumble** | (continuous) | DRIVER | Left motor proportional to flywheel speed |
-| 10 | **Game Data Missing** | HIGH | BOTH | SOS-like pattern when FMS data absent |
+| 1 | **Auto Won** | CRITICAL | BOTH | Full buzz (1.0/1.0 for 0.2s) then two right pings (positive, scoring side) |
+| 2 | **Auto Lost** | CRITICAL | BOTH | Full buzz (1.0/1.0 for 0.2s) then left thump (warning side, heavier) |
+| 3 | **Endgame Warning** | CRITICAL | BOTH | Two quick pulses at 30s remaining |
+| 4 | **Ready to Shoot** | HIGH | COPILOT | Gentle right-side tap (0/0.3 for 0.25s) |
+| 5 | **Hub Activated** | HIGH | COPILOT | Two right pings, hub is live |
+| 6 | **Hub Deactivated** | HIGH | COPILOT | Left thump, hub went offline |
+| 7 | **Hub Shift Warning** | MEDIUM | BOTH | Three quick taps when shift is 2.5s away |
+| 8 | **Jam Detected** | HIGH | COPILOT | Three strong pulses (0.8 intensity), auto-reverse active |
+| 9 | **Progressive Aim** | (continuous) | COPILOT | Intensity scales with aim error (see below) |
+| 10 | **Spin-Up Rumble** | (continuous) | DRIVER | Left motor proportional to flywheel speed |
 
 ### Priority System
 

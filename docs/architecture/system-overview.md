@@ -132,7 +132,7 @@ We use two Xbox controllers. Port 0 is the driver (movement, positioning). Port 
 
 - **Copilot gets scoring signals:** progressive aim guidance, ReadyToShoot confirmation, hub state changes, jam alerts. These are the things you need to know to decide when to pull the trigger.
 - **Driver gets awareness signals:** flywheel spin-up rumble, so the driver knows the copilot is preparing to shoot and can hold position.
-- **Both get match events:** teleop start, endgame warning, hub shift, role switch confirmation.
+- **Both get match events:** auto result (won/lost), endgame warning, hub shift, role switch confirmation.
 
 If the copilot controller is unplugged, everything falls back gracefully to the driver controller. Nothing crashes.
 

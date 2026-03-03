@@ -72,7 +72,7 @@ These values can be adjusted live through SmartDashboard during testing. They ar
 | Haptic | hapticScale | `SmartDashboard/DriverFeedback/` | Global haptic intensity multiplier (0-2x) |
 | LED | brightness | `SmartDashboard/LED/` | LED strip brightness (0-1) |
 | LED | TestState | `SmartDashboard/LED/` | Force a specific LED state for testing (0-10) |
-| Haptic | TestPattern | `SmartDashboard/DriverFeedback/` | Force a specific haptic pattern (0-5) |
+| Haptic | TestPattern | `SmartDashboard/DriverFeedback/` | Force a specific haptic pattern (0-8) |
 
 ## Layout File Locations
 

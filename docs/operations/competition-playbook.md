@@ -11,7 +11,7 @@ Your job is movement. The robot handles assessment, the copilot handles shooting
 - **Dashboard**: The driver tab shows battery voltage, match time, alliance color, and bandwidth warnings. You shouldn't need to stare at it. Glance between matches.
 - **Haptic feedback you'll feel**:
   - Short buzz when the flywheel starts spinning up (awareness, so you know the copilot is getting ready to shoot)
-  - Strong pulse at teleop start (confirms your controller is connected and routed)
+  - Auto result buzz at teleop start: full buzz then right pings = won auto (collect first), full buzz then left thump = lost auto (shoot NOW)
   - Escalating rumble in endgame (time awareness, 30 seconds left)
   - Rumble on hub shift (the hub changed scoring multiplier, reposition if needed)
   - Rumble on role switch confirmation (coach called a strategy change)
