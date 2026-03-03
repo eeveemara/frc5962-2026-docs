@@ -9,42 +9,34 @@ We run 21 telemetry classes that monitor ~500 signals every loop cycle, a fire c
 This is the core pipeline. Subsystems own the hardware. Telemetry reads from subsystems and does all the analysis. Everything gets logged through SafeLog into AdvantageKit's logger, which publishes to NetworkTables for live dashboards and writes to disk for post-match review.
 
 ```mermaid
-flowchart LR
-    subgraph Hardware
-        S1[Shooter]
-        S2[Intake]
-        S3[Indexer]
-        S4[Swerve Drive]
-        S5[Other Subsystems]
+flowchart TB
+    subgraph HW ["Hardware (Subsystems)"]
+        direction LR
+        S1[Shooter] ~~~ S2[Intake] ~~~ S3[Indexer] ~~~ S4[Swerve Drive] ~~~ S5[Others]
     end
 
-    subgraph Telemetry Layer
-        TM[TelemetryManager<br/>updateAll per cycle]
-        T1[ShooterTelemetry]
-        T2[IntakeTelemetry]
-        T3[IndexerTelemetry]
-        T4[DriveTelemetry]
-        T5[17 more classes...]
+    TM[TelemetryManager — updateAll once per cycle]
+
+    subgraph TEL ["Telemetry Layer (21 classes)"]
+        direction LR
+        T1[ShooterTelemetry] ~~~ T2[IntakeTelemetry] ~~~ T3[IndexerTelemetry] ~~~ T4[DriveTelemetry] ~~~ T5[17 more...]
     end
 
-    subgraph Logging
-        SL[SafeLog<br/>per-signal isolation]
-        AK[AdvantageKit Logger]
+    SL[SafeLog — per-signal crash isolation]
+    AK[AdvantageKit Logger]
+
+    subgraph OUT ["Outputs"]
+        direction LR
+        NT[NetworkTables] ~~~ LOG[Log File .wpilog]
     end
 
-    subgraph Outputs
-        NT[NetworkTables]
-        LOG[Log File .wpilog]
-        EL[Elastic Dashboard]
-        AS[AdvantageScope]
+    subgraph DASH ["Dashboards (live)"]
+        direction LR
+        EL[Elastic Dashboard] ~~~ AS[AdvantageScope]
     end
 
-    S1 & S2 & S3 & S4 & S5 --> TM
-    TM --> T1 & T2 & T3 & T4 & T5
-    T1 & T2 & T3 & T4 & T5 --> SL
-    SL --> AK
-    AK --> NT & LOG
-    NT --> EL & AS
+    HW --> TM --> TEL --> SL --> AK --> OUT
+    NT --> DASH
 
     style S1 fill:#7c3aed,stroke:#5b21b6,color:#fff
     style S2 fill:#7c3aed,stroke:#5b21b6,color:#fff
@@ -159,29 +151,30 @@ For more details, see the [Safety Architecture](safety-architecture.md) document
 Shooting isn't just "spin up and launch." Our fire control pipeline has four layers that all have to agree before a shot is authorized:
 
 ```mermaid
-flowchart LR
-    subgraph "Layer 1: Hub Timing"
-        HS[HubShiftEngine<br/>tracks scoring windows]
+flowchart TB
+    subgraph L1 ["Layer 1: Hub Timing"]
+        HS[HubShiftEngine\nTracks which hub is active and when shifts happen]
     end
 
-    subgraph "Layer 2: Zone Legality"
-        ZG[Zone Gate<br/>alliance zone check]
+    subgraph L2 ["Layer 2: Zone Legality"]
+        ZG[Zone Gate\nBlocks shots outside alliance zone]
     end
 
-    subgraph "Layer 3: Shot Quality"
-        SC2[ShotCalculator<br/>Newton TOF solver]
-        CONF2[ShotConfidence<br/>5 components, 0-100%]
+    subgraph L3 ["Layer 3: Shot Quality"]
+        SC2[ShotCalculator\nNewton TOF solver, 5 iterations, warm start]
+        SC2 --> CONF2[ShotConfidence\n5-component weighted score, 0 to 100%]
     end
 
-    subgraph "Layer 4: Scoring Readiness"
-        RTS2[ReadyToShoot<br/>6 conditions + debounce]
+    subgraph L4 ["Layer 4: Scoring Readiness"]
+        RTS2[ReadyToShoot\n6 conditions + debounce]
     end
 
-    HS -->|window open| ZG
-    ZG -->|in alliance zone| SC2
-    SC2 --> CONF2
-    CONF2 -->|>= 50%| RTS2
-    RTS2 -->|all 6 true| FIRE[Shot Authorized]
+    FIRE([Shot Authorized])
+
+    HS -->|scoring window open| ZG
+    ZG -->|robot in alliance zone| SC2
+    CONF2 -->|confidence >= 50%| RTS2
+    RTS2 -->|all 6 conditions true| FIRE
 
     style HS fill:#7c3aed,stroke:#5b21b6,color:#fff
     style ZG fill:#2563eb,stroke:#1d4ed8,color:#fff

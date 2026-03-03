@@ -30,6 +30,43 @@ flowchart TB
     style HW fill:#dc2626,stroke:#b91c1c,color:#fff
 ```
 
+Here's what happens when a failure occurs. Each layer catches it at a different scope, and only the narrowest possible piece of the system is affected:
+
+```mermaid
+flowchart TB
+    FAIL[Something fails]
+
+    FAIL --> Q1{Subsystem reference is null?}
+    Q1 -->|yes| R1[Layer 1 catches it\nRe-acquire reference or set defaults]
+    R1 --> OK1([Other 20 telemetry classes unaffected])
+
+    Q1 -->|no| Q2{Hardware read throws?}
+    Q2 -->|yes| R2[Layer 2 catches it\nSet deviceConnected = false, zero readings]
+    R2 --> OK2([Other motors and sensors keep reporting])
+
+    Q2 -->|no| Q3{Single log call throws?}
+    Q3 -->|yes| R3[Layer 3 catches it\nSafeLog records failure, skips that signal]
+    R3 --> OK3([Other ~499 signals log normally])
+
+    Q3 -->|no| Q4{Whole telemetry class throws?}
+    Q4 -->|yes| R4[Layer 4 catches it\nTelemetryManager logs which class failed]
+    R4 --> OK4([Other 20 classes still update and log])
+
+    style FAIL fill:#dc2626,stroke:#b91c1c,color:#fff
+    style Q1 fill:#d97706,stroke:#b45309,color:#fff
+    style Q2 fill:#d97706,stroke:#b45309,color:#fff
+    style Q3 fill:#d97706,stroke:#b45309,color:#fff
+    style Q4 fill:#d97706,stroke:#b45309,color:#fff
+    style R1 fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style R2 fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style R3 fill:#059669,stroke:#047857,color:#fff
+    style R4 fill:#0891b2,stroke:#0e7490,color:#fff
+    style OK1 fill:#34d399,stroke:#10b981,color:#000
+    style OK2 fill:#34d399,stroke:#10b981,color:#000
+    style OK3 fill:#34d399,stroke:#10b981,color:#000
+    style OK4 fill:#34d399,stroke:#10b981,color:#000
+```
+
 ### Layer 1: Null Subsystem Re-acquisition
 
 Every telemetry class holds a reference to its subsystem (e.g., `ShooterTelemetry` holds a reference to `Shooter`). If that reference is ever null, maybe because the subsystem failed to initialize or got garbage collected, the telemetry class tries to re-acquire it at the start of `update()`. If re-acquisition still returns null, the class sets all its fields to safe defaults (zeros and false) and returns without touching any hardware. This way, a subsystem that never initializes just produces zeroed-out signals instead of throwing NullPointerExceptions everywhere.

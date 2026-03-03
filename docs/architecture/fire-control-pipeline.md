@@ -26,18 +26,27 @@ When ReadyToShoot drops, `ScoringTelemetry` logs which condition failed via `Sco
 ## The Full Pipeline
 
 ```mermaid
-flowchart LR
-    V[Vision System] --> SC[ShotCalculator]
-    O[Odometry + Velocity] --> SC
-    SC --> |distance, TOF, RPM| CF[ShotConfidence]
-    CF --> |confidence >= 50%| FA[FireAuthorization]
-    HS[HubShiftEngine] --> FA
-    FA --> |authorized| RT[ReadyToShoot]
-    SH[Shooter at RPM] --> RT
-    IX[Indexer clear] --> RT
-    VL[Vision locked] --> RT
-    BL[Ball present] --> RT
-    RT --> |true| CP[Copilot pulls trigger]
+flowchart TB
+    subgraph Inputs ["Sensor Inputs"]
+        direction LR
+        V[Vision System] ~~~ O[Odometry + Velocity]
+    end
+
+    V & O --> SC[ShotCalculator\nNewton TOF solver, 5 iterations]
+    SC -->|distance, TOF, RPM| CF[ShotConfidence\n5-component weighted score]
+    CF -->|confidence >= 50%| FA[FireAuthorization]
+
+    HS[HubShiftEngine\nscoring window tracker] --> FA
+
+    FA -->|authorized| RT[ReadyToShoot\n6 conditions + debounce]
+
+    subgraph Conditions ["Subsystem Conditions"]
+        direction LR
+        SH[Shooter at RPM] ~~~ IX[Indexer clear] ~~~ VL[Vision locked] ~~~ BL[Ball present]
+    end
+
+    Conditions --> RT
+    RT -->|all true| CP([Copilot pulls trigger])
 
     style V fill:#7c3aed,stroke:#5b21b6,color:#fff
     style O fill:#7c3aed,stroke:#5b21b6,color:#fff

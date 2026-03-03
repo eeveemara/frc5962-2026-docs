@@ -20,7 +20,50 @@ Ronald Mace's Universal Design framework gives us a clear way to think about mak
 
 ## Multi-Sensory Redundancy
 
-Every critical robot state reaches the operator through multiple channels:
+Every critical robot state reaches the operator through multiple channels. The key idea: if any single channel fails (crowd noise drowns audio, bright lights wash out LEDs), the operator still gets the information through a different sense.
+
+```mermaid
+flowchart TB
+    subgraph Sources ["Robot State Assessment"]
+        direction LR
+        RTS[ReadyToShoot] ~~~ JAM[Jam Detected] ~~~ HUB[Hub Shift] ~~~ SPIN[Flywheel Spinning] ~~~ VIS[Vision Confidence]
+    end
+
+    CC[ChannelCoordinator\nroutes by priority and role]
+
+    subgraph Touch ["Touch (Haptic)"]
+        HAP[Controller rumble\nworks in any lighting or noise]
+    end
+
+    subgraph Sight1 ["Sight (LED Strip)"]
+        LED[Colorblind-safe palette\nanimation + brightness + hue]
+    end
+
+    subgraph Sight2 ["Sight (Dashboard)"]
+        DASH[Elastic / AdvantageScope\nnumerical readouts and graphs]
+    end
+
+    subgraph Roles ["Role-Based Routing"]
+        direction LR
+        DRIVER[Driver\ngets awareness signals] ~~~ COPILOT[Copilot\ngets scoring signals]
+    end
+
+    Sources --> CC
+    CC --> Touch & Sight1 & Sight2
+    Touch & Sight1 & Sight2 --> Roles
+
+    style RTS fill:#059669,stroke:#047857,color:#fff
+    style JAM fill:#dc2626,stroke:#b91c1c,color:#fff
+    style HUB fill:#d97706,stroke:#b45309,color:#fff
+    style SPIN fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style VIS fill:#0891b2,stroke:#0e7490,color:#fff
+    style CC fill:#db2777,stroke:#be185d,color:#fff
+    style HAP fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style LED fill:#34d399,stroke:#10b981,color:#000
+    style DASH fill:#fbbf24,stroke:#f59e0b,color:#000
+    style DRIVER fill:#dc2626,stroke:#b91c1c,color:#fff
+    style COPILOT fill:#f87171,stroke:#ef4444,color:#fff
+```
 
 | Information | Touch (Haptic) | Sight (LED) | Sight (Dashboard) |
 |-------------|---------------|-------------|-------------------|

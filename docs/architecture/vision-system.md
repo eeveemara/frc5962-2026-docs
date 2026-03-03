@@ -30,17 +30,26 @@ Not every pose estimate is good. Reflections, partial tag occlusion, motion blur
 Every pose runs through these six checks in order. The first failure rejects the pose:
 
 ```mermaid
-flowchart LR
-    RAW[Raw Camera Pose] --> G1[Ambiguity]
-    G1 --> G2[Z-Height]
-    G2 --> G3[Roll/Pitch]
-    G3 --> G4[Field Bounds]
-    G4 --> G5[Heading Divergence]
-    G5 --> G6[Pose Jump]
-    G6 --> ACC[Accepted Pose]
-    ACC --> KF[Kalman Filter]
-    KF --> ODO[Fused Odometry]
-    ODO --> SC[ShotCalculator]
+flowchart TB
+    RAW[Raw Camera Pose]
+
+    subgraph GATES ["6-Gate Rejection Pipeline"]
+        direction TB
+        G1[Gate 1: Ambiguity\nReject if PnP solver confidence too low]
+        G2[Gate 2: Z-Height\nReject if robot appears airborne or underground]
+        G3[Gate 3: Roll/Pitch\nReject if tilt exceeds 12 degrees]
+        G4[Gate 4: Field Bounds\nReject if pose is outside field walls]
+        G5[Gate 5: Heading Divergence\nReject if heading disagrees with gyro by 30+ degrees]
+        G6[Gate 6: Pose Jump\nReject if pose teleports more than 2m]
+        G1 --> G2 --> G3 --> G4 --> G5 --> G6
+    end
+
+    ACC[Accepted Pose\nstd devs scaled by distance, speed, and tag count]
+    KF[Kalman Filter\nfuses vision with wheel odometry + gyro]
+    SC[ShotCalculator\nuses fused position for RPM and heading]
+
+    RAW --> G1
+    G6 --> ACC --> KF --> SC
 
     style RAW fill:#7c3aed,stroke:#5b21b6,color:#fff
     style G1 fill:#dc2626,stroke:#b91c1c,color:#fff
@@ -51,7 +60,6 @@ flowchart LR
     style G6 fill:#2563eb,stroke:#1d4ed8,color:#fff
     style ACC fill:#34d399,stroke:#10b981,color:#000
     style KF fill:#db2777,stroke:#be185d,color:#fff
-    style ODO fill:#f472b6,stroke:#ec4899,color:#fff
     style SC fill:#f87171,stroke:#ef4444,color:#fff
 ```
 

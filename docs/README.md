@@ -11,12 +11,16 @@ Welcome to our control system docs for the 2026 FRC season (game: REBUILT). This
 ## Site Map
 
 ```mermaid
-graph LR
-    HOME[Documentation Home] --> ARCH["Architecture<br/>System design, telemetry, vision,<br/>fire control, crash isolation"]
-    HOME --> FB["Driver Feedback<br/>Universal design, AMDA system,<br/>alliance strategy"]
-    HOME --> OPS["Operations<br/>Competition playbook,<br/>tuning, troubleshooting"]
-    HOME --> DASH["Dashboards<br/>Elastic, AdvantageScope,<br/>quick reference"]
-    HOME --> ENG["Engineering<br/>Process, testing, simulation,<br/>FMEA log, lessons learned"]
+flowchart TB
+    HOME[Documentation Home]
+
+    ARCH["Architecture\nSystem design, telemetry, vision,\nfire control, crash isolation"]
+    FB["Driver Feedback\nUniversal design, AMDA system,\nalliance strategy"]
+    OPS["Operations\nCompetition playbook,\ntuning, troubleshooting"]
+    DASH["Dashboards\nElastic, AdvantageScope,\nquick reference"]
+    ENG["Engineering\nProcess, testing, simulation,\nFMEA log, lessons learned"]
+
+    HOME --> ARCH & FB & OPS & DASH & ENG
 
     style HOME fill:#7c3aed,stroke:#5b21b6,color:#fff
     style ARCH fill:#2563eb,stroke:#1d4ed8,color:#fff
@@ -59,23 +63,28 @@ graph LR
 ## System Architecture
 
 ```mermaid
-graph LR
-    subgraph Robot
-        SUB[Subsystems] --> TM[TelemetryManager]
-        TM --> SL[SafeLog]
+flowchart TB
+    subgraph Robot ["Robot (20ms loop)"]
+        SUB[Subsystems] --> TM[TelemetryManager] --> SL[SafeLog]
     end
 
     SL --> AK[AdvantageKit Logger]
-    AK --> NT[NetworkTables]
-    AK --> LOG[Log Files]
 
-    NT --> DASH[Dashboards]
+    subgraph Storage ["Storage"]
+        direction LR
+        NT[NetworkTables] ~~~ LOG[Log Files]
+    end
+
+    AK --> Storage
+
     NT --> CC[ChannelCoordinator]
 
-    CC --> HAP[Haptic Feedback]
-    CC --> LED_OUT[LED Status]
-    CC --> HUD[Camera HUD]
-    CC --> DASH
+    subgraph Feedback ["Operator Feedback"]
+        direction LR
+        HAP[Haptic] ~~~ LED_OUT[LED Status] ~~~ HUD[Camera HUD] ~~~ DASH[Dashboards]
+    end
+
+    CC --> Feedback
 
     style SUB fill:#7c3aed,stroke:#5b21b6,color:#fff
     style TM fill:#2563eb,stroke:#1d4ed8,color:#fff
