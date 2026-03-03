@@ -10,13 +10,10 @@ The system uses four nested layers of defense. Each layer catches failures that 
 
 ```mermaid
 flowchart TB
-    subgraph L4["Layer 4: TelemetryManager runSafely()"]
-        direction TB
-        subgraph L3["Layer 3: SafeLog per-signal isolation"]
-            direction TB
-            subgraph L2["Layer 2: try-catch on hardware reads"]
-                direction TB
-                subgraph L1["Layer 1: Null subsystem re-acquisition"]
+    subgraph L4["Layer 4: TelemetryManager runSafely"]
+        subgraph L3["Layer 3: SafeLog isolation"]
+            subgraph L2["Layer 2: try-catch on reads"]
+                subgraph L1["Layer 1: Null re-acquisition"]
                     HW[Hardware Access]
                 end
             end
