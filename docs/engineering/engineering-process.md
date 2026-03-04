@@ -79,7 +79,8 @@ We test at four levels:
 
 | Level | What | Scale |
 |-------|------|-------|
-| **Unit tests** | JUnit tests for individual classes. Does VisionFilter reject a pose 3m outside the field? Does JamProtection transition from MONITORING to REVERSING correctly? | 53 test files, runs in ~10 seconds |
+| **Unit tests** | JUnit tests for individual classes. Does VisionFilter reject a pose 3m outside the field? Does JamProtection transition from MONITORING to REVERSING correctly? | 50+ test files, runs in ~10 seconds |
+| **Code coverage** | Jacoco measures which lines and branches our tests actually exercise. We focus on core logic classes, not hardware wiring. | 76% core logic coverage |
 | **Mutation testing** | PITest injects artificial bugs (flip a `>` to `<`, change `true` to `false`) and checks if our tests catch them. If a mutant survives, we have a testing gap. | 10 target classes, 53% kill rate, 75% test strength |
 | **Simulation** | Full robot simulation with YAGSL MapleSim physics, PhotonVision simulated cameras, and our custom FuelSim ball physics engine. 10 scenarios test different match situations. | 10 scenarios, ~22ms loop time in sim |
 | **Dashboard validation** | 4 Elastic layouts and 11 AdvantageScope layouts for visual verification of signals, state machines, and subsystem behavior | 15 layout files |

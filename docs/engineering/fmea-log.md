@@ -99,7 +99,7 @@ After writing everything down, we noticed the same types of bugs kept showing up
 5. **Wrap ALL of the library** (entry 6). Our SafeLog wrapper didn't cover every type. We audited every overload and found two more missing types.
 6. **Never PID to zero** (entries 19, 20). Using closed-loop PID to stop a motor causes gear clicking from backlash. Just cut power and let it coast. We wrote a lint rule for this.
 7. **If it turns on, prove it turns off** (entries 21, 22). We had 274 passing tests and none checked "does the vibration stop?" Now every feedback boolean gets 3 tests: on, off, and never-on-when-it-shouldn't.
-9. **Test both alliance sides, always** (entries 33, 34). We found two bugs that only showed up on red alliance. Most of our testing was on blue (the default). Now we run every sim scenario on both sides.
+8. **Test both alliance sides, always** (entries 33, 34). We found two bugs that only showed up on red alliance. Most of our testing was on blue (the default). Now we run every sim scenario on both sides.
 
 ## Connection to Automated Checking
 

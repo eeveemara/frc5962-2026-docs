@@ -35,6 +35,7 @@ flowchart TB
 | Metric | Value |
 |--------|-------|
 | Telemetry signals monitored in real time | ~500 |
+| Core logic code coverage (Jacoco) | 76% |
 | Mutation testing kill rate | 53% across 10 classes |
 | FMEA failure entries tracked | 34 |
 | Feedback channels (haptic, LED, HUD, dashboard) | 4 |

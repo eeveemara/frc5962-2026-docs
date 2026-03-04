@@ -72,7 +72,7 @@ flowchart TB
 
     subgraph Coordination
         CC[ChannelCoordinator<br/>AMDA]
-        DF[DriverFeedback<br/>11 haptic patterns]
+        DF[DriverFeedback<br/>10 haptic patterns]
         LED[LEDStatusDisplay<br/>11 states]
         HUD[Camera HUD<br/>Orange Pi overlay]
         DASH[Dashboard Widgets]

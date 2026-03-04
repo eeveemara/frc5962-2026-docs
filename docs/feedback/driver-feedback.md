@@ -58,7 +58,7 @@ We use two Xbox controllers: port 0 for the driver (movement), port 1 for the co
 
 If the copilot controller is not plugged in, all COPILOT-targeted patterns gracefully fall back to the driver controller. No signals are lost.
 
-### 11 Haptic Patterns
+### 10 Haptic Patterns
 
 | # | Pattern | Priority | Target | Feel |
 |---|---------|----------|--------|------|
@@ -72,7 +72,8 @@ If the copilot controller is not plugged in, all COPILOT-targeted patterns grace
 | 8 | **Jam Detected** | HIGH | COPILOT | Three strong pulses (0.8 intensity), auto-reverse active |
 | 9 | **Game Data Missing** | CRITICAL | BOTH | Three strong pulses, repeats every 2s when FMS data is absent during transition |
 | 10 | **Progressive Aim** | (continuous) | COPILOT | Intensity scales with aim error (see below) |
-| 11 | **Spin-Up Rumble** | (continuous) | DRIVER | Left motor proportional to flywheel speed |
+
+The driver also gets a continuous **spin-up rumble** (left motor proportional to flywheel speed) so they can feel the shooter winding up without it being confused for a scoring cue.
 
 ### Priority System
 

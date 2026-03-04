@@ -64,6 +64,14 @@ Here's how a stall detection test works conceptually:
 
 This pattern repeats across all our tests. Set up a known state, run the logic, check the result. The magic is that we can simulate any motor condition we want without a physical robot.
 
+## Code Coverage (Jacoco)
+
+Before mutation testing, we ran Jacoco to see how much of our code is actually exercised by tests. The overall numbers are 49% instruction coverage and 34% branch coverage, but those are misleading because a lot of our code is hardware wiring (motor configuration, CAN setup) that can't run in simulation.
+
+The number that matters: **76% coverage on core logic classes**. That includes the fire control pipeline, scoring readiness, jam detection, driver feedback routing, and hub shift timing. These are the classes where bugs actually hide, and they're well covered.
+
+We use Jacoco as a "did we forget to test something?" tool, not a target to chase. 100% coverage is meaningless if the tests don't check the right things. That's where mutation testing comes in.
+
 ## What is Mutation Testing (PITest)?
 
 This is where it gets interesting. Regular tests answer the question "does the code work?" Mutation testing asks a harder question: **"would our tests catch it if the code was WRONG?"**
