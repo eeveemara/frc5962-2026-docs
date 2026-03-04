@@ -68,8 +68,8 @@ If the copilot controller is not plugged in, all COPILOT-targeted patterns grace
 | 4 | **Ready to Shoot** | HIGH | COPILOT | Gentle right-side tap (0/0.3 for 0.25s) |
 | 5 | **Hub Activated** | HIGH | COPILOT | Two right pings, hub is live |
 | 6 | **Hub Deactivated** | HIGH | COPILOT | Left thump, hub went offline |
-| 7 | **Hub Shift Warning** | MEDIUM | BOTH | Three quick taps when shift is 2.5s away |
-| 8 | **Jam Detected** | HIGH | COPILOT | Three strong pulses (0.8 intensity), auto-reverse active |
+| 7 | **Hub Shift Warning** | MEDIUM | BOTH | 5 second count down at 5, 4, 3, 2, 1 |
+| 8 | **Jam Detected** | HIGH | COPILOT | L-R-L signals |
 | 9 | **Game Data Missing** | CRITICAL | BOTH | Three strong pulses, repeats every 2s when FMS data is absent during transition |
 | 10 | **Progressive Aim** | (continuous) | COPILOT | Intensity scales with aim error (see below) |
 
