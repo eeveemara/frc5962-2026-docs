@@ -24,7 +24,7 @@ You are the weapons officer. Your controller gets all the scoring feedback. Lear
 - **Progressive aim**: The controller vibrates harder as alignment improves. Light rumble = pointed vaguely right. Strong rumble = almost locked. The intensity IS the information. Trust it.
 - **ReadyToShoot pulse**: A distinct pulse means all 6 conditions are met (flywheel at speed, indexer clear, vision locked, ball loaded, hub active, confidence above threshold). When you feel this, pull the trigger. That's the whole point.
 - **Hub shift warning**: You'll feel a unique pattern when the hub changes state. Reposition to take advantage of the new scoring multiplier.
-- **Jam alert**: A rapid buzz means something is jammed. JamProtection should auto-reverse, but if it persists, stop feeding balls for a moment.
+- **Jam alert**: An L-R-L buzz means something is jammed. Stop feeding balls for a moment and let the jam clear.
 - **RPM offset**: Your bumper buttons adjust the flywheel speed +/- 25 RPM per press. If shots are consistently high or low, nudge it. Resets when the robot is disabled.
 
 ### Programmer

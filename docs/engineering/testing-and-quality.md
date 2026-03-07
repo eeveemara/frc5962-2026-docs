@@ -106,7 +106,7 @@ We run mutation testing on 10 target classes. Overall: **53% kill rate, 75% test
 | StrategySelector | 85% | 88% | Switching between SHOOTER and FEEDER roles |
 | FireAuthorization | 81% | 81% | Whether the robot is allowed to shoot right now |
 | DriverFeedback | 64% | 90% | Haptic patterns routed to the right controller |
-| JamProtection | 51% | 52% | Jam detection and auto-reverse state machine |
+| JamProtection | 51% | 52% | Jam detection and alert state machine |
 | AlertManager | 35% | 45% | Alert raising for subsystem health issues |
 | LEDStatusDisplay | 25% | 84% | Choosing the right LED color for robot state |
 

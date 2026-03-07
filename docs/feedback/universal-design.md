@@ -83,15 +83,15 @@ Each LED state is distinguishable through three independent cues:
 
 | State | Color | Animation | Brightness |
 |-------|-------|-----------|------------|
-| Idle | White | Solid | Full |
-| Disabled | White | Solid | Dim |
+| Idle | Green | Solid | Full |
+| Disabled | Green | Solid | Dim |
 | Vision locked | Blue | Breathing (2s cycle) | Full |
-| Aiming | Blue | Pulsing (speed varies) | Full |
+| Aiming | Blue | Pulsing (speed varies, phase accumulator) | Full |
 | Ready to shoot | Blue | Solid | Full |
-| Shooter spinning up | Blue | Progress bar (fills L to R) | Full |
-| Warning (jam/stall/low battery) | Orange | Breathing (1.5s cycle) | Full |
-| Critical alert | Red + orange | Rapid alternating flash (20Hz) | Full |
-| Match over | White | Breathing (3s cycle) | Full |
+| Shooter spinning up | Blue | Progress bar (fills L to R, dim blue background) | Full |
+| Warning (jam/stall/low battery) | Orange | Chase (sliding dots, ~1 Hz) | Full |
+| Critical alert | Red + orange | Dual chase (sliding bands, ~0.5 Hz) | Full |
+| Match over | Green | Breathing (3s cycle) | Full |
 | Autonomous | Rainbow | Scrolling | Full |
 
 Even under simulated protanopia (no red cones) or deuteranopia (no green cones), every state is still easy to tell apart because we differentiate by animation pattern and brightness, not just hue.
@@ -120,7 +120,7 @@ We didn't set out to build an accessible system. We set out to minimize attentio
 
 | Design Choice | Engineering Reason | Accessibility Consequence |
 |--------------|-------------------|--------------------------|
-| Blue/orange/white LED palette | Maximize contrast under pit lights | Works for red-green colorblind drivers (~8% of males) |
+| Blue/orange/green LED palette | Maximize contrast under pit lights | Works for red-green colorblind drivers (~8% of males) |
 | LED states encoded in rhythm + brightness | Redundancy, not relying on one signal dimension | Colorblind drivers read the same info as anyone |
 | Haptic delivers scoring readiness without vision | Lowest attention cost for most critical info | Eyes-free operation for any driver |
 | Configurable vibration intensity (TunableNumber) | Different drivers, different preferences | Adjustable for reduced hand sensitivity |

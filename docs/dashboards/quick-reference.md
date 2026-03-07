@@ -42,7 +42,7 @@ Cheat sheet for finding the right dashboard view for what you need to check.
 | `Shooter/VelocityRPM` | number | Current flywheel speed in RPM. Target is distance-dependent. |
 | `Shooter/AtSpeed` | boolean | True = flywheel is within tolerance of target RPM. |
 | `Intake/Stalled` | boolean | True = intake motor stall detected. Possible jam. |
-| `Indexer/JamDetected` | boolean | True = indexer jam detected. Auto-reverse should trigger. |
+| `Indexer/JamDetected` | boolean | True = indexer jam detected. Copilot feels an L-R-L buzz. |
 | `Vision/LockedOnTarget` | boolean | True = camera has a valid target lock (enough consecutive frames). |
 | `Match/TimeRemaining` | seconds | Seconds left in the current match period. |
 | `AMDA/Confidence` | LOW/HIGH | Vision confidence level. Hysteresis: drops to LOW below 40%, recovers to HIGH at 55%+. Affects feedback intensity. |
@@ -71,8 +71,8 @@ These values can be adjusted live through SmartDashboard during testing. They ar
 | Driver | SlowModeRotation | `SmartDashboard/Driver/` | Slow-mode rotation multiplier |
 | Haptic | hapticScale | `SmartDashboard/DriverFeedback/` | Global haptic intensity multiplier (0-2x) |
 | LED | brightness | `SmartDashboard/LED/` | LED strip brightness (0-1) |
-| LED | TestState | `SmartDashboard/LED/` | Force a specific LED state for testing (0-10) |
-| Haptic | TestPattern | `SmartDashboard/DriverFeedback/` | Force a specific haptic pattern (0-8) |
+| LED | TestState | `SmartDashboard/LED/` | Force a specific LED state for testing (0-9) |
+| Haptic | TestPattern | `SmartDashboard/DriverFeedback/` | Force a specific haptic pattern (0-9) |
 
 ## Layout File Locations
 

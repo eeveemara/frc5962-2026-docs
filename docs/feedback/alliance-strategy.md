@@ -47,8 +47,7 @@ flowchart TD
 
 Key details:
 - The toggle is edge-detected (one press = one switch, holding Start doesn't oscillate)
-- LED state changes to FEEDING so the drive team has a visual confirmation
-- A ROLE_SWITCHED haptic fires on both controllers so pilots feel the mode change
+- The role change is logged to telemetry and visible on the dashboard
 - StrategyTelemetry logs 14 signals including current role, active feed strategy, zone state, and cycle metrics
 
 ## What Changes Per Role
@@ -102,8 +101,7 @@ The physical controls stay the same. The same buttons and triggers work in both 
 
 - In SHOOTER, the RT trigger fires at the hub. Progressive aim haptic guides your timing.
 - In FEEDER, the RT trigger ejects to the feed spot. The aim target changes automatically.
-- The LED strip changes to the FEEDING color pattern so the whole drive team can see the current role.
-- You'll feel a ROLE_SWITCHED rumble on your controller confirming the change went through.
+- The role change shows on the dashboard so the drive team can confirm it.
 
 One important thing: switching roles doesn't reset the flywheel or clear any state. It's a clean transition. The robot just redirects where it's aiming and what RPM it targets.
 

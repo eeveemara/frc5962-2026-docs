@@ -16,8 +16,8 @@ We run 4 cameras configured in `Cameras.java`, each as a PhotonVision camera wit
 |--------|------|----------|-------------|---------|
 | LEFT_CAM | `back-left` | (-0.293, 0.293, 0.229)m | 15 deg down, 135 deg yaw | Rear-left coverage |
 | RIGHT_CAM | `back-right` | (-0.293, -0.293, 0.229)m | 15 deg down, -135 deg yaw | Rear-right coverage |
-| FRONT_LEFT_CAM | `front-left` | (-0.113, 0.145, 0.483)m | 0 pitch, 45 deg yaw | Front-left coverage |
-| FRONT_RIGHT_CAM | `front-right` | (-0.113, -0.145, 0.483)m | 0 pitch, -45 deg yaw | Front-right coverage |
+| FRONT_LEFT_CAM | `front-left` | (-0.113, 0.145, 0.483)m | 0 pitch, 35 deg yaw | Front-left coverage |
+| FRONT_RIGHT_CAM | `front-right` | (-0.113, -0.145, 0.483)m | 0 pitch, -35 deg yaw | Front-right coverage |
 
 Each camera has independent standard deviation baselines: single-tag (0.3, 0.3, 0.6) and multi-tag (0.1, 0.1, 0.2). Multi-tag gets tighter std devs because seeing multiple tags lets PhotonVision triangulate much more precisely.
 

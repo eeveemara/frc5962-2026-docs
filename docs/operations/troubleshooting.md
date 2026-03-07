@@ -12,7 +12,7 @@ When something goes wrong, find your symptom in the table below. The "How to Dia
 | Progressive aim not working | Vision not locking or confidence too low | Check `Vision/LockedOnTarget` and `AMDA/VisionConfidence`. Progressive aim needs vision lock. If confidence is LOW (below 40%), intensity is reduced. | Point at AprilTags. Check camera connection. Clean camera lens. |
 | Vision not locking on target | Camera issue or VisionFilter rejecting poses | Check `Vision/HasTarget` (camera sees something) vs `Vision/LockedOnTarget` (passed all gates). Check `Vision/Rejection/` counters to see which gate is rejecting. | Ambiguity: too far or bad angle. Z-height: camera transform wrong. PoseJump: robot moving too fast. Heading: gyro disagreement. |
 | Motor overheating | Sustained high load or mechanical binding | Check `*/TemperatureCelsius` (warns at 50C, danger at 65C). Check `*/CurrentAmps` for sustained high draw. Check `*/Stalled` flag. | Let motor cool. If binding, check mechanical alignment. If stalled, check for debris or broken gears. |
-| Intake keeps jamming | Balls getting stuck, JamProtection cycling | Check `JamProtection/State` (should cycle MONITORING > JAM_CONFIRMING > REVERSING > COOLDOWN). Check `JamProtection/JamCount`. If jams are frequent, it's mechanical. | Clear debris. Check roller alignment and gap. If auto-reverse works but jams keep recurring, the problem is physical. |
+| Intake keeps jamming | Balls getting stuck, JamProtection flagging it | Check `JamProtection/State` and `JamProtection/JamCount`. If jams are frequent, it's probably mechanical. The copilot will feel a buzz when it happens. | Clear debris. Check roller alignment and gap. If jams keep coming back, the problem is physical. |
 | Battery brownout mid-match | Battery can't handle current spikes | Check `SystemHealth/BatteryVoltage` for dips below 7V. Check `Power/BatteryAtRisk` (predictive). Check total current draw across all motors. | Swap to a fresher battery. Reduce simultaneous motor usage. Check battery internal resistance. |
 | CAN bus errors | Motor controller dropped off the bus | Check `*/Device/Connected` for each subsystem. A false means that device isn't responding. Check `*/Device/FaultsRaw` for error codes. Check `SystemHealth/CANUtilization`. | Reseat CAN connectors. Check for broken wires. Verify CAN termination resistor. Power cycle the robot. |
 | Robot drives sideways or spins | Swerve module fault or gyro issue | Check `Drive/` signals for module states. Check `Drive/Gyro/Connected`. Look for one module reporting different values than the others. | If gyro disconnected, heading control fails. Reboot. If one module is off, check that module's motor and encoder. |
@@ -22,18 +22,18 @@ When something goes wrong, find your symptom in the table below. The "How to Dia
 
 ## JamProtection State Machine
 
-When a jam is detected, the robot automatically reverses the motor to try to clear it. Here's the state flow:
+JamProtection only detects jams, it doesn't actually reverse the motors. When it catches a jam, the copilot feels an L-R-L buzz and the state gets logged. The state machine still transitions for tracking purposes:
 
 ```mermaid
 stateDiagram-v2
     [*] --> MONITORING
-    MONITORING --> JAM_CONFIRMING : high current +low velocity(after 0.5s startup ignore)
+    MONITORING --> JAM_CONFIRMING : high current + low velocity (after 0.5s startup ignore)
     JAM_CONFIRMING --> MONITORING : conditions clear
-    JAM_CONFIRMING --> REVERSING : sustained jamconfirmed
+    JAM_CONFIRMING --> REVERSING : sustained jam confirmed
     JAM_CONFIRMING --> DISABLED : max attempts reached
     REVERSING --> COOLDOWN : reverse time elapsed
     COOLDOWN --> MONITORING : cooldown done (re-arms startup ignore)
-    DISABLED --> MONITORING : driver manual reset button
+    DISABLED --> MONITORING : manual reset
 
     classDef green fill:#059669,stroke:#047857,color:#fff
     classDef yellow fill:#d97706,stroke:#b45309,color:#fff
@@ -48,7 +48,7 @@ stateDiagram-v2
     class DISABLED gray
 ```
 
-If a jam won't clear after multiple auto-reverse attempts, the motor goes to DISABLED. The driver has to press a button to reset it. This prevents the robot from endlessly reversing if something is physically stuck.
+The transitions are just for logging. The copilot feels the buzz and decides what to do about it.
 
 ## Emergency Procedures (Right Before a Match)
 

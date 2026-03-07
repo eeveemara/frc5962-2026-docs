@@ -66,7 +66,7 @@ Safety lock: when FMS is attached (at a real competition match), TunableNumber a
 
 | Key | Default | What It Does |
 |-----|---------|-------------|
-| `DriverFeedback/TestPattern` | 0 | Select a haptic pattern to test (1-10) |
+| `DriverFeedback/TestPattern` | 0 | Select a haptic pattern to test (1-9) |
 | `DriverFeedback/hapticScale` | 1.0 | Overall haptic intensity multiplier |
 | `LED/brightness` | 0.8 | LED strip brightness (0.0 to 1.0) |
 | `LED/TestState` | 0 | Force a specific LED state for testing |

@@ -59,7 +59,7 @@ We have 34 FMEA entries covering mechanical failures, software bugs, sensor drop
 
 | Failure | S | O | D | RPN | Mitigation | New RPN |
 |---------|---|---|---|-----|-----------|---------|
-| Flywheel jam during match | 8 | 3 | 4 | 96 | JamProtection auto-reverse state machine (MONITORING, JAM_CONFIRMING, REVERSING, COOLDOWN) | Much lower: jam is detected in <200ms and cleared automatically |
+| Flywheel jam during match | 8 | 3 | 4 | 96 | JamProtection catches it within 200ms and buzzes the copilot's controller (L-R-L pattern) | Lower: copilot knows right away and can react |
 | Progressive aim sticks on | 6 | 4 | 5 | 120 | 250ms stale timeout auto-clears the haptic pattern | Lower: worst case is 250ms of stale feedback |
 
 The point is that FMEA happens at design time, not after something breaks on the field. We'd rather spend 20 minutes thinking about failure modes than lose a qualification match to a preventable bug.

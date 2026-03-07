@@ -151,7 +151,7 @@ It defaults to FIRE_AUTHORIZED (fail-open) to prevent suppressing shots before t
 
 ## The Pilot and Weapons Officer
 
-The two-controller setup maps directly to the pipeline. The copilot is the weapons officer: they handle targeting. The progressive aim haptic pattern on the copilot's controller intensifies as ShotConfidence climbs, and ReadyToShoot triggers a distinct "fire now" rumble. The copilot pulls the trigger knowing the robot has verified the shot.
+The two-controller setup maps directly to the pipeline. The copilot is the weapons officer: they handle targeting. The progressive aim haptic pattern on the copilot's controller intensifies as aim error decreases, and ReadyToShoot triggers a distinct "fire now" rumble. The copilot pulls the trigger knowing the robot has verified the shot.
 
 The driver is the pilot: they handle positioning. They feel spin-up vibrations when the flywheel is coming to speed and hub shift warnings when the scoring window is about to change. Their job is to get the robot into range and keep it stable.
 

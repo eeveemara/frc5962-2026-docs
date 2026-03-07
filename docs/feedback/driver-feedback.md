@@ -54,11 +54,11 @@ We use two Xbox controllers: port 0 for the driver (movement), port 1 for the co
 
 - **COPILOT gets scoring signals**: progressive aim feedback, ready-to-shoot confirmation, hub activation/deactivation, jam alerts. The copilot controls when to fire, so they need to feel the robot's scoring readiness.
 - **DRIVER gets awareness signals**: shooter spin-up rumble (left motor only, so they can feel the flywheel winding up without it being confused for a scoring cue).
-- **BOTH get match events**: auto result (won/lost), endgame warning, hub shift warning, role switch confirmation.
+- **BOTH get match events**: auto result (won/lost), endgame warning, hub shift warning.
 
-If the copilot controller is not plugged in, all COPILOT-targeted patterns gracefully fall back to the driver controller. No signals are lost.
+If the copilot controller isn't physically plugged in (checked via `isConnected()`), all COPILOT-targeted patterns automatically go to the driver controller instead. Nothing gets dropped.
 
-### 10 Haptic Patterns
+### 9 Haptic Patterns + Progressive Aim
 
 | # | Pattern | Priority | Target | Feel |
 |---|---------|----------|--------|------|
@@ -68,10 +68,10 @@ If the copilot controller is not plugged in, all COPILOT-targeted patterns grace
 | 4 | **Ready to Shoot** | HIGH | COPILOT | Gentle right-side tap (0/0.3 for 0.25s) |
 | 5 | **Hub Activated** | HIGH | COPILOT | Two right pings, hub is live |
 | 6 | **Hub Deactivated** | HIGH | COPILOT | Left thump, hub went offline |
-| 7 | **Hub Shift Warning** | MEDIUM | BOTH | 5 second count down at 5, 4, 3, 2, 1 |
-| 8 | **Jam Detected** | HIGH | COPILOT | L-R-L signals |
-| 9 | **Game Data Missing** | CRITICAL | BOTH | Three strong pulses, repeats every 2s when FMS data is absent during transition |
-| 10 | **Progressive Aim** | (continuous) | COPILOT | Intensity scales with aim error (see below) |
+| 7 | **Hub Shift Countdown** | MEDIUM | BOTH | Graduated countdown at 5, 4, 3, 2, 1 seconds before shift (intensity ramps up) |
+| 8 | **Jam Detected** | HIGH | COPILOT | L-R-L alternating pulses |
+| 9 | **Game Data Missing** | CRITICAL | BOTH | Three strong pulses, repeats every 2s when FMS data is absent |
+| -- | **Progressive Aim** | (continuous) | COPILOT | Intensity scales with aim error (see below) |
 
 The driver also gets a continuous **spin-up rumble** (left motor proportional to flywheel speed) so they can feel the shooter winding up without it being confused for a scoring cue.
 
@@ -94,34 +94,34 @@ The right motor gets 2.5x the left motor intensity. This makes the pattern feel 
 
 ## LED Status Display
 
-### 11 LED States (priority order, highest first)
+### 10 LED States (priority order, highest first)
 
 | State | Color/Pattern | Trigger |
 |-------|--------------|---------|
-| **CRITICAL_ALERT** | Red/orange rapid flash (20Hz) | Battery below critical voltage or brownout |
+| **CRITICAL_ALERT** | Red/orange dual chase (sliding bands, ~0.5 Hz) | Battery below critical voltage or brownout |
 | **READY_TO_SHOOT** | Solid blue | All 6 scoring conditions met |
-| **AIM_PROGRESS** | Blue pulse, speed varies with error | Progressive aim active, pulse faster = closer to target |
-| **SHOOTER_SPINUP** | Blue progress bar (fills left to right) | Flywheel spinning up, bar = % of target speed |
-| **FEEDING** | Green pulse | Robot in FEEDER role, actively collecting or ejecting balls |
-| **WARNING** | Orange breathing (1.5s cycle) | Jam, stall, low battery, CAN error, or low vision confidence |
+| **AIM_PROGRESS** | Blue pulse, speed varies with error (phase accumulator prevents brightness jumps) | Progressive aim active, pulse faster = closer to target |
+| **SHOOTER_SPINUP** | Blue progress bar (fills left to right, dim blue background) | Flywheel spinning up, bar = % of target speed |
+| **WARNING** | Orange chase (sliding dots, ~1 Hz) | Jam, stall, low battery, CAN error, or low vision confidence |
 | **AUTO_RUNNING** | Rainbow scroll | Autonomous period active |
 | **VISION_LOCKED** | Blue breathing (2s cycle) | Vision has a target lock in teleop |
-| **MATCH_OVER** | White breathing (3s cycle) | Match timer hit zero (latched) |
-| **IDLE** | Solid white | Enabled, nothing special happening |
-| **DISABLED** | Dim white | Robot disabled |
+| **MATCH_OVER** | Green breathing (3s cycle) | Match timer hit zero (latched) |
+| **IDLE** | Solid green | Enabled, nothing special happening |
+| **DISABLED** | Dim green | Robot disabled |
 
 ### Colorblind-Safe Design
 
 The palette avoids relying on red vs green distinction. Instead, states are differentiated by:
-- **Color category**: blue (scoring/good), orange (warning), red+orange flash (critical), white (neutral)
-- **Animation pattern**: solid vs breathing vs flashing vs progress bar
+- **Color category**: blue (scoring/good), orange (warning), red+orange chase (critical), green (neutral/idle)
+- **Animation pattern**: solid vs breathing vs chase vs progress bar
 - **Brightness variation**: disabled is dim, active states are full brightness
+- **Minimum brightness floor (0.15)**: LEDs never go fully dark during animations, so there's always something visible
 
 A tunable brightness slider (`LED/brightness`) lets drivers adjust for different venue lighting. Test sliders let pit crew preview any state, but these are locked out when connected to FMS so they cannot interfere during a match.
 
 ## Jam Protection (JamProtection)
 
-JamProtection is a reusable state machine that lives on the intake, indexer, and agitator. When a ball gets stuck, the robot automatically detects it and tries to reverse the motor to clear the jam, without the driver doing anything.
+JamProtection is a state machine that lives on the intake, indexer, and agitator. When a ball gets stuck, it picks up on the jam and sends the copilot an L-R-L haptic buzz so they know to react. It only detects and reports though, it doesn't touch the motors.
 
 ### State Machine
 
@@ -150,17 +150,17 @@ stateDiagram-v2
     class DISABLED gray
 ```
 
-### Three-Layer Detection
+### Detection Logic
 
 1. **Startup Ignore (0.5s default)**: When a motor first starts, inrush current is high and velocity is low. That looks exactly like a jam. The startup ignore window suppresses detection for the first 0.5 seconds after each motor start to avoid false triggers.
 
 2. **Sustained Jam Confirmation**: Both conditions must hold simultaneously: current above threshold AND velocity below threshold. If either condition clears during the debounce window, the state machine drops back to MONITORING. This prevents triggering on momentary load spikes.
 
-3. **Reverse and Retry**: Once confirmed, the motor reverses at a configured power (e.g., -0.3) for a set duration, then pauses in COOLDOWN before resuming forward. Each reverse attempt counts toward a limit. After max attempts, the motor goes to DISABLED and stays there until the driver manually resets it (prevents the robot from endlessly reversing if there's a real mechanical obstruction).
+3. **State transitions still run** (REVERSING, COOLDOWN, DISABLED) so telemetry can track what's happening, but the state machine doesn't actually command any motors. The copilot feels the buzz and decides what to do.
 
 ### Integration with Haptic Feedback
 
-When any JamProtection instance enters REVERSING (i.e., `isIntervening()` returns true), TelemetryManager reports it, and DriverFeedback fires the JAM_DETECTED pattern: three strong 0.8-intensity pulses routed to the copilot. The telemetry also captures which subsystem triggered the jam, so pit crew can see "Intake" vs "Indexer" vs "Agitator" in the logs.
+When any JamProtection instance catches a jam, TelemetryManager picks it up and DriverFeedback fires the JAM_DETECTED pattern on the copilot's controller: three alternating L-R-L pulses at 0.8 intensity. The logs also show which subsystem jammed (Intake, Indexer, or Agitator) so the pit crew can track it down.
 
 ## Testing
 

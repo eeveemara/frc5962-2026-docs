@@ -34,7 +34,7 @@ The primary driver view. Everything at a glance.
 | Hub Shift# / Shift Timer | Which hub and time to next shift | Plan shots around shift timing |
 | Auto Selector | Pick autonomous routine | Set this BEFORE the match starts |
 | AMDA Mode / Confidence | Feedback system status | Shows current awareness mode |
-| JAM! / Intake Jam | Jam detection for indexer and intake | Red = jam detected, auto-reverse should trigger |
+| JAM! / Intake Jam | Jam detection for indexer and intake | Red = jam detected, copilot feels a buzz |
 | Agitator | Whether agitator is running | Green when active |
 | Alerts | Active system alerts | Check for anything critical |
 
@@ -94,7 +94,7 @@ Tune driver feel. Sliders for exponential curve K (0=linear, 6+=aggressive), tri
 Split into three sections:
 
 - **Haptic (left):** Pattern slider (0=off, 1-5 cycles through patterns), active pattern name, description, priority, left/right motor intensity bars, haptic scale slider (0-2x), pattern count, aim error, haptic target (DRIVER/COPILOT/BOTH).
-- **LED (right):** State slider (0=off, 1-10 cycles through LED states), current state name, description, hardware connected indicator, brightness slider, state change count, brightness readback.
+- **LED (right):** State slider (0=off, 1-9 cycles through LED states), current state name, description, hardware connected indicator, brightness slider, state change count, brightness readback.
 - **AMDA (far right):** Mode, confidence level, mode changed flag, vision locked, ready to shoot, hub active, target distance, vision confidence, consecutive frames.
 
 ### Hub Shift Practice Tab
