@@ -1,16 +1,16 @@
-# Ball Physics Simulation (FuelSim)
+# Ball Physics Simulation (FuelPhysicsSim)
 
-## What is FuelSim?
+## What is FuelPhysicsSim?
 
-FuelSim is a complete physics simulation of balls (fuel cells) flying through the 2026 REBUILT field. It tracks every ball from the moment it leaves the shooter to when it lands, scores, bounces off a wall, or gets picked up by the intake. We built it as a single, self-contained, MIT-licensed file that any FRC team using MapleSim can drop into their project.
+FuelPhysicsSim is a complete physics simulation of balls (fuel cells) flying through the 2026 REBUILT field. It tracks every ball from the moment it leaves the shooter to when it lands, scores, bounces off a wall, or gets picked up by the intake. We built it as a single, self-contained, MIT-licensed file that any FRC team using MapleSim can drop into their project.
 
 ## Why We Built It
 
 Our fire control pipeline (ShotCalculator, ShotConfidence) computes physics-based shot parameters, but we had no way to validate those calculations without a physical robot. Can the ball actually reach the hub from this distance? Does the spin we're applying give enough lift? What happens if the ball clips the trench ceiling?
 
-FuelSim answers these questions in simulation. It takes the same physics our fire control uses (drag, Magnus lift, gravity) and runs it in real time during simulated matches. We can watch balls fly through AdvantageScope's 3D field view and verify that our shot solutions actually work.
+FuelPhysicsSim answers these questions in simulation. It takes the same physics our fire control uses (drag, Magnus lift, gravity) and runs it in real time during simulated matches. We can watch balls fly through AdvantageScope's 3D field view and verify that our shot solutions actually work.
 
-The default MapleSim projectile physics uses a fudged gravity constant (11 m/s^2 instead of 9.81) and doesn't model air resistance or spin effects at all. FuelSim replaces that with real aerodynamics.
+The default MapleSim projectile physics uses a fudged gravity constant (11 m/s^2 instead of 9.81) and doesn't model air resistance or spin effects at all. FuelPhysicsSim replaces that with real aerodynamics.
 
 ## The Physics
 
@@ -20,13 +20,13 @@ Three forces act on every ball in flight:
 
 **Drag force** slows the ball as it flies. It's proportional to the square of the ball's speed, so faster balls experience dramatically more air resistance. The formula uses the standard drag equation with Cd = 0.47 (smooth sphere in the subcritical Reynolds number regime, which matches our shot speeds of 5 to 15 m/s).
 
-**Magnus force** is the fun one. When a ball spins, it generates lift, the same effect that makes a curveball curve in baseball. Our launcher puts backspin on the ball, which creates an upward lift force that extends the ball's range. FuelSim models this as a vertical force proportional to speed squared, with a tunable coefficient (Cm = 0.2).
+**Magnus force** is the fun one. When a ball spins, it generates lift, the same effect that makes a curveball curve in baseball. Our launcher puts backspin on the ball, which creates an upward lift force that extends the ball's range. FuelPhysicsSim models this as a vertical force proportional to speed squared, with a tunable coefficient (Cm = 0.2).
 
 The simulation runs **Euler integration at 4ms subticks**, which means 50 physics steps per robot loop. This keeps the physics smooth and prevents balls from tunneling through thin obstacles.
 
 ## Field Geometry
 
-FuelSim models **43 active collision elements** representing the physical field:
+FuelPhysicsSim models **43 active collision elements** representing the physical field:
 
 | Element Type | Count | Description |
 |-------------|-------|-------------|
@@ -49,7 +49,7 @@ All geometry was cross-referenced from three sources: the game manual (Section 5
 
 ```mermaid
 flowchart TD
-    SHOT[Robot fires a shot] --> LAUNCH[FuelSim creates ball with velocity + spin]
+    SHOT[Robot fires a shot] --> LAUNCH[FuelPhysicsSim creates ball with velocity + spin]
     LAUNCH --> PHYSICS[Physics loop: gravity + drag + Magnus]
     PHYSICS --> COLLISION{Collision check}
     COLLISION -->|Wall/trench/tower| BOUNCE[Bounce with energy loss]
@@ -73,18 +73,18 @@ flowchart TD
     style INTAKE fill:#059669,stroke:#047857,color:#fff
 ```
 
-**Hub scoring**: The ball must pass through the hub opening at the correct height and speed. When it does, FuelSim registers a score and disperses the ball so it doesn't interfere with the next shot.
+**Hub scoring**: The ball must pass through the hub opening at the correct height and speed. When it does, FuelPhysicsSim registers a score and disperses the ball so it doesn't interfere with the next shot.
 
-**Ball-ball collision**: When multiple balls are in the air at once, they can collide with each other. FuelSim uses spatial hashing to efficiently find nearby balls without checking every pair (avoiding slow O(n^2) comparisons). Ball-ball bounces use a coefficient of restitution of 0.5 (foam on foam is pretty absorptive).
+**Ball-ball collision**: When multiple balls are in the air at once, they can collide with each other. FuelPhysicsSim uses spatial hashing to efficiently find nearby balls without checking every pair (avoiding slow O(n^2) comparisons). Ball-ball bounces use a coefficient of restitution of 0.5 (foam on foam is pretty absorptive).
 
 **Robot collision**: Balls can bounce off the robot's bumper bounding box with a very low coefficient of restitution (0.1), since bumpers are made of foam and absorb most of the impact.
 
 ## Integration with the Robot Simulation
 
-SimFuelManager is the glue between FuelSim and the rest of our simulation. It:
+SimFuelManager is the glue between FuelPhysicsSim and the rest of our simulation. It:
 
 - Detects when the robot fires a shot using rising-edge detection from SimDeviceManager
-- Creates a new ball in FuelSim with the appropriate launch velocity and spin
+- Creates a new ball in FuelPhysicsSim with the appropriate launch velocity and spin
 - Provides TunableNumbers for ball mass, drag coefficient, and Magnus coefficient so you can tweak physics parameters from the dashboard while the sim is running
 - Logs ball counts and positions to NetworkTables via SafeLog (8 signals total: in-flight count, on-ground count, scored count, intaked count, and more)
 - Renders all ball positions in AdvantageScope's Field3d view
@@ -102,7 +102,7 @@ This means you can experiment with different ball properties in real time. Wonde
 
 ## MIT Licensed
 
-FuelSim.java is designed to be shareable. It's a single file with an MIT license header, depends only on WPILib and the YAGSL vendordep, and has no references to our team-specific code. Any MapleSim team can drop it in and get drag, Magnus, and field collision physics for their ball simulation. The team-specific wiring (shot detection, SafeLog, TunableNumbers) lives in SimFuelManager, which is separate.
+FuelPhysicsSim.java is designed to be shareable. It's a single file with an MIT license header, depends only on WPILib and the YAGSL vendordep, and has no references to our team-specific code. Any MapleSim team can drop it in and get drag, Magnus, and field collision physics for their ball simulation. The team-specific wiring (shot detection, SafeLog, TunableNumbers) lives in SimFuelManager, which is separate.
 
 ---
 

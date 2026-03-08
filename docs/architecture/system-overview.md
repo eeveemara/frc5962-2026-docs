@@ -136,9 +136,9 @@ We use two Xbox controllers. Port 0 is the driver (movement, positioning). Port 
 
 If the copilot controller is unplugged, everything falls back gracefully to the driver controller. Nothing crashes.
 
-## Ball Physics Simulation (FuelSim)
+## Ball Physics Simulation (FuelPhysicsSim)
 
-We built a full-field ball physics simulator called FuelSim. It models projectile flight with drag and Magnus spin effects, 43 collision elements (floor bumps, trench pillars, trench ceilings, tower structure, outposts, hub ramps, guardrails), hub scoring detection, intake pickup, robot bumper collisions, and ball-to-ball collisions using spatial hashing. It runs at 4ms subticks inside the sim loop. This matters because we can test shooting from any position on the field, verify that balls behave realistically off walls and obstacles, and validate fire control solutions without a physical robot. FuelSim is MIT licensed and designed to be shareable with other teams.
+We built a full-field ball physics simulator called FuelPhysicsSim. It models projectile flight with drag and Magnus spin effects, 43 collision elements (floor bumps, trench pillars, trench ceilings, tower structure, outposts, hub ramps, guardrails), hub scoring detection, intake pickup, robot bumper collisions, and ball-to-ball collisions using spatial hashing. It runs at 4ms subticks inside the sim loop. This matters because we can test shooting from any position on the field, verify that balls behave realistically off walls and obstacles, and validate fire control solutions without a physical robot. FuelPhysicsSim is MIT licensed and designed to be shareable with other teams.
 
 ## Safety and Crash Isolation
 
