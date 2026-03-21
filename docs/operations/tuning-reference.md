@@ -1,8 +1,8 @@
 # Tuning & Adjustment Reference
 
-TunableNumber is our system for live-adjusting values without redeploying code. When `Constants.TUNING_MODE = true`, each TunableNumber publishes to SmartDashboard as a NetworkTables entry. You can change it from the Elastic dashboard and the robot picks up the new value immediately.
+`TunableNumber` is how we change values live without redeploying code. When `Constants.TUNING_MODE = true`, each TunableNumber publishes to SmartDashboard as a NetworkTables entry. You can change it from Elastic and the robot picks it up right away.
 
-Safety lock: when FMS is attached (at a real competition match), TunableNumber always returns the compile-time default from Constants.java regardless of TUNING_MODE. You can't accidentally change PID gains mid-match.
+Safety lock: when FMS is attached, TunableNumber always returns the compile-time default from `Constants.java` no matter what `TUNING_MODE` says. That keeps us from changing gains in the middle of a real match.
 
 ## All Tunable Parameters
 
@@ -98,4 +98,3 @@ Use this if shots are consistently landing high or low. If you're adding more th
 - TunableNumbers only publish when `TUNING_MODE = true`. In competition mode, they don't clutter NetworkTables bandwidth.
 - The `ifChanged()` helper method only runs the PID update callback when a value actually changes, so there's zero overhead during matches.
 - Never tune at competition with `TUNING_MODE = true` and FMS disconnected. The FMS lock only works when FMS is attached. If you're in practice mode without FMS, someone could accidentally drag a slider.
-

@@ -2,16 +2,16 @@
 
 ## The Core Idea
 
-During a match, drivers cannot afford to look at a screen. Every second spent checking a dashboard is a second not spent driving. So instead of putting information on a screen and hoping drivers glance at it, our robot pushes real-time assessments directly to the operators through multiple sensory channels: controller vibration in their hands, LED colors in their peripheral vision, camera overlays on the driver station feed, and dashboard widgets as a fallback.
+During a match, drivers can't be looking at a screen. Every second spent checking a dashboard is a second not spent driving. So instead of putting info on a screen and hoping drivers glance at it, our robot pushes what it knows directly to the operators: controller vibration in their hands, LED colors in their peripheral vision, camera overlays on the driver station feed, and dashboard widgets as a fallback.
 
-We call this system **AMDA: Adaptive Multi-Modal Driver Awareness**. It coordinates four feedback channels and adapts their behavior based on how confident the robot is in its own perception.
+We call this **AMDA: Adaptive Multi-Modal Driver Awareness**. It coordinates four feedback channels and changes how they behave based on how confident the robot is in its own vision.
 
 ## The Four Channels
 
 | Channel | Medium | Who Feels It | Latency | Best For |
 |---------|--------|-------------|---------|----------|
-| **Haptic** | Controller rumble motors | Driver and/or copilot (role-routed) | Instant | Time-critical scoring cues, match phase alerts |
-| **LED** | Addressable LED strip on robot | Pit crew + field audience + drivers | ~20ms | Robot state at a glance (spinning up, ready, jammed) |
+| **Haptic** | Controller rumble motors | Driver and/or copilot (role-routed via HapticTarget) | Instant | Time-critical scoring cues, match phase alerts |
+| **LED** | Addressable LED strip on robot | Pit crew + field audience + drivers | ~20ms | Robot state at a glance (spinning up, ready, jammed, feeding) |
 | **Camera HUD** | Overlay on driver station camera | Driver + copilot | ~50ms | Vision lock indicators, zone boundaries (in progress) |
 | **Dashboard** | Elastic / AdvantageScope | Pit crew, coach | Variable | Detailed diagnostics, tuning, post-match review |
 
@@ -24,6 +24,8 @@ The key design choice is **hysteresis** to prevent rapid flickering between mode
 - Only recovers to HIGH when confidence reaches **55% or above**
 
 That 15-point gap means the system won't bounce back and forth when confidence hovers near a threshold. In LOW mode, the LED strip shows a warning state, and the haptic spin-up rumble gets amplified (0.7 max intensity vs the normal 0.4) to compensate for degraded vision.
+
+ChannelCoordinator also has a `reset()` method called at teleopInit so it starts fresh each time teleop begins.
 
 ```mermaid
 flowchart TB
@@ -50,15 +52,15 @@ flowchart TB
 
 ### Two-Controller Routing
 
-We use two Xbox controllers: port 0 for the driver (movement), port 1 for the copilot (weapons/scoring). Different information goes to different people based on who needs to act on it:
+We use two Xbox controllers: port 0 for the driver (movement), port 1 for the copilot (scoring). Different information goes to different people based on who needs to act on it, using the `HapticTarget` enum (DRIVER, COPILOT, BOTH):
 
-- **COPILOT gets scoring signals**: progressive aim feedback, ready-to-shoot confirmation, hub activation/deactivation, jam alerts. The copilot controls when to fire, so they need to feel the robot's scoring readiness.
+- **COPILOT gets scoring signals**: progressive aim feedback, ready-to-shoot confirmation, hub activation/deactivation, jam alerts, pre-spin notification. The copilot controls when to fire, so they need to feel the robot's scoring readiness.
 - **DRIVER gets awareness signals**: shooter spin-up rumble (left motor only, so they can feel the flywheel winding up without it being confused for a scoring cue).
-- **BOTH get match events**: auto result (won/lost), endgame warning, hub shift warning.
+- **BOTH get match events**: auto result (won/lost), endgame warning, hub shift warning, role switch confirmation, game data missing.
 
 If the copilot controller isn't physically plugged in (checked via `isConnected()`), all COPILOT-targeted patterns automatically go to the driver controller instead. Nothing gets dropped.
 
-### 9 Haptic Patterns + Progressive Aim
+### 11 Haptic Patterns + 5 Hub Countdown Variants + Progressive Aim
 
 | # | Pattern | Priority | Target | Feel |
 |---|---------|----------|--------|------|
@@ -68,12 +70,13 @@ If the copilot controller isn't physically plugged in (checked via `isConnected(
 | 4 | **Ready to Shoot** | HIGH | COPILOT | Gentle right-side tap (0/0.3 for 0.25s) |
 | 5 | **Hub Activated** | HIGH | COPILOT | Two right pings, hub is live |
 | 6 | **Hub Deactivated** | HIGH | COPILOT | Left thump, hub went offline |
-| 7 | **Hub Shift Countdown** | MEDIUM | BOTH | Graduated countdown at 5, 4, 3, 2, 1 seconds before shift (intensity ramps up) |
-| 8 | **Jam Detected** | HIGH | COPILOT | L-R-L alternating pulses |
+| 7 | **Jam Detected** | HIGH | COPILOT | L-R-L alternating pulses |
+| 8 | **Role Switched** | HIGH | BOTH | Distinct pattern so both operators know the role changed |
 | 9 | **Game Data Missing** | CRITICAL | BOTH | Three strong pulses, repeats every 2s when FMS data is absent |
+| 10 | **Pre-Spin Alert** | MEDIUM | DRIVER | Short buzz when the flywheel starts spinning up, so the driver knows to hold steady |
+| 11 | **Localization Degraded** | MEDIUM | BOTH | Warning when vision trust drops to LOW |
+| -- | **Hub Countdown 5-1** | MEDIUM | BOTH | Graduated countdown at 5, 4, 3, 2, 1 seconds before hub shift (intensity ramps up, 5 separate patterns) |
 | -- | **Progressive Aim** | (continuous) | COPILOT | Intensity scales with aim error (see below) |
-
-The driver also gets a continuous **spin-up rumble** (left motor proportional to flywheel speed) so they can feel the shooter winding up without it being confused for a scoring cue.
 
 ### Priority System
 
@@ -81,33 +84,51 @@ Four levels: LOW, MEDIUM, HIGH, CRITICAL. A pattern can only be interrupted by o
 
 ### Progressive Aim
 
-This one's different from the rest of the patterns. Instead of a discrete pulse, it provides continuous feedback that scales with how close the turret is to being on target:
+This one's different from the rest. Instead of a discrete pulse, it's a continuous rumble that scales with how close the robot is to being on target:
 
 1. The aim command calls `setProgressiveAim(errorDeg)` every cycle with the current pointing error in degrees
 2. If error > 10 degrees: no rumble (too far off to be useful)
 3. If error <= 10 degrees: intensity = (1 - error/10)^2, applied as left=intensity*0.2, right=intensity*0.5
 4. The quadratic curve means you barely feel anything at 8 degrees, moderate feedback at 4 degrees, and strong confirmation as you approach zero
 
-The right motor gets 2.5x the left motor intensity. This makes the pattern feel distinct from the spin-up rumble (which is left-only), so the copilot can distinguish "I'm aiming" from "the flywheel is spinning."
+The right motor gets 2.5x the left motor intensity. That makes the pattern feel different from the spin-up rumble (which is left-only), so the copilot can tell "I am lining up" from "the flywheel is spinning."
 
 **Safety**: progressive aim has a 250ms stale timeout. If the command stops calling `setProgressiveAim()`, the rumble auto-clears. This prevents a stuck rumble if a command ends unexpectedly.
 
+### Copilot Aim Bias
+
+The copilot's right stick X adds up to +/-5 degrees of manual aim offset. If the aim feels consistently off in one direction, the copilot can nudge it on the fly without anyone touching the code. This goes straight into ShotCalculator.
+
 ## LED Status Display
 
-### 10 LED States (priority order, highest first)
+### 12 LED States (priority order, highest first)
 
 | State | Color/Pattern | Trigger |
 |-------|--------------|---------|
 | **CRITICAL_ALERT** | Red/orange dual chase (sliding bands, ~0.5 Hz) | Battery below critical voltage or brownout |
-| **READY_TO_SHOOT** | Solid blue | All 6 scoring conditions met |
+| **READY_TO_SHOOT** | Solid blue | All 8 scoring conditions met |
 | **AIM_PROGRESS** | Blue pulse, speed varies with error (phase accumulator prevents brightness jumps) | Progressive aim active, pulse faster = closer to target |
 | **SHOOTER_SPINUP** | Blue progress bar (fills left to right, dim blue background) | Flywheel spinning up, bar = % of target speed |
+| **HUB_COUNTDOWN** | Progress bar fill showing time to hub shift | Hub shift approaching, bar drains as time runs out |
+| **FEEDING** | Blue/green alternating | Robot is in feeder role and actively feeding balls |
 | **WARNING** | Orange chase (sliding dots, ~1 Hz) | Jam, stall, low battery, CAN error, or low vision confidence |
 | **AUTO_RUNNING** | Rainbow scroll | Autonomous period active |
 | **VISION_LOCKED** | Blue breathing (2s cycle) | Vision has a target lock in teleop |
 | **MATCH_OVER** | Green breathing (3s cycle) | Match timer hit zero (latched) |
 | **IDLE** | Solid green | Enabled, nothing special happening |
-| **DISABLED** | Dim green | Robot disabled |
+| **DISABLED** | Dim green (with pre-match diagnostics) | Robot disabled |
+
+### Pre-Match LED Diagnostics
+
+When the robot is disabled before a match, the LED strip doubles as a diagnostic display. Instead of just showing dim green, the DISABLED state cycles through sub-states:
+
+| Sub-State | Color | What it means |
+|-----------|-------|--------------|
+| **NO_VISION** | Red | Cameras are down or no multitag lock. Fix before match. |
+| **NO_AUTO** | Purple | No autonomous routine selected. Pick one in the dashboard. |
+| **ALL_GOOD** | Rainbow sweep | Everything checks out. Ready to go. |
+
+This lets the pit crew spot problems from across the field without opening a dashboard first.
 
 ### Colorblind-Safe Design
 
@@ -118,6 +139,10 @@ The palette avoids relying on red vs green distinction. Instead, states are diff
 - **Minimum brightness floor (0.15)**: LEDs never go fully dark during animations, so there's always something visible
 
 A tunable brightness slider (`LED/brightness`) lets drivers adjust for different venue lighting. Test sliders let pit crew preview any state, but these are locked out when connected to FMS so they cannot interfere during a match.
+
+## Drive Speed Limiting
+
+When the shooter flywheel is spinning, drive speed drops to 40%. The driver does not have to think about slowing down while the copilot lines up a shot. Once the flywheel stops, full speed comes back. This happens in the command bindings, not in the feedback system itself, but it affects the same operator experience.
 
 ## Jam Protection (JamProtection)
 
@@ -165,4 +190,3 @@ When any JamProtection instance catches a jam, TelemetryManager picks it up and 
 ## Testing
 
 Both DriverFeedback and LEDStatusDisplay have Elastic dashboard sliders for testing each pattern/state individually. These are TunableNumber-based: set the slider to a pattern number to trigger it. All test controls are automatically locked out when FMS is attached so they cannot fire during competition. A combined test dashboard layout is available in the [Elastic Guide](../dashboards/elastic-guide.md).
-

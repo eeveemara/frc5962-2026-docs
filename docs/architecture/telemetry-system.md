@@ -2,11 +2,11 @@
 
 ## What Telemetry Means for Us
 
-Telemetry is how we see inside the robot while it's running. Every motor current, every velocity reading, every temperature, every jam detection, every vision lock, every scoring condition is captured in real time and logged. If something goes wrong during a match, we don't have to guess. We can pull up the log file, scrub to the exact timestamp, and see exactly what the robot was doing.
+Telemetry is how we see inside the robot while it is running. Motor current, velocity, temperature, jam detection, vision lock, scoring state, all of that gets captured and logged. If something goes wrong in a match, we do not have to guess from memory.
 
-We log roughly 500 signals every 20ms cycle. That covers every subsystem on the robot plus derived states like stall detection, shot confidence, and scoring readiness. All of it flows through AdvantageKit's logging framework and can be replayed in AdvantageScope after the match.
+We log roughly 585 signals every 20 ms cycle. That covers every subsystem plus derived states like stall detection, shot confidence, and scoring readiness. Everything flows through AdvantageKit and can be replayed in AdvantageScope later.
 
-## The 21 Telemetry Classes
+## The 22 Telemetry Classes
 
 Every telemetry class implements the `SubsystemTelemetry` interface, which defines three methods: `update()`, `log()`, and `getName()`. TelemetryManager instantiates and orchestrates all of them.
 
@@ -29,7 +29,7 @@ These classes directly monitor physical subsystems on the robot.
 
 | Class | What it tracks |
 |-------|---------------|
-| `ScoringTelemetry` | ReadyToShoot composite (6 conditions), hub shift timing, ready state transitions, lost-reason diagnostics |
+| `ScoringTelemetry` | ReadyToShoot composite (8 checks), hub shift timing, ready state transitions, lost-reason diagnostics |
 | `ShotPredictorTelemetry` | ShootOnTheMove calculations: distance, time of flight, compensated target, drift, computed RPM, heading error |
 | `ShotVisualizerTelemetry` | 3D trajectory arc for AdvantageScope visualization (Pose3d array) |
 
@@ -58,9 +58,15 @@ These classes directly monitor physical subsystems on the robot.
 |-------|---------------|
 | `StrategyTelemetry` | Active alliance role (SHOOTER/FEEDER), feed strategy, zone awareness, role switch events |
 
+### HUD Telemetry
+
+| Class | What it tracks |
+|-------|---------------|
+| `HUDTelemetry` | Camera HUD overlay state, AMDA channel status for the Orange Pi coprocessor |
+
 ## How TelemetryManager Orchestrates Everything
 
-`TelemetryManager` is a singleton. It creates all 21 telemetry instances in its constructor (plus `MatchTelemetry` which is added inline) and stores them in a `telemetryList`. The constructor order matters because some classes depend on others. For example, `ScoringTelemetry` takes `ShooterTelemetry`, `IndexerTelemetry`, and `VisionTelemetry` as constructor arguments so it can read their state.
+`TelemetryManager` is a singleton. It creates all 22 telemetry instances in its constructor and stores them in a `telemetryList`. The constructor order matters because some classes depend on others. For example, `ScoringTelemetry` takes `ShooterTelemetry`, `IndexerTelemetry`, and `VisionTelemetry` as constructor arguments so it can read their state.
 
 After construction, `RobotContainer` calls setter methods to inject runtime dependencies:
 - `setVision(vision)` gives VisionTelemetry access to the camera system
@@ -121,20 +127,20 @@ Signals follow a `Category/SignalName` pattern:
 
 The naming is hierarchical, so in AdvantageScope you can expand `Scoring/` to see all scoring signals, or `Shooter/` to see everything about the flywheel.
 
-## What ~500 Signals Means Practically
+## What ~585 Signals Means Practically
 
 For every motor on the robot, we log: velocity, temperature, applied output, output current, bus voltage, device connected, sticky faults raw, and stall state. That's 8+ signals per motor, and we have 7 motors (shooter, indexer, intake, intake actuator, agitator, hanger, plus swerve modules).
 
-On top of that, we log derived states: jam detection with JamProtection state machines on 3 subsystems, ReadyToShoot with all 6 sub-conditions and edge detection, vision confidence with hysteresis thresholds, match phase tracking, hub shift timing, network bandwidth, CAN bus health, shot trajectory visualization, driver feedback state, LED state, and per-class execution timing.
+On top of that, we log derived states: jam detection with JamProtection state machines on 3 subsystems, ReadyToShoot with all 8 checks and edge detection, vision confidence with hysteresis thresholds, match phase tracking, hub shift timing, network bandwidth, CAN bus health, shot trajectory visualization, driver feedback state, LED state, and per-class execution timing.
 
-All of these are documented in SIGNALS.md, which is append-only (we never remove entries).
+All of these are documented in `SIGNALS.md`, which is append-only.
 
 ## How to Add a New Signal
 
 1. Add a `SafeLog.put("Category/SignalName", value)` call in the appropriate telemetry class's `log()` method
 2. Append the new signal to `SIGNALS.md` (this file is append-only, never remove entries)
 
-That's it. AdvantageKit picks it up automatically on the next deploy.
+That is it. AdvantageKit picks it up automatically on the next deploy.
 
 ## Staleness Detection
 

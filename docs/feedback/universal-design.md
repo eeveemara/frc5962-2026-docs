@@ -1,10 +1,10 @@
 # Universal Design & Accessibility
 
-## Why This Matters
+## Why We Care About This
 
-FRC matches are loud, bright, and chaotic. There are hundreds of people cheering, buzzers going off, robots crashing into each other, and flashing lights everywhere. If your feedback system only uses one sense, like a screen the driver has to read, or a sound they have to hear, it's going to fail in that environment. You can't rely on a single channel when the arena is working against you.
+FRC matches are loud, bright, and messy. If a feedback system only works when someone can calmly read a screen or hear a sound, it is probably going to fail at an event.
 
-We designed our feedback system around the idea that every critical piece of information should reach the operator through at least two independent senses. That way, if one channel is drowned out (you can't hear over the crowd, you can't see because of the lights), the other one still gets through.
+We built ours so important information reaches the operator through at least two different senses. That way, if one channel gets lost in the environment, the other one still has a good chance of getting through.
 
 ## Mace's 7 Universal Design Principles
 
@@ -77,7 +77,7 @@ If one channel fails or the operator can't perceive it, the info still gets thro
 
 ## Colorblind-Safe LED Palette
 
-Our LED palette was specifically chosen to avoid relying on red vs green as a differentiator. About 8% of males have some form of color vision deficiency, and in FRC that's a meaningful percentage of drive teams.
+Our LED palette was chosen so it does not depend on red vs green alone. In FRC, that matters. We wanted the states to stay readable even if hue is not the main thing a person notices.
 
 Each LED state is distinguishable through three independent cues:
 
@@ -116,7 +116,7 @@ Our entire feedback system works without any audio cues. This was a deliberate c
 
 ## Accessibility as an Engineering Consequence
 
-We didn't set out to build an accessible system. We set out to minimize attention cost. But when you design for the cheapest channel first, you naturally build redundant paths that work for any driver. Every design choice that made the system faster to use also made it more inclusive.
+We did not start with a big speech about accessibility. We started with a simpler goal: get the right information to the right person fast. A lot of the accessibility benefits came from making the system lower-stress and easier to use under pressure.
 
 | Design Choice | Engineering Reason | Accessibility Consequence |
 |--------------|-------------------|--------------------------|

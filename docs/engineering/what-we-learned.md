@@ -1,6 +1,6 @@
 # What We Learned & Design Decisions
 
-This doc explains why we built our system the way we did. Every major design choice came from a real problem we hit, and most of them came from the question "what happens when this breaks during a match?" It's useful for judges who want to understand our thinking, and for future team members who'll inherit this codebase.
+This page is the "why" behind the system. Most of these decisions came from a real failure, a weird test result, or a match problem we did not want to repeat. It is mainly here for judges and for future students who inherit the codebase.
 
 ## Key Design Decisions
 
@@ -16,7 +16,7 @@ Even within a single telemetry class, we wrap each individual signal publication
 
 ### 3. Why Two Controllers
 
-In a real aircraft, the pilot flies and the weapons officer targets. We applied the same idea: the driver handles movement (swerve drive, positioning, defense avoidance) and the copilot handles scoring (watching progressive aim feedback, pulling the trigger at the right moment, adjusting RPM offsets, managing role switches).
+We split the jobs on purpose: the driver handles movement (swerve drive, positioning, defense avoidance) and the copilot handles scoring (watching progressive aim feedback, pulling the trigger at the right moment, adjusting RPM offsets, managing role switches).
 
 Without this split, one person has to simultaneously drive into position AND watch for the ReadyToShoot signal AND pull the trigger at the right moment. That's three cognitive tasks competing for attention during a loud, chaotic match. With two controllers, each person can focus on what they're responsible for, and the haptic feedback goes to the right person automatically.
 
@@ -35,7 +35,7 @@ We call it Adaptive Multi-Modal Driver Awareness because different situations ne
 - **Dashboard** has full detail for between-match analysis and pit diagnostics. Too much information for mid-match use, perfect for debugging.
 - **Camera HUD** (in progress) overlays targeting info directly in the camera feed, so the copilot sees confidence and aim state right in the video stream.
 
-The ChannelCoordinator ties them together. When vision confidence drops, it adjusts all four channels simultaneously. This isn't just redundancy. Each channel serves a different person and situation. For more on the feedback system, see [Driver Feedback](../feedback/driver-feedback.md).
+The ChannelCoordinator ties them together. When vision confidence drops, it adjusts all four channels at once. That is not just redundancy. Each channel is useful for a different person and a different moment. For more on the feedback system, see [Driver Feedback](../feedback/driver-feedback.md).
 
 ### 6. Why Hysteresis on Vision Confidence
 
@@ -58,7 +58,6 @@ PITest mutation testing answers that question. It changes the code (flips a > to
 
 ## What We're Proudest Of
 
-The moment it all clicked was during our test when the copilot said "I can feel when the shot is ready." That's exactly the point. The robot assesses conditions using physics, the copilot receives that assessment through progressive haptic feedback, and the driver flies the robot into position. Nobody has to stare at a screen during a match. The information just flows to the right person through the right channel at the right time.
+The moment it all clicked was when the copilot said, "I can feel when the shot is ready." That meant the system was doing what we wanted. The robot handles the checks, the copilot feels the result, and the driver can keep focusing on driving instead of staring at a screen.
 
-The crash isolation architecture also proved itself: during testing, we deliberately injected faults into individual telemetry classes, and every time, the rest of the system kept running. That's the kind of reliability that matters when you're on the field and something unexpected happens.
-
+The crash isolation architecture also proved itself. During testing, we deliberately broke individual telemetry paths, and the rest of the system kept running. That is the kind of reliability that matters when something weird happens in a real match.

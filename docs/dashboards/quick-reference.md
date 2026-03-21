@@ -1,6 +1,6 @@
 # Dashboard Quick Reference
 
-Cheat sheet for finding the right dashboard view for what you need to check.
+This is the fast version. If you need a signal or a layout in a hurry, start here.
 
 ## "I Want to Check X" Lookup Table
 
@@ -37,7 +37,7 @@ Cheat sheet for finding the right dashboard view for what you need to check.
 
 | Signal Path | Type | What It Means |
 |-------------|------|---------------|
-| `Scoring/ReadyToShoot` | boolean | True = all 6 conditions met (shooter ready, indexer clear, vision locked, has ball, fire authorized, shot confident). Safe to fire. |
+| `Scoring/ReadyToShoot` | boolean | True = all 8 scoring checks are passing: shooter ready, indexer clear, vision locked, has ball, fire authorized, shot confident, heading on target, and not in the exclusion zone. |
 | `Scoring/ShotConfidence` | 0-100% | How confident we are the shot will land. Geometric mean of 5 components. |
 | `Shooter/VelocityRPM` | number | Current flywheel speed in RPM. Target is distance-dependent. |
 | `Shooter/AtSpeed` | boolean | True = flywheel is within tolerance of target RPM. |

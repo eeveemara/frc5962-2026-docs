@@ -6,7 +6,7 @@
 
 > *The robot assesses. The copilot fires. The driver flies.*
 
-Welcome to our control system docs for the 2026 FRC season (game: REBUILT). This covers everything from our telemetry and fire control pipeline to the feedback systems that keep our drivers informed without ever needing to glance at a screen.
+This is our control system reference for the 2026 FRC season and REBUILT. It covers the robot's telemetry, fire control, feedback systems, dashboards, and the process we used to build and test everything.
 
 ## Site Map
 
@@ -34,15 +34,15 @@ flowchart TB
 
 | Metric | Value |
 |--------|-------|
-| Telemetry signals monitored in real time | ~500 |
+| Telemetry signals monitored in real time | ~585 |
 | Core logic code coverage (Jacoco) | 76% |
 | Mutation testing kill rate | 53% across 10 classes |
 | FMEA failure entries tracked | 34 |
 | Feedback channels (haptic, LED, HUD, dashboard) | 4 |
-| Conditions for automated scoring readiness | 6 |
+| Conditions for automated scoring readiness | 8 |
 | Neural network ensemble models for shot prediction | 10 |
 | Collision elements in physics simulation | 43 |
-| Custom code linter rules | 108 |
+| Custom code linter rules | 111 |
 
 ## Quick Start by Role
 

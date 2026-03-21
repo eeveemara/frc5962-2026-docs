@@ -1,8 +1,8 @@
 # Our Engineering Process
 
-## Why This Matters
+## How We Work
 
-Building a competitive FRC robot isn't just about writing code that works. It's about writing code that works reliably under pressure, on a field, with 2 minutes and 30 seconds to prove it. This document explains how we work, not just what we built.
+We care less about "did it work once in the lab?" and more about "will it still work when the pit is loud and the next match is close?" This page is about how we work, not just what we built.
 
 We wanted a system where bugs get caught before they reach the field, where every feature is tested at multiple levels, and where we learn from both our own matches and other teams' approaches.
 
@@ -62,11 +62,11 @@ We have 34 FMEA entries covering mechanical failures, software bugs, sensor drop
 | Flywheel jam during match | 8 | 3 | 4 | 96 | JamProtection catches it within 200ms and buzzes the copilot's controller (L-R-L pattern) | Lower: copilot knows right away and can react |
 | Progressive aim sticks on | 6 | 4 | 5 | 120 | 250ms stale timeout auto-clears the haptic pattern | Lower: worst case is 250ms of stale feedback |
 
-The point is that FMEA happens at design time, not after something breaks on the field. We'd rather spend 20 minutes thinking about failure modes than lose a qualification match to a preventable bug.
+The important part is when FMEA happens. We use it before a feature is finished, not after it fails on the field. Spending 20 minutes thinking early is cheaper than losing a match to something predictable.
 
 ## Iteration Evidence
 
-We don't just build and ship. We measure, find weaknesses, and improve. A few real examples:
+We try not to stop at "it works." We measure, find weak spots, and improve. A few real examples:
 
 - **DriverFeedback mutation kill rate**: Started at 40%, meaning our tests only caught 40% of artificial bugs injected into the code. After writing targeted mutation-catching tests, it climbed to 64%. That's 24% more bugs our test suite would catch before they reach the field.
 - **Overall PITest kill rate**: Went from 49% to 53% across 10 target classes by adding tests specifically designed to catch mutants that survived.
@@ -82,7 +82,7 @@ We test at four levels:
 | **Unit tests** | JUnit tests for individual classes. Does VisionFilter reject a pose 3m outside the field? Does JamProtection transition from MONITORING to REVERSING correctly? | 50+ test files, runs in ~10 seconds |
 | **Code coverage** | Jacoco measures which lines and branches our tests actually exercise. We focus on core logic classes, not hardware wiring. | 76% core logic coverage |
 | **Mutation testing** | PITest injects artificial bugs (flip a `>` to `<`, change `true` to `false`) and checks if our tests catch them. If a mutant survives, we have a testing gap. | 10 target classes, 53% kill rate, 75% test strength |
-| **Simulation** | Full robot simulation with YAGSL MapleSim physics, PhotonVision simulated cameras, and our custom FuelPhysicsSim ball physics engine. 10 scenarios test different match situations. | 10 scenarios, ~22ms loop time in sim |
+| **Simulation** | Full robot simulation with YAGSL MapleSim physics, PhotonVision simulated cameras, and our custom FuelPhysicsSim ball physics engine. 18 scenarios test different match situations. | 18 scenarios, ~22ms loop time in sim |
 | **Dashboard validation** | 4 Elastic layouts and 11 AdvantageScope layouts for visual verification of signals, state machines, and subsystem behavior | 15 layout files |
 
 The tests run on every build (`./gradlew build` includes test). Mutation testing runs separately (`./gradlew pitest`) because it takes longer. For the full deep dive, see [Testing & Quality](testing-and-quality.md).
@@ -91,7 +91,7 @@ The tests run on every build (`./gradlew build` includes test). Mutation testing
 
 ## Custom Code Linter
 
-We built a 108-rule static analysis linter specifically for FRC Java code. It uses tree-sitter for AST parsing (with regex fallback) and catches common mistakes across 6 categories:
+We built a 111-rule static analysis linter specifically for FRC Java code. It uses tree-sitter for AST parsing (with regex fallback) and catches common mistakes across 6 categories:
 
 - Safety issues (unhandled exceptions in periodic loops, missing null checks)
 - Performance problems (allocations in hot loops, redundant sensor reads)
@@ -102,7 +102,6 @@ The linter runs against our codebase and reports findings by severity tier. It's
 
 ## The Takeaway
 
-Our process isn't about doing things because "that's what good teams do." Each layer exists because we've been burned by its absence. Week-0 taught us that clicking shooters need root cause analysis. Mutation testing showed us where our test suite had blind spots. FMEA caught the progressive-aim stale timeout before it ever happened on a field.
+Our process is not there to look impressive. Each layer exists because skipping it already hurt us once. Week-0 taught us to trace weird behavior all the way to the root cause. Mutation testing showed us where our tests were weaker than we thought. FMEA caught at least one issue before it reached a field.
 
-The cycle keeps going. Every match, every log review, every test failure makes the system a little more reliable.
-
+That cycle keeps repeating. Every match, log review, and failed test gives us something concrete to tighten up.

@@ -1,16 +1,16 @@
 # Ball Physics Simulation (FuelPhysicsSim)
 
-## What is FuelPhysicsSim?
+## What FuelPhysicsSim Is
 
-FuelPhysicsSim is a complete physics simulation of balls (fuel cells) flying through the 2026 REBUILT field. It tracks every ball from the moment it leaves the shooter to when it lands, scores, bounces off a wall, or gets picked up by the intake. We built it as a single, self-contained, MIT-licensed file that any FRC team using MapleSim can drop into their project.
+FuelPhysicsSim is our ball-flight simulator for the 2026 REBUILT field. It tracks a ball from the moment it leaves the shooter until it lands, scores, bounces, or gets picked up again. We kept it as one self-contained MIT-licensed file so another FRC team could reuse it without dragging in our whole codebase.
 
-## Why We Built It
+## Why We Made It
 
 Our fire control pipeline (ShotCalculator, ShotConfidence) computes physics-based shot parameters, but we had no way to validate those calculations without a physical robot. Can the ball actually reach the hub from this distance? Does the spin we're applying give enough lift? What happens if the ball clips the trench ceiling?
 
-FuelPhysicsSim answers these questions in simulation. It takes the same physics our fire control uses (drag, Magnus lift, gravity) and runs it in real time during simulated matches. We can watch balls fly through AdvantageScope's 3D field view and verify that our shot solutions actually work.
+FuelPhysicsSim lets us answer those questions in sim instead of guessing. It uses the same physics ideas as our fire control and runs them during simulated matches. We can watch shots in AdvantageScope and check whether our solutions make sense before the real robot is ready.
 
-The default MapleSim projectile physics uses a fudged gravity constant (11 m/s^2 instead of 9.81) and doesn't model air resistance or spin effects at all. FuelPhysicsSim replaces that with real aerodynamics.
+The default MapleSim projectile model was too simplified for what we wanted. FuelPhysicsSim replaces it with drag and spin so the trajectories behave more like the real game pieces.
 
 ## The Physics
 
@@ -20,7 +20,7 @@ Three forces act on every ball in flight:
 
 **Drag force** slows the ball as it flies. It's proportional to the square of the ball's speed, so faster balls experience dramatically more air resistance. The formula uses the standard drag equation with Cd = 0.47 (smooth sphere in the subcritical Reynolds number regime, which matches our shot speeds of 5 to 15 m/s).
 
-**Magnus force** is the fun one. When a ball spins, it generates lift, the same effect that makes a curveball curve in baseball. Our launcher puts backspin on the ball, which creates an upward lift force that extends the ball's range. FuelPhysicsSim models this as a vertical force proportional to speed squared, with a tunable coefficient (Cm = 0.2).
+**Magnus force** is the spin effect. Backspin creates lift, which helps the ball carry farther instead of dropping early. FuelPhysicsSim models that as a vertical force proportional to speed squared, with a tunable coefficient (`Cm = 0.2`).
 
 The simulation runs **Euler integration at 4ms subticks**, which means 50 physics steps per robot loop. This keeps the physics smooth and prevents balls from tunneling through thin obstacles.
 
@@ -98,7 +98,7 @@ All physics constants are adjustable from the dashboard during simulation throug
 - **MagnusCoeff** (default 0.2): Magnus lift coefficient
 - **Enabled** (default true): master kill switch for the entire simulation
 
-This means you can experiment with different ball properties in real time. Wondering what happens if the ball is heavier? Slide the mass up and watch the trajectory change.
+This means we can experiment in real time. If we want to see what a heavier ball or more drag would do, we can change it and immediately watch the path change.
 
 ## MIT Licensed
 

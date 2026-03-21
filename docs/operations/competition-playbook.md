@@ -1,12 +1,12 @@
 # Competition Day Playbook
 
-This is the document you print out and bring to the venue. It covers what each person on the drive team and pit crew should be doing before, during, and after every match. If you only read one thing on competition day, read your role section and the pre-match checklist.
+This is the version you print and actually use at an event. It covers what each person should be doing before, during, and after a match. If you only have time to skim, read your role section and the pre-match checklist.
 
 ## Role Guides
 
 ### Driver
 
-Your job is movement. The robot handles assessment, the copilot handles shooting decisions, and you handle positioning. Here's what matters to you:
+Your job is movement. The robot handles the scoring checks, the copilot handles the shot timing, and you handle where the robot is on the field. Here is what matters most:
 
 - **Dashboard**: The driver tab shows battery voltage, match time, alliance color, and bandwidth warnings. You shouldn't need to stare at it. Glance between matches.
 - **Haptic feedback you'll feel**:
@@ -19,17 +19,17 @@ Your job is movement. The robot handles assessment, the copilot handles shooting
 
 ### Copilot
 
-You are the weapons officer. Your controller gets all the scoring feedback. Learn these patterns:
+You are the scoring operator. Your controller gets the shot feedback. Learn these patterns:
 
-- **Progressive aim**: The controller vibrates harder as alignment improves. Light rumble = pointed vaguely right. Strong rumble = almost locked. The intensity IS the information. Trust it.
-- **ReadyToShoot pulse**: A distinct pulse means all 6 conditions are met (flywheel at speed, indexer clear, vision locked, ball loaded, hub active, confidence above threshold). When you feel this, pull the trigger. That's the whole point.
+- **Progressive aim**: The controller vibrates harder as alignment improves. Light rumble means you are generally pointed the right way. Strong rumble means you are close.
+- **ReadyToShoot pulse**: A distinct pulse means all 8 checks are passing: flywheel at speed, indexer clear, vision locked, ball loaded, fire authorized, confidence high enough, heading on target, and not in the exclusion zone. That is the best time to shoot.
 - **Hub shift warning**: You'll feel a unique pattern when the hub changes state. Reposition to take advantage of the new scoring multiplier.
 - **Jam alert**: An L-R-L buzz means something is jammed. Stop feeding balls for a moment and let the jam clear.
 - **RPM offset**: Your bumper buttons adjust the flywheel speed +/- 25 RPM per press. If shots are consistently high or low, nudge it. Resets when the robot is disabled.
 
 ### Programmer
 
-You're in the pit managing the robot's software state. Here's your workflow:
+You are in the pit managing the robot's software state. This is the basic flow:
 
 **Pre-match (5 min before queue)**:
 1. Deploy latest code: `./gradlew deploy`

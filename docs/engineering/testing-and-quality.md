@@ -1,6 +1,6 @@
 # Testing & Quality Assurance
 
-This is a deep dive into how we test our robot code. If you've never heard of mutation testing, you're in the right place. We'll explain everything from the ground up.
+This page explains how we test our robot code and why we care so much about it. If mutation testing is new to you, that is fine. We explain it step by step.
 
 ## What is JUnit Testing?
 
@@ -18,13 +18,13 @@ If someone accidentally breaks the stall detection logic later, this test catche
 
 We have hundreds of these tests across 53 test files, and they all run in about 10 seconds.
 
-## Why This Matters More Than Test Count
+## Why We Care More About Test Quality Than Test Count
 
-The number of tests isn't the point. What matters is whether the tests actually catch real bugs. We noticed the copilot's controller kept buzzing after they stopped aiming. When we dug into it, we realized we had 274 passing tests and not a single one checked "does the vibration stop when you let go of the aim button?" Our entire test suite missed it.
+The number of tests is not the interesting part. What matters is whether those tests would catch a real bug. We found that out the hard way when the copilot controller kept buzzing after aiming stopped. We had 274 passing tests and not one of them checked whether the vibration actually turned off.
 
 That experience changed how we think about testing. Now every test is a bug that can't come back. When we change something, the tests tell us immediately if we broke something. Not at 2am at competition, not when the shooter starts clicking during a qualification match. Right now, in the lab, with time to think.
 
-It also means multiple people can work on the codebase without being terrified of breaking each other's stuff. Change the stall detection threshold? The tests tell you if that broke jam protection. Refactor the fire control pipeline? The tests tell you if ReadyToShoot still works. It's like a safety net that gets stronger every time we add a test.
+It also means multiple people can work on the same codebase without guessing whether they broke someone else's logic. If we change a stall threshold, the tests tell us whether jam protection still behaves. If we refactor fire control, the tests tell us whether ReadyToShoot still makes sense.
 
 ## What We Test (and What We Don't)
 
@@ -74,7 +74,7 @@ We use Jacoco as a "did we forget to test something?" tool, not a target to chas
 
 ## What is Mutation Testing (PITest)?
 
-This is where it gets interesting. Regular tests answer the question "does the code work?" Mutation testing asks a harder question: **"would our tests catch it if the code was WRONG?"**
+Regular tests answer "does this code work in the cases we wrote down?" Mutation testing asks a harder question: **"would our tests notice if the code were wrong?"**
 
 Here's how it works:
 
@@ -93,7 +93,7 @@ Here's how it works:
 
 5. The **kill rate** is the percentage of mutations that were caught. Higher is better.
 
-Think of it like this: mutation testing is a stress test for your test suite. It answers the question "if someone made a typo in this code, would any test notice?"
+The easiest way to think about it is that mutation testing stress-tests the tests, not the robot.
 
 ## Our PITest Results
 
@@ -124,7 +124,7 @@ PITest mutated a condition in the endgame warning from `matchTime <= 30.0` to `m
 
 The fix: add a boundary test that sets match time to exactly 30.0 and verifies the endgame warning fires. That single test killed the mutation and would catch any future boundary regression.
 
-This is the real value of mutation testing. It finds the blind spots that you wouldn't think to test for, because the code already "looks right" and passes all your existing tests.
+That is why mutation testing matters to us. It finds blind spots in places where the code already looks reasonable and the normal tests are all green.
 
 ## Running Tests
 
@@ -141,7 +141,7 @@ JUnit results land in `build/reports/tests/test/index.html`. PITest results in `
 
 ## Simulation Scenarios
 
-We have 10 simulation scenarios that test different match situations:
+We have 18 simulation scenarios that test different match situations. Here are the most commonly used ones:
 
 | Scenario | CLI Flag | What It Tests |
 |----------|----------|---------------|
@@ -150,11 +150,19 @@ We have 10 simulation scenarios that test different match situations:
 | RapidFire | `-DsimScenario=RapidFire` | Fast 1.5s shoot cycles to stress shooter and indexer signals (13s). |
 | Brownout | `-DsimScenario=Brownout` | Two-stage voltage decline to trigger brownout detection and battery prediction (25s). |
 | FaultInjection | `-DsimScenario=FaultInjection` | Walks voltage through all 4 brownout risk levels under motor load, then recovers (60s). |
-| ModeTransition | `-DsimScenario=ModeTransition` | Rapid enable/disable cycling to stress mode transitions and command scheduling (30s). |
-| FullVideoShowcase | `-DsimScenario=FullVideoShowcase` | Full match with HubArcDrive orbits during active shifts. Designed for video recording (169s). |
-| AMDAShowcase | `-DsimScenario=AMDAShowcase` | Exercises all 4 feedback channels: haptic, LED, HUD, dashboard through 13 phases (45s). |
-| SignalCoverage | `-DsimScenario=SignalCoverage` | Gap-filler that covers signals other scenarios miss: voltage sweep, all mode transitions, stall cycles (30s). |
+| RapidModeTransition | `-DsimScenario=RapidModeTransition` | Rapid enable/disable cycling to stress mode transitions and command scheduling (30s). |
+| FullVideoShowcase | `-DsimScenario=FullVideoShowcase` | Full match with HubArcDrive orbits during active shifts. For video recording (169s). |
+| AMDAShowcase | `-DsimScenario=AMDAShowcase` | All 4 feedback channels: haptic, LED, HUD, dashboard through 13 phases (45s). |
+| SignalCoverage | `-DsimScenario=SignalCoverage` | Gap-filler covering signals other scenarios miss: voltage sweep, mode transitions, stall cycles (30s). |
 | HubShiftPractice | `-DsimScenario=HubShiftPractice` | Full 140s teleop with real-time hub shift haptics for driver training. |
+| FuelPhysicsShowcase | `-DsimScenario=FuelPhysicsShowcase` | Ball physics demo with field collisions, scoring, and intake pickup. |
+| BallCycleShowcase | `-DsimScenario=BallCycleShowcase` | Full intake-to-score ball cycling through the robot. |
+| SOTMShowcase | `-DsimScenario=SOTMShowcase` | Shoot-on-the-move demo with velocity compensation and polar speed limiting. |
+| FireControlTest | `-DsimScenario=FireControlTest` | Fire control pipeline exerciser: ShotCalculator, confidence, authorization. |
+| ShooterTest | `-DsimScenario=ShooterTest` | Shooter subsystem isolation test: spin-up, at-speed latch, RPM recovery. |
+| DefensiveFeeder | `-DsimScenario=DefensiveFeeder` | Feeder role demo with eject-to-feed-spot and role switching. |
+| DriverPractice | `-DsimScenario=DriverPractice` | Free-drive practice with haptic and LED feedback active. |
+| OffensiveBlitz | `-DsimScenario=OffensiveBlitz` | Aggressive multi-cycle scoring run to stress the full pipeline. |
 
 **What you can verify in sim**: telemetry signals updating correctly, haptic feedback timing, state machine transitions, fire control computations, ReadyToShoot composite signal logic.
 
@@ -203,5 +211,4 @@ flowchart LR
 | Simulation | `./gradlew simulateJava -DsimScenario=SignalCoverage` | All signals publish correctly |
 | Robot Deploy | Deploy + physical safety check | Hardware responds correctly |
 
-Each gate catches a different category of bug. Build catches syntax errors. Tests catch logic errors. PITest catches test gaps. Simulation catches integration issues. And the robot deploy catches anything that only shows up on real hardware.
-
+Each gate catches a different kind of problem. Build catches syntax issues. Tests catch logic bugs. PITest catches holes in the tests. Simulation catches integration problems. The real robot catches the last hardware-specific surprises.

@@ -6,13 +6,13 @@
 
 ## Real Failures, Real Fixes
 
-We keep a log of everything that breaks. Every sensor glitch, every logic error, every "why is it doing that?" moment gets written down with the root cause and the fix. We started this in early February and honestly we're kind of obsessed with it now. As of March 1 we have 34 entries, and the patterns we found changed how we write code.
+We keep a log of everything that breaks. Sensor glitches, logic errors, weird one-off behavior, all of it goes in with the root cause and the fix. We started this in early February. By March 1 we had 34 entries, and the patterns changed how we write code.
 
 ## Development Failures (Feb 7 to March 1)
 
 | # | Component | What Went Wrong | Found By | Fix | Severity |
 |---|-----------|----------------|----------|-----|----------|
-| 1 | Telemetry | One bad signal crashed all ~500 signals' logging | Code review | Built 4-layer crash isolation (SafeLog) | Critical |
+| 1 | Telemetry | One bad signal crashed all ~585 signals' logging | Code review | Built 4-layer crash isolation (SafeLog) | Critical |
 | 2 | Simulator | YAGSL physics silently overwrote our manual voltage in brownout scenarios | Debugging | Disabled SimulatedBattery before manual voltage control | High |
 | 3 | CAN bus | Motor controllers randomly didn't respond after boot (CAN overload) | Hardware testing | Sequential initialization with retry logic | High |
 | 4 | JamProtection | False JAM alerts every time a motor starts (startup current spike) | Sim testing | 0.5s startup ignore window in JamProtection state machine | High |
@@ -90,7 +90,7 @@ gantt
 
 ## Patterns We Found
 
-After writing everything down, we noticed the same types of bugs kept showing up. These aren't just individual fixes anymore, they're categories we now prevent by design:
+After we wrote everything down, the same bug patterns kept showing up. At that point it stopped being a list of random mistakes and started becoming design rules:
 
 1. **Silent failures are the scariest** (entries 1, 2, 10). Three systems were broken with zero error messages. We had no idea until we specifically went looking.
 2. **Startup is weird** (entries 4, 17, 31). The first 0.5s of any motor command gives garbage readings. Just ignore it. We extended this from individual motors to the entire alert system with a 45-second warmup gate.
@@ -103,11 +103,11 @@ After writing everything down, we noticed the same types of bugs kept showing up
 
 ## Connection to Automated Checking
 
-We built a log-analytic platform with 34 automated health gate rules. After a match, you upload the .wpilog file and it checks for crash signatures, timing issues, sensor dropouts, and scoring consistency. Red/yellow/green report in under 60 seconds.
+We also built a log-analytic platform with 34 automated health gate rules. After a match, you upload the `.wpilog` file and it checks for crash signatures, timing issues, sensor dropouts, and scoring consistency. It gives a red/yellow/green report in under a minute.
 
 On top of that, we run mutation testing (PITest) to check if our tests would actually catch a bug if one existed. It makes tiny changes to our code (flipping a > to <, changing true to false) and checks if any test fails. If no test catches the change, that's a gap we need to fill. It found 21 surviving mutants in our jam detection alone. Our regular tests said "all passing" but PITest showed us the holes.
 
-> Every bug on this list made the system better. That's the whole point.
+> Writing the bug down matters almost as much as fixing it, because the pattern is what keeps it from coming back.
 
 ---
 

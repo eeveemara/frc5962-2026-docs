@@ -1,12 +1,12 @@
 # Troubleshooting Guide
 
-When something goes wrong, find your symptom in the table below. The "How to Diagnose" column tells you exactly which signals to check. Most issues are visible in the Elastic pit diagnostic dashboard or in AdvantageScope logs.
+When something goes wrong, start with the table below. The "How to Diagnose" column tells you which signals to check first. Most of these problems show up clearly in the pit dashboard or in AdvantageScope.
 
 ## Common Issues
 
 | Symptom | Likely Cause | How to Diagnose | Fix |
 |---------|-------------|----------------|-----|
-| Robot won't shoot | One of the 6 ReadyToShoot conditions is false | Check `Scoring/Conditions/` signals: ShooterReady, IndexerClear, VisionLocked, HasBall, HubActive, ShotConfident. Whichever is false is your problem. | Fix the false condition (see specific entries below) |
+| Robot won't shoot | One of the ReadyToShoot checks is false | Check `Scoring/Conditions/` signals first. The important ones are ShooterReady, IndexerClear, VisionLocked, HasBall, FireAuthorized, ShotConfident, HeadingOnTarget, and InExclusionZone. The one that is failing points to the real problem. | Fix the failed condition (see specific entries below) |
 | Shots missing the hub | Bad shot parameters or inconsistent flywheel | Check `ShotConfidence/` score and components. Check `Shooter/AtSpeedPercent` stability. Check `Vision/LockedOnTarget` during the shot. | If confidence is low, distance or angle is bad. Reposition. If RPM is unstable, check battery and PID. Use copilot RPM offset if consistently off. |
 | Controller not vibrating | Feedback not routed or FMS-locked | Check `DriverFeedback/` signals in the dashboard. Verify controller ports (driver=0, copilot=1). If testing with `DriverFeedback/TestPattern`, make sure FMS is not attached (TunableNumbers lock). | Reconnect controller to correct port. In pit testing, ensure FMS is disconnected. |
 | Progressive aim not working | Vision not locking or confidence too low | Check `Vision/LockedOnTarget` and `AMDA/VisionConfidence`. Progressive aim needs vision lock. If confidence is LOW (below 40%), intensity is reduced. | Point at AprilTags. Check camera connection. Clean camera lens. |
@@ -74,7 +74,7 @@ These are the most important signals to check when diagnosing issues:
 
 | Category | Key Signals |
 |----------|------------|
-| Scoring | `Scoring/ReadyToShoot`, `Scoring/Conditions/*` (6 conditions) |
+| Scoring | `Scoring/ReadyToShoot`, `Scoring/Conditions/*` (8 checks) |
 | Shooter | `Shooter/VelocityRPM`, `Shooter/AtSpeed`, `Shooter/TemperatureCelsius` |
 | Vision | `Vision/LockedOnTarget`, `Vision/ConsecutiveFrames`, `Vision/Rejection/*` |
 | Power | `SystemHealth/BatteryVoltage`, `Power/BatteryAtRisk`, `*/CurrentAmps` |

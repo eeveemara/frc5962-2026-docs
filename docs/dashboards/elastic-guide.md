@@ -1,6 +1,6 @@
 # Elastic Dashboard Guide
 
-Elastic is a real-time FRC dashboard that connects to your robot over NetworkTables. It shows live sensor data, boolean states, camera streams, and lets you adjust tunable values on the fly. Think of it as the cockpit instrument panel for the robot.
+Elastic is our live dashboard. It connects over NetworkTables and shows sensor data, booleans, camera streams, and tuning values while the robot is running.
 
 We have 4 Elastic layouts, each designed for a specific situation. You load them from `dashboards/elastic/`.
 
@@ -25,7 +25,7 @@ The primary driver view. Everything at a glance.
 | Widget | What It Shows | What to Watch For |
 |--------|--------------|-------------------|
 | Match Time | Countdown timer | Goes red at 15s, yellow at 30s |
-| READY TO SHOOT | Big green/red box | Green = all 6 scoring conditions met, safe to fire |
+| READY TO SHOOT | Big green/red box | Green = all 8 scoring checks are passing, safe to fire |
 | Camera | Live camera feed | Should have a clear view of the field |
 | Target Lock | Vision has a target | Orange = no lock, green = locked |
 | Battery | Voltage bar (8-13V) | Should stay above 11V during a match |

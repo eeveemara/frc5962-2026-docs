@@ -1,25 +1,25 @@
 # System Architecture Overview
 
-Our control system does three things: it watches every subsystem on the robot in real time, it figures out when conditions are right for scoring, and it tells the right operator at the right time through the right channel. The tagline is "the robot assesses, the copilot fires, the driver flies." That's not marketing. It's literally how the data flows.
+Our control system does three jobs: it watches the robot in real time, it decides when scoring conditions are good enough, and it tells the right operator what they need to know. "The robot assesses, the copilot fires, the driver flies" is the short version of that flow.
 
-We run 21 telemetry classes that monitor ~500 signals every loop cycle, a fire control pipeline that calculates shot parameters using physics solvers and neural networks, and a 4-channel feedback system that routes information to whichever operator needs it. All of this sits on top of WPILib's AdvantageKit logging framework, with crash isolation at every layer so one broken sensor can't take down the whole system.
+We have 22 telemetry classes watching ~585 signals every loop cycle, a fire control pipeline that figures out shot parameters using physics solvers and neural networks, and a 4-channel feedback system that sends the right info to the right operator. Everything runs on WPILib's AdvantageKit logging framework, with crash isolation at every layer so one broken sensor can't take down the whole system.
 
 ## Data Flow: Subsystems to Dashboards
 
-This is the core pipeline. Subsystems own the hardware. Telemetry reads from subsystems and does all the analysis. Everything gets logged through SafeLog into AdvantageKit's logger, which publishes to NetworkTables for live dashboards and writes to disk for post-match review.
+This is the core pipeline. Subsystems own hardware access. Telemetry reads from the subsystems and does the analysis. SafeLog sends everything into AdvantageKit, which then feeds the live dashboards and the match logs.
 
 ```mermaid
 flowchart TB
     subgraph HW ["Hardware (Subsystems)"]
         direction LR
-        S1[Shooter] ~~~ S2[Intake] ~~~ S3[Indexer] ~~~ S4[Swerve Drive] ~~~ S5[Others]
+        S1[Shooter] ~~~ S2[IntakeRoller] ~~~ S3[Indexer] ~~~ S4[Swerve Drive] ~~~ S5[Others]
     end
 
     TM[TelemetryManager — updateAll once per cycle]
 
-    subgraph TEL ["Telemetry Layer (21 classes)"]
+    subgraph TEL ["Telemetry Layer (22 classes)"]
         direction LR
-        T1[ShooterTelemetry] ~~~ T2[IntakeTelemetry] ~~~ T3[IndexerTelemetry] ~~~ T4[DriveTelemetry] ~~~ T5[17 more...]
+        T1[ShooterTelemetry] ~~~ T2[IntakeTelemetry] ~~~ T3[IndexerTelemetry] ~~~ T4[DriveTelemetry] ~~~ T5[18 more...]
     end
 
     SL[SafeLog — per-signal crash isolation]
@@ -67,13 +67,13 @@ flowchart TB
         TEL[Telemetry Classes]
         SC[ShotCalculator<br/>physics solver]
         CONF[ShotConfidence<br/>5-component score]
-        RTS[ReadyToShoot<br/>6 conditions]
+        RTS[ReadyToShoot<br/>8 conditions]
     end
 
     subgraph Coordination
         CC[ChannelCoordinator<br/>AMDA]
-        DF[DriverFeedback<br/>9 haptic patterns]
-        LED[LEDStatusDisplay<br/>10 states]
+        DF[DriverFeedback<br/>11 haptic patterns + 5 countdown]
+        LED[LEDStatusDisplay<br/>12 states]
         HUD[Camera HUD<br/>Orange Pi overlay]
         DASH[Dashboard Widgets]
     end
@@ -112,43 +112,55 @@ flowchart TB
 
 Subsystems only do motor control. They expose getters like `getVelocityRPM()` and `getTemperature()`, but they never log anything or run detection logic. All of that lives in the matching telemetry class (e.g., `ShooterTelemetry` reads from `Shooter`).
 
-Why? Crash isolation. If a sensor returns garbage or throws an exception, the telemetry class catches it and keeps going. The subsystem never knows, and it keeps controlling the motor just fine. This also means we can disable or swap out telemetry without touching any subsystem code.
+Why? Crash isolation. If a sensor read goes bad, the telemetry class catches it and keeps the damage local. The subsystem keeps controlling the motor, and we can change telemetry logic without rewriting the hardware code.
 
 ### SafeLog wraps every log call
 
-Every single `Logger.recordOutput()` call goes through `SafeLog.put()` instead of being called directly. SafeLog wraps each call in its own try-catch so that if one signal crashes (bad data type, null pointer, whatever), only that one signal dies. The other ~499 signals keep logging normally.
+Every single `Logger.recordOutput()` call goes through `SafeLog.put()` instead of being called directly. SafeLog wraps each call in its own try-catch so that if one signal crashes (bad data type, null pointer, whatever), only that one signal dies. The other ~584 signals keep logging normally.
 
-We learned this the hard way. One bad signal used to crash the entire logging pipeline and we'd lose all data for the rest of the match. Now the worst case is one blank signal in the log file.
+We learned this one the hard way. A single bad signal used to crash the entire logging pipeline. Now the worst case is usually one missing signal instead of losing the whole log.
+
+`SafeLog.run()` does the same thing for external calls in telemetry (like EventMarker or CycleTracker). It also rate-limits exception logging to 1 per second per call site, so a CAN disconnect storm doesn't fill up memory with repeated stack traces.
 
 ### TelemetryManager runs everything in one place
 
-`TelemetryManager.updateAll()` gets called once per `robotPeriodic()` cycle. It loops through all 21 telemetry classes and calls `update()` then `log()` on each one, in a consistent order, every single cycle.
+`TelemetryManager.updateAll()` gets called once per `robotPeriodic()` cycle. It loops through all 22 telemetry classes and calls `update()` then `log()` on each one, in a consistent order, every single cycle.
 
-This means there's exactly one place to look when you want to know what runs when. It also means telemetry classes can safely read from each other (through TelemetryManager's accessors) because the update order is deterministic.
+So there's exactly one place to look when you want to know what runs when. Telemetry classes can also read from each other safely (through TelemetryManager's accessors) because the update order is deterministic.
 
 ### Two controllers with role-based routing
 
-We use two Xbox controllers. Port 0 is the driver (movement, positioning). Port 1 is the copilot (shooting, intake, strategy toggles). The feedback system routes information based on who needs it:
+We use two Xbox controllers. Port 0 is the driver (movement, positioning). Port 1 is the copilot (shooting, intake, strategy toggles). The feedback system routes information based on who needs it, using a `HapticTarget` enum (DRIVER, COPILOT, BOTH):
 
-- **Copilot gets scoring signals:** progressive aim guidance, ReadyToShoot confirmation, hub state changes, jam alerts. These are the things you need to know to decide when to pull the trigger.
-- **Driver gets awareness signals:** flywheel spin-up rumble, so the driver knows the copilot is preparing to shoot and can hold position.
-- **Both get match events:** auto result (won/lost), endgame warning, hub shift, role switch confirmation.
+- **COPILOT gets scoring signals:** progressive aim guidance, ReadyToShoot confirmation, hub state changes, jam alerts. These are the things you need to know to decide when to pull the trigger.
+- **DRIVER gets awareness signals:** flywheel spin-up rumble, so the driver knows the copilot is preparing to shoot and can hold position.
+- **BOTH get match events:** auto result (won/lost), endgame warning, hub shift, role switch confirmation.
 
-If the copilot controller is unplugged, everything falls back gracefully to the driver controller. Nothing crashes.
+If the copilot controller isn't physically plugged in (checked via `isConnected()`), all COPILOT-targeted patterns automatically go to the driver controller instead. Nothing gets dropped.
+
+### Alliance role switching
+
+The robot supports two roles: SHOOTER (default) and FEEDER. The copilot toggles this with the Start button. In FEEDER mode, the same trigger bindings do different things (eject balls to feed spots instead of shooting at the hub), LEDs show a FEEDING state, and zone restrictions change. The switch is confirmed with a haptic buzz on both controllers so nobody's confused about which mode they're in.
+
+### Drive speed limiting during shooting
+
+When the shooter flywheel is spinning, the drive automatically drops to 40% max speed. This keeps the robot stable while lining up a shot. The copilot doesn't have to tell the driver to slow down. Once the flywheel stops, full speed comes back.
 
 ## Ball Physics Simulation (FuelPhysicsSim)
 
-We built a full-field ball physics simulator called FuelPhysicsSim. It models projectile flight with drag and Magnus spin effects, 43 collision elements (floor bumps, trench pillars, trench ceilings, tower structure, outposts, hub ramps, guardrails), hub scoring detection, intake pickup, robot bumper collisions, and ball-to-ball collisions using spatial hashing. It runs at 4ms subticks inside the sim loop. This matters because we can test shooting from any position on the field, verify that balls behave realistically off walls and obstacles, and validate fire control solutions without a physical robot. FuelPhysicsSim is MIT licensed and designed to be shareable with other teams.
+We built a full-field ball physics simulator called FuelPhysicsSim (2,167 lines, MIT-licensed, designed to be shareable). It models projectile flight with drag and Magnus spin effects, 43 collision elements (floor bumps, trench pillars, trench ceilings, tower structure, outposts, hub ramps, guardrails), hub scoring detection, intake pickup, robot bumper collisions, and ball-to-ball collisions using spatial hashing. It runs symplectic Euler integration at 4ms subticks with a sequential impulse solver (4 iterations, warm starting, Baumgarte stabilization). There's also CCD for fast projectiles so balls don't clip through thin walls.
+
+We can test shooting from any position on the field, check that balls bounce off walls and obstacles the way they should, and validate fire control solutions without having the actual robot. It has 64 tests and a deterministic mode for reproducible test runs.
 
 ## Safety and Crash Isolation
 
-The system has four layers of crash protection so one broken sensor never takes down the whole robot. First, every telemetry class re-acquires its subsystem reference if it's null, so a subsystem that fails to initialize doesn't crash the telemetry layer. Second, all hardware reads (encoder values, temperatures, currents) happen inside a try-catch, so a CAN bus glitch just zeros out that reading instead of propagating. Third, SafeLog wraps every individual log call in its own try-catch, so one bad signal can't kill the other ~499. Fourth, TelemetryManager wraps each telemetry class's update/log cycle, so even if an entire telemetry class throws an uncaught exception, the other 20 classes still run normally.
+The system has four layers of crash protection so one broken sensor never takes down the whole robot. First, every telemetry class re-acquires its subsystem reference if it's null, so a subsystem that fails to initialize doesn't crash the telemetry layer. Second, all hardware reads (encoder values, temperatures, currents) happen inside a try-catch, so a CAN bus glitch just zeros out that reading instead of propagating. Third, SafeLog wraps every individual log call in its own try-catch, so one bad signal can't kill the other ~584. Fourth, TelemetryManager wraps each telemetry class's update/log cycle, so even if an entire telemetry class throws an uncaught exception, the other 21 classes still run normally.
 
 For more details, see the [Safety Architecture](safety-architecture.md) document.
 
 ## Fire Control Pipeline
 
-Shooting isn't just "spin up and launch." Our fire control pipeline has four layers that all have to agree before a shot is authorized:
+Shooting is not just "spin up and launch." Our fire control pipeline has four layers that all have to agree before a shot is authorized:
 
 ```mermaid
 flowchart TB
@@ -166,15 +178,17 @@ flowchart TB
     end
 
     subgraph L4 ["Layer 4: Scoring Readiness"]
-        RTS2[ReadyToShoot<br/>6 conditions + debounce]
+        RTS2[ReadyToShoot<br/>8 conditions + debounce + heading hysteresis]
     end
 
     FIRE([Shot Authorized])
+    DUMP([Emergency Dump<br/>D-pad down bypasses all])
 
     HS -->|scoring window open| ZG
     ZG -->|robot in alliance zone| SC2
     CONF2 -->|confidence >= 50%| RTS2
-    RTS2 -->|all 6 conditions true| FIRE
+    RTS2 -->|all 8 conditions true| FIRE
+    RTS2 -.->|override| DUMP
 
     style HS fill:#7c3aed,stroke:#5b21b6,color:#fff
     style ZG fill:#2563eb,stroke:#1d4ed8,color:#fff
@@ -182,15 +196,16 @@ flowchart TB
     style CONF2 fill:#059669,stroke:#047857,color:#fff
     style RTS2 fill:#d97706,stroke:#b45309,color:#fff
     style FIRE fill:#dc2626,stroke:#b91c1c,color:#fff
+    style DUMP fill:#9ca3af,stroke:#6b7280,color:#fff
 ```
 
-**Layer 1, Hub Timing:** The REBUILT game has shifting hubs. HubShiftEngine tracks which hub is active and when shifts happen, so we don't shoot into a deactivated hub.
+**Layer 1, Hub Timing:** The REBUILT game has shifting hubs. HubShiftEngine tracks which hub is active and when shifts happen, so we don't shoot into a deactivated hub. FireAuthorization also compensates for time of flight, checking whether the hub will still be active when the ball arrives.
 
-**Layer 2, Zone Legality:** A zone gate on the copilot's trigger prevents shooting when the robot is outside our alliance zone. This is a game rule thing, not a safety thing.
+**Layer 2, Zone Legality:** A zone gate on the copilot's trigger prevents shooting when the robot is outside our alliance zone. This is a game rule thing.
 
-**Layer 3, Shot Quality:** ShotCalculator uses a Newton iteration time-of-flight solver (5 iterations, warm start, velocity compensation) to compute the RPM and angle for the current distance. ShotConfidence produces a 0-100% weighted geometric mean from 5 components: distance quality, vision lock strength, robot stability, shooter readiness, and solver convergence.
+**Layer 3, Shot Quality:** ShotCalculator uses a Newton iteration time-of-flight solver (5 iterations, warm start, velocity compensation, direction-aware polar velocity limiting) to compute the RPM and angle for the current distance. ShotConfidence produces a 0-100% weighted geometric mean from 5 components: distance quality, vision lock strength, robot stability, shooter readiness, and solver convergence.
 
-**Layer 4, Scoring Readiness:** ReadyToShoot is the final gate. All six conditions must be true: shooter at target RPM, indexer clear, vision locked, ball present, fire authorized by hub timing, and shot confidence at or above 50%. There's also debounce to prevent flickering.
+**Layer 4, Scoring Readiness:** ReadyToShoot is the final gate. All eight conditions must be true: shooter at target RPM, indexer clear, vision locked, ball present, fire authorized by hub timing, shot confidence at or above 50%, heading on target (with 4x hysteresis band), and not in a trench exclusion zone. Each condition has its own debounce to prevent flickering. Copilot D-pad down overrides everything for emergency dumps.
 
 ## Shot Calculation Fallback
 
@@ -199,18 +214,23 @@ The robot computes shot parameters (RPM and trajectory) using a 4-tier fallback 
 | Tier | Source | How It Works |
 |------|--------|-------------|
 | 1 (best) | Mode B Live NN | 10-model ensemble on Orange Pi, 50Hz live inference, 8D input (distance, velocity, battery, motor temp, etc.) |
-| 2 | Mode A NN LUT | Pre-generated lookup table from the same neural network, loaded at boot |
-| 3 | Sim LUT | Lookup table generated by ProjectileSimulator (RK4 + drag + Magnus physics) |
+| 2 | Mode A NN LUT | Pre-generated lookup table from the same neural network, 5-state FSM manages loading and validation |
+| 3 | Sim LUT | Lookup table generated by ProjectileSimulator (RK4 + drag + Magnus physics), ~90 dense entries |
 | 4 (baseline) | Baseline LUT | Hand-tuned table from practice, always available |
 
-The neural network was trained on 800K physics-simulated shots with domain randomization (varied drag, Magnus, battery voltage, motor wear) so it generalizes well to real-world conditions. Mode B sends live telemetry to the Orange Pi and gets back RPM predictions in real time. Mode A is the same model but pre-baked into a table so it works even if the coprocessor is down.
+We trained the neural network on 800K physics-simulated shots with domain randomization, so it can handle variation in drag, Magnus effect, battery voltage, and motor wear. Mode B runs live on the Orange Pi. Mode A is the same idea baked into a table so it still works if the coprocessor is unavailable.
+
+## Auto Scoring Pipeline
+
+Auto scoring uses the same fire control pipeline as teleop. PathPlanner paths with event markers trigger `AimAndShootCommand` through static `EventTrigger` fields, so the robot aims and shoots with the same logic whether a human or an auto routine is driving.
+
+The pipeline supports 4 auto routines built from 8 PathPlanner paths. Some paths use `PointTowardsZone` with a 180-degree rotation offset so the robot passively aims its rear-mounted shooter at the hub while driving. Return-to-score paths use `DeferredCommand` to compute the path at runtime based on the robot's current position, so the auto can recover from drift.
 
 ## What's Next
 
 The rest of this documentation goes deeper into each piece:
-- [Telemetry System](telemetry-system.md) for the 21-class architecture and signal conventions
+- [Telemetry System](telemetry-system.md) for the 22-class architecture and signal conventions
 - [Fire Control Pipeline](fire-control-pipeline.md) for the full solver, confidence, and NN details
 - [Safety Architecture](safety-architecture.md) for the 4-layer crash isolation design
-- [Vision System](vision-system.md) for the 6-gate filtering pipeline
+- [Vision System](vision-system.md) for the 10-gate filtering pipeline
 - [Driver Feedback & AMDA](../feedback/driver-feedback.md) for the 4 feedback channels and role-based routing
-

@@ -1,10 +1,10 @@
 # Alliance Role Strategy
 
-## The Problem
+## Why We Added Role Switching
 
 In REBUILT, your alliance has three robots and one hub to score in. Sometimes your robot is the best shooter. Sometimes your alliance partner has a faster cycle time or better accuracy. When that happens, the smartest move is to stop shooting and start feeding balls to them instead.
 
-Most FRC teams hard-code their strategy at the start of a match. We built a system that lets the copilot switch roles mid-match, so we can adapt to whatever our alliance needs.
+We did not want to lock that choice in before the match even settled. So we added a way for the copilot to switch roles during the match and adapt to what the alliance actually needs.
 
 ## Two Roles
 
@@ -19,7 +19,7 @@ The robot defaults to SHOOTER. The copilot presses Start to toggle to FEEDER, an
 
 ## How StrategySelector Works
 
-StrategySelector is the central class that manages role state. Here's the flow:
+`StrategySelector` is the class that manages role state. Here is the basic flow:
 
 ```mermaid
 flowchart TD
@@ -45,7 +45,7 @@ flowchart TD
     style AIM_FEED fill:#34d399,stroke:#10b981,color:#000
 ```
 
-Key details:
+What matters here:
 - The toggle is edge-detected (one press = one switch, holding Start doesn't oscillate)
 - The role change is logged to telemetry and visible on the dashboard
 - StrategyTelemetry logs 14 signals including current role, active feed strategy, zone state, and cycle metrics
@@ -66,15 +66,14 @@ Key details:
 
 ## Feed Strategies
 
-The system supports three feeding approaches, defined in `FeedStrategy`:
+There are two feeding approaches, defined in `FeedStrategy`:
 
 | Strategy | How it works | Best for |
 |----------|-------------|----------|
-| **CORRAL_RELAY** | Collect balls from the corral area, drive to a handoff zone, eject to partner | When partner is nearby and you have a clear relay path |
-| **DIRECT_GROUND** | Eject balls onto the ground in front of an alliance partner | Quick and simple, works when partner has a good ground intake |
-| **CHUTE_RELAY** | Use the chute/station to pass balls to a partner in a structured handoff | More controlled than ground feeding, less driving than corral relay |
+| **CORRAL_RELAY** | Eject into the corral area, human player moves them to the chute | Safer, less driving |
+| **DIRECT_HANDOFF** | Eject onto the ground at a spot agreed on before the match | Faster, but needs coordination |
 
-The active feed strategy can be pre-selected based on what the alliance agrees on during strategy discussions.
+The active feed strategy gets picked based on what the alliance agrees on during strategy discussions.
 
 ## Zone Awareness
 
@@ -90,24 +89,24 @@ The zone check is the 4th layer of the fire control pipeline. It's wired as an A
 
 ### For coaches: when to call a role switch
 
-- Your alliance partner is scoring consistently and you're missing shots. Switch to FEEDER, supply them with fuel.
+- Your alliance partner is scoring consistently and we are not. Switch to FEEDER and keep them supplied.
 - Your partner's shooter broke mid-match. Switch back to SHOOTER.
 - During endgame when both hubs are active: SHOOTER mode for everyone, maximize scoring.
 - If you're getting defense played on you heavily, consider switching to FEEDER and letting a less-defended partner score.
 
 ### For copilots: what changes when you switch
 
-The physical controls stay the same. The same buttons and triggers work in both modes. What changes is the behavior behind them:
+The physical controls stay the same. The same buttons and triggers still work. What changes is what the robot does with those inputs:
 
 - In SHOOTER, the RT trigger fires at the hub. Progressive aim haptic guides your timing.
 - In FEEDER, the RT trigger ejects to the feed spot. The aim target changes automatically.
 - The role change shows on the dashboard so the drive team can confirm it.
 
-One important thing: switching roles doesn't reset the flywheel or clear any state. It's a clean transition. The robot just redirects where it's aiming and what RPM it targets.
+One important detail: switching roles does not reset the flywheel or clear state. The robot just changes its target and behavior.
 
 ## Telemetry Signals
 
-StrategyTelemetry (the 21st telemetry class) logs 14 signals. The key ones to watch:
+StrategyTelemetry logs ~14 signals. The key ones to watch:
 
 | Signal | What it tells you |
 |--------|------------------|

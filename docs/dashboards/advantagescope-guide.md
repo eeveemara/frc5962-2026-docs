@@ -1,8 +1,6 @@
 # AdvantageScope Guide
 
-AdvantageScope is a log replay and visualization tool for FRC robots. While Elastic shows you live data during a match, AdvantageScope is where you go after the match to figure out what happened and why. It can also connect live, but its real strength is replaying `.wpilog` files with synchronized timelines, 3D field views, and multi-signal graphs.
-
-**The key difference:** Elastic = live instrument panel during the match. AdvantageScope = detective tool after the match.
+AdvantageScope is our main replay tool. Elastic is what we watch live. AdvantageScope is what we open after a match when we want to slow everything down and see what actually happened. It can connect live too, but replaying `.wpilog` files is what it does best.
 
 We have 11 AdvantageScope layouts stored in `dashboards/advantagescope/`.
 
@@ -21,7 +19,7 @@ The sidebar on the left lists every signal in the log. You can drag signals dire
 
 ### Match Analysis
 
-**`match_review.json`** - The go-to layout after every match. 6 tabs:
+**`match_review.json`** - This is the first layout we open after every match. It has 6 tabs:
 - **Scoring Timeline:** ReadyToShoot, ShotDetected, AtSpeed, VisionLocked, JamDetected, and HubActive as colored stripes. Heading error and shift timing as line graphs. Shows exactly when you could have scored and when you actually did.
 - **Field Position:** 2D field view with robot pose. See where the robot went during the match.
 - **3D Field:** Full 3D view with robot model and shot trajectories rendered as Fuel game pieces.
@@ -33,7 +31,7 @@ The sidebar on the left lists every signal in the log. You can drag signals dire
 
 ### Debugging
 
-**`mechanism_debug.json`** - For diagnosing weird subsystem behavior. Shows commands, motor outputs, and sensor readings for each mechanism.
+**`mechanism_debug.json`** - For diagnosing subsystem behavior that does not make sense at first glance. Shows commands, motor outputs, and sensor readings for each mechanism.
 
 **`vision_debug.json`** - Vision pipeline analysis. Camera connectivity, tag detection, pose estimation quality, filter rejection reasons.
 
@@ -82,7 +80,7 @@ The sidebar on the left lists every signal in the log. You can drag signals dire
 
 ## Diagnosing Issues
 
-When someone says "the robot did something weird at about 1:30 left in the match":
+If someone says, "the robot did something weird at about 1:30 left":
 
 ```mermaid
 flowchart TD
@@ -132,7 +130,7 @@ flowchart TD
 - **Lock axes** in LineGraph tabs to keep a consistent scale when comparing across timestamps.
 - **Export** screenshots of interesting moments for the engineering notebook.
 - **Compare matches** by opening multiple AdvantageScope windows side by side.
-- Log files are saved to a USB stick on the roboRIO. Grab them after every match. They are your best debugging tool.
+- Log files are saved to a USB stick on the roboRIO. Pull them after every match. They usually answer arguments faster than memory does.
 
 ---
 
