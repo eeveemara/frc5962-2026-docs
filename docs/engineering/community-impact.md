@@ -42,7 +42,6 @@ The developer behind the command-based framework, SysId, SlewRateLimiter, and ot
 
 Almost every FRC team uses something he wrote. He also gave us a calibration workflow from industry practice: fit your simulator's fudge factors to match empirical data for your specific shooter, then when the mechanism changes, update the physical parameters instead of remeasuring the whole table.
 
-The creator of YAGSL, the swerve library hundreds of FRC teams depend on, wants to port our solver into his framework. If that happens, our fire control ships to every team using his library.
 
 ## Peer Review
 
@@ -50,27 +49,6 @@ Someone from Team 2702 studied our Newton solver math closely enough to find a r
 
 That's the kind of review most FRC teams never get. The code got better because we shared it.
 
-## The 12-Day Timeline
-
-```mermaid
-flowchart LR
-    A["Mar 11\nv1.0.0 released"] --> B["Mar 11\nExpert endorsement\n(27 minutes)"]
-    B --> C["Mar 12\nBug found + fixed\nsame day (v1.0.1)"]
-    C --> D["Mar 14-15\nTeams 2609, 5427,\n7461 adopt"]
-    D --> E["Mar 14-19\n7 feature requests\nfrom community"]
-    E --> F["Mar 20-22\nTeams compete\n2609 wins award"]
-    F --> G["Mar 23\nv1.1.0 ships all\n7 features"]
-
-    style A fill:#7c3aed,stroke:#5b21b6,color:#fff
-    style B fill:#059669,stroke:#047857,color:#fff
-    style C fill:#dc2626,stroke:#b91c1c,color:#fff
-    style D fill:#2563eb,stroke:#1d4ed8,color:#fff
-    style E fill:#d97706,stroke:#b45309,color:#fff
-    style F fill:#059669,stroke:#047857,color:#fff
-    style G fill:#7c3aed,stroke:#5b21b6,color:#fff
-```
-
-Release, endorsement, bug fix, adoption, feature requests, competition, iteration. Twelve days.
 
 ## What We Released
 
