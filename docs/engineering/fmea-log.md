@@ -6,9 +6,9 @@
 
 ## Real Failures, Real Fixes
 
-We keep a log of everything that breaks. Sensor glitches, logic errors, weird one-off behavior, all of it goes in with the root cause and the fix. We started this in early February. By March 1 we had 34 entries, and the patterns changed how we write code.
+We keep a log of everything that breaks. Sensor glitches, logic errors, weird one-off behavior, all of it goes in with the root cause and the fix. We started this in early February. By late March we had 44 entries, and the patterns changed how we write code.
 
-## Development Failures (Feb 7 to March 1)
+## Development Failures (Feb 7 to Feb 28)
 
 | # | Component | What Went Wrong | Found By | Fix | Severity |
 |---|-----------|----------------|----------|-----|----------|
@@ -25,19 +25,29 @@ We keep a log of everything that breaks. Sensor glitches, logic errors, weird on
 | 11 | DriverFeedback | Endgame haptic blocked all scoring feedback for 1.6 seconds | Driver feedback | Shortened to 0.5s, cut from 13 patterns to 6 | High |
 | 12 | LEDStatusDisplay | Endgame LED state blocked scoring LEDs for 30 seconds | Sim testing | Removed ENDGAME LED state (arena timer is enough) | High |
 | 13 | VisionFilter | Stale camera data accepted after coprocessor restart | Sim testing | Timestamp freshness check, reject poses > 1 second old | High |
-| 14 | VisionFilter | Dashboard showed wrong camera's blend weight (loop overwrite) | Sim Testing | Changed to Math.max() aggregation | Low |
+| 14 | VisionFilter | Dashboard showed wrong camera's blend weight (loop overwrite) | Sim testing | Changed to Math.max() aggregation | Low |
 | 15 | AlertManager | Battery warnings during every normal match (threshold too high) | Driver feedback | Context-aware: WARNING only when disabled, CRITICAL always | Medium |
 | 16 | ReadyToShoot | Flickered off during rapid-fire from brief RPM dips | Match testing | 200ms hold timer on composite boolean | Medium |
 | 17 | PredictiveAlerts | BatteryAtRisk false positives in sim from startup voltage sag | Sim testing | 150-sample window in sim vs 50 on hardware | Low |
 | 18 | ChannelCoordinator | Haptic and LED flickering when vision confidence near 50% | Driver feedback | Asymmetric hysteresis: drops at 40%, recovers at 55% | Medium |
 | 19 | Shooter | Clicking noise after every shot (PID-to-zero through gear backlash) | Pit crew heard it | Duty-cycle coast instead of PID to 0 RPM | High |
 | 20 | Indexer | Motor kept running after shot sequence (same PID-to-zero issue) | Pit crew heard it | Duty-cycle coast in MoveIndexer.end() | High |
-| 21 | Electrical | RoboRIO brownouts | Week0-Match | Lower brownout voltage to 6.3V. | Critical |
-| 22 | Telemetry | Dashboard jam/stall alerts freeze after CAN hiccup | Test | Added missing booleans to setDefaultValues() + staleness detector | High |
-| 23 | Build system | Real test failures hidden behind BUILD SUCCESSFUL (ignoreFailures mask) | Test | XML-parsing quality gate that only ignores HAL crash | Critical |
-| 24 | PITest | Mutation testing can't reach 6/8 classes (HAL JNI conflict) | PITest setup | Constructor injection pattern | High |
+
+## Week-0 Competition (Feb 22)
+
+| # | Component | What Went Wrong | Found By | Fix | Severity |
+|---|-----------|----------------|----------|-----|----------|
+| 21 | Electrical | RoboRIO brownouts during matches | Competition | Lower brownout voltage to 6.3V | Critical |
+| 22 | Telemetry | Dashboard jam/stall alerts freeze after CAN hiccup | Competition | Added missing booleans to setDefaultValues() + staleness detector | High |
+
+## Post-Competition Review (Feb 24 to Mar 1)
+
+| # | Component | What Went Wrong | Found By | Fix | Severity |
+|---|-----------|----------------|----------|-----|----------|
+| 23 | Build system | Real test failures hidden behind BUILD SUCCESSFUL (ignoreFailures mask) | Test review | XML-parsing quality gate that only ignores HAL crash | Critical |
+| 24 | PITest | Mutation testing can't reach 6/8 classes (HAL JNI conflict) | PITest setup | Constructor injection pattern (JamProtection model) | High |
 | 25 | DriverInputShaper | Deadband after curve killed 46% of stick travel | Code review | Moved deadband before curve | High |
-| 26 | HubShiftEngine | initializeTeleop() never called, hub timing was disabled | Code review | One-line fix in Robot.teleopInit() | High |
+| 26 | HubShiftEngine | initializeTeleop() never called, hub timing was disabled the whole time | Code review | One-line fix in Robot.teleopInit() | High |
 | 27 | ShootOnTheMove | Distance field stored time-of-flight (seconds vs meters) | Code review | Changed to getSolvedDistance() | Medium |
 | 28 | StrategyTelemetry | Logged role-dependent RPM instead of feeder eject RPM | Code review | Added getFeederEjectRPM() method | Medium |
 | 29 | RobotContainer | No G407 zone gate on RT trigger, could shoot from wrong zone | Code review | Added isInAllianceZone() gate (4th fire control layer) | Critical |
@@ -47,7 +57,22 @@ We keep a log of everything that breaks. Sensor glitches, logic errors, weird on
 | 33 | NNLiveReceiver | NN gives garbage predictions on red alliance side | Integration testing | Alliance-aware coordinate frame flip | High |
 | 34 | Utilities | isRedAlliance() always returning false on both sides | Sim testing | Fixed alliance detection, added both-side tests | High |
 
+## Week 1+ Fixes (Mar 7 to Mar 23)
 
+These came from competition data, code reviews, external code review (we had another team's mentor look at our code), and integration testing on the team's tuning branch.
+
+| # | Component | What Went Wrong | Found By | Fix | Severity |
+|---|-----------|----------------|----------|-----|----------|
+| 35 | Cameras | getLatestResult() returned oldest frame, getBestResult() NPE on empty targets | Code review | Fixed frame ordering, null check on empty target list | High |
+| 36 | VisionFilter | Heading divergence used fused heading instead of raw gyro | Code review | Switched to raw gyro for divergence check | Medium |
+| 37 | SystemHealth | Loop timing code in SystemHealthTelemetry crashed 2nd chassis robot | Competition (2nd robot) | Moved loop timing inside try-catch | Critical |
+| 38 | ShotCalculator | Newton derivative missing drag factor, feedforward sign flipped | Peer review (CD) + code review | Fixed derivative chain rule, corrected FF sign | High |
+| 39 | CommandsTelemetry | Ghost detection flagged default commands as stuck (Issue #94) | Sim testing | Skip commands where isDefaultCommand() is true (PR #95) | Medium |
+| 40 | AlertManager | Battery alert spam in pit, unnecessary warnings during matches (Issue #83) | Driver/pit crew | FMS gate + 30s debounce in pit/lab mode (PR #93) | High |
+| 41 | DriveToHub | Command self-canceled because it scheduled a child with same subsystem requirement | Code review | Restructured to not schedule conflicting child (PR #92) | High |
+| 42 | Shooter | Follower motors not closed in test teardown, crashed 29 tests after ShooterConfig merge (Issue #104) | Test suite | Close follower motors in teardown, separate desired vs slew-limited RPM (PR #105) | High |
+| 43 | IntakePivot | TunableNumber key collision between IntakePivot and IntakeRoller (same "Intake/kP" key) | Code review (Tuning4 audit) | Changed IntakePivot keys to "IntakePivot/kP" namespace | Medium |
+| 44 | RobotContainer | Driver LT binding used getLeftX() twice instead of getLeftX()/getLeftY(), toggleOnTrue instead of whileTrue | Code review (Tuning4 audit) | Fixed axes and trigger type | High |
 
 ## Discovery Timeline
 
@@ -75,17 +100,21 @@ gantt
     Hysteresis for flickering      :active, h5, 2026-02-17, 2d
 
     section Week-0 Competition
-    Brownouts					   :crit, w1, 2026-02-22, 1d
+    Brownouts                      :crit, w1, 2026-02-22, 1d
     Shooter clicking (PID-to-zero) :crit, w1, 2026-02-22, 1d
-    Channel coordinator :crit, w1, 2026-02-22, 1d
-  
+    Channel coordinator            :crit, w1, 2026-02-22, 1d
 
     section Post-Comp Review
-    Haptic timeout missing         :active, w2, 2026-02-24, 2d
     Build gate ignoring failures   :active, w3, 2026-02-24, 2d
     Deadband and fire control      :active, cr1, 2026-02-27, 2d
     NN coordinate frame fix        :active, cr2, 2026-02-28, 1d
-    isRedAlliance always false     :active, cr3, 2026-02-28, 1d
+
+    section Week 1+ Fixes
+    Vision camera bugs             :active, m1, 2026-03-07, 2d
+    Ghost detection (PR 95)        :active, m2, 2026-03-14, 2d
+    Battery alert spam (PR 93)     :active, m3, 2026-03-14, 2d
+    Newton solver derivative       :active, m4, 2026-03-13, 1d
+    Tuning4 audit (10 bugs)        :active, m5, 2026-03-23, 2d
 ```
 
 ## Patterns We Found
@@ -98,8 +127,9 @@ After we wrote everything down, the same bug patterns kept showing up. At that p
 4. **High priority blocks what matters** (entries 11, 12). Both haptic and LED had the same bug where endgame alerts blocked scoring feedback during the most important part of the match. We cut patterns down so there are fewer conflicts.
 5. **Wrap ALL of the library** (entry 6). Our SafeLog wrapper didn't cover every type. We audited every overload and found two more missing types.
 6. **Never PID to zero** (entries 19, 20). Using closed-loop PID to stop a motor causes gear clicking from backlash. Just cut power and let it coast. We wrote a lint rule for this.
-7. **If it turns on, prove it turns off** (entries 21, 22). We had 274 passing tests and none checked "does the vibration stop?" Now every feedback boolean gets 3 tests: on, off, and never-on-when-it-shouldn't.
+7. **If it turns on, prove it turns off** (entries 21, 22). We had 274 passing tests and none checked "does the vibration stop?" Now every feedback boolean gets 3 tests: on, off, and never-on-when-it-shouldn't-be.
 8. **Test both alliance sides, always** (entries 33, 34). We found two bugs that only showed up on red alliance. Most of our testing was on blue (the default). Now we run every sim scenario on both sides.
+9. **External eyes catch what you're blind to** (entries 35-44). The March fixes came from a code review by another team's mentor, the peer review on Chief Delphi, and our own audit of a teammate's tuning branch. Fresh eyes on familiar code found 10 bugs in one session.
 
 ## Connection to Automated Checking
 
