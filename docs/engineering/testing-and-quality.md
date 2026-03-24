@@ -162,6 +162,7 @@ We have 18 simulation scenarios that test different match situations. Here are t
 | ShooterTest | `-DsimScenario=ShooterTest` | Shooter subsystem isolation test: spin-up, at-speed latch, RPM recovery. |
 | DefensiveFeeder | `-DsimScenario=DefensiveFeeder` | Feeder role demo with eject-to-feed-spot and role switching. |
 | DriverPractice | `-DsimScenario=DriverPractice` | Free-drive practice with haptic and LED feedback active. |
+| JudgeDemo | `-DsimScenario=JudgeDemo` | Interactive demo for judge pit visits. Judge drives robot with Xbox controller, shoots balls, sees full physics in AdvantageScope Field3d. ShotCalculator outputs displayed in real time. No time limit. |
 | OffensiveBlitz | `-DsimScenario=OffensiveBlitz` | Aggressive multi-cycle scoring run to stress the full pipeline. |
 
 **What you can verify in sim**: telemetry signals updating correctly, haptic feedback timing, state machine transitions, fire control computations, ReadyToShoot composite signal logic.

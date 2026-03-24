@@ -43,6 +43,8 @@ flowchart TB
 | Neural network ensemble models for shot prediction | 10 |
 | Collision elements in physics simulation | 43 |
 | Custom code linter rules | 111 |
+| Verified teams running our open-source fire control | 5 |
+| Awards won by teams using our code (2026) | 3 |
 
 ## Quick Start by Role
 
@@ -56,7 +58,7 @@ flowchart TB
 [Competition Playbook](operations/competition-playbook.md) | [Alliance Strategy](feedback/alliance-strategy.md) | [Quick Reference](dashboards/quick-reference.md)
 
 **Judges & Mentors** \
-[System Overview](architecture/system-overview.md) | [Fire Control](architecture/fire-control-pipeline.md) | [FMEA Log](engineering/fmea-log.md) | [Engineering Process](engineering/engineering-process.md) | [Universal Design](feedback/universal-design.md) | [What We Learned](engineering/what-we-learned.md)
+[System Overview](architecture/system-overview.md) | [Fire Control](architecture/fire-control-pipeline.md) | [Community Impact](engineering/community-impact.md) | [FMEA Log](engineering/fmea-log.md) | [Engineering Process](engineering/engineering-process.md) | [Universal Design](feedback/universal-design.md) | [What We Learned](engineering/what-we-learned.md)
 
 **Debugging** \
 [Troubleshooting](operations/troubleshooting.md) | [Elastic Guide](dashboards/elastic-guide.md) | [AdvantageScope Guide](dashboards/advantagescope-guide.md)
