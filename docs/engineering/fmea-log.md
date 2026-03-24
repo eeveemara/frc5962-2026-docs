@@ -133,9 +133,7 @@ After we wrote everything down, the same bug patterns kept showing up. At that p
 
 ## Connection to Automated Checking
 
-We also built a log-analytic platform with 34 automated health gate rules. After a match, you upload the `.wpilog` file and it checks for crash signatures, timing issues, sensor dropouts, and scoring consistency. It gives a red/yellow/green report in under a minute.
-
-On top of that, we run mutation testing (PITest) to check if our tests would actually catch a bug if one existed. It makes tiny changes to our code (flipping a > to <, changing true to false) and checks if any test fails. If no test catches the change, that's a gap we need to fill. It found 21 surviving mutants in our jam detection alone. Our regular tests said "all passing" but PITest showed us the holes.
+We also run mutation testing (PITest) to check if our tests would actually catch a bug if one existed. It makes tiny changes to our code (flipping a > to <, changing true to false) and checks if any test fails. If no test catches the change, that's a gap we need to fill. It found 21 surviving mutants in our jam detection alone. Our regular tests said "all passing" but PITest showed us the holes.
 
 > Writing the bug down matters almost as much as fixing it, because the pattern is what keeps it from coming back.
 
