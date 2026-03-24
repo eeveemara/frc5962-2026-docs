@@ -59,7 +59,7 @@ flowchart TB
 
 ## Feedback Loop: Sensors to Operators
 
-The second major flow is how assessed information reaches the humans. Telemetry classes produce status signals. The ChannelCoordinator (our AMDA system) decides what to show and where. Feedback routes differently depending on whether you're the driver or copilot.
+The second major flow is how the robot tells operators what's going on. Telemetry classes produce status signals. The ChannelCoordinator (our AMDA system) decides what to show and where. Feedback routes differently depending on whether you're the driver or copilot.
 
 ```mermaid
 flowchart TB

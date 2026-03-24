@@ -1,9 +1,5 @@
 # FMEA Log
 
-**Judge question:** *What went wrong and how did you fix it?*
-
----
-
 ## Real Failures, Real Fixes
 
 We keep a log of everything that breaks. Sensor glitches, logic errors, weird one-off behavior, all of it goes in with the root cause and the fix. We started this in early February. By late March we had 44 entries, and the patterns changed how we write code.
@@ -131,7 +127,7 @@ After we wrote everything down, the same bug patterns kept showing up. At that p
 8. **Test both alliance sides, always** (entries 33, 34). We found two bugs that only showed up on red alliance. Most of our testing was on blue (the default). Now we run every sim scenario on both sides.
 9. **External eyes catch what you're blind to** (entries 35-44). The March fixes came from a code review by another team's mentor, the peer review on Chief Delphi, and our own audit of a teammate's tuning branch. Fresh eyes on familiar code found 10 bugs in one session.
 
-## Connection to Automated Checking
+## How Mutation Testing Fits In
 
 We also run mutation testing (PITest) to check if our tests would actually catch a bug if one existed. It makes tiny changes to our code (flipping a > to <, changing true to false) and checks if any test fails. If no test catches the change, that's a gap we need to fill. It found 21 surviving mutants in our jam detection alone. Our regular tests said "all passing" but PITest showed us the holes.
 

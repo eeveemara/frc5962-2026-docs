@@ -17,7 +17,7 @@ We call this **AMDA: Adaptive Multi-Modal Driver Awareness**. It coordinates fou
 
 ## ChannelCoordinator: Vision Confidence Hysteresis
 
-`ChannelCoordinator` sits at the center of AMDA. It reads the robot's pose confidence from vision and determines whether the system is in **HIGH** or **LOW** confidence mode. This mode then influences how every channel behaves.
+`ChannelCoordinator` sits at the center of AMDA. It reads the robot's pose confidence from vision and determines whether the system is in **HIGH** or **LOW** confidence mode. That mode changes how every channel behaves.
 
 The key design choice is **hysteresis** to prevent rapid flickering between modes:
 - Drops to LOW when confidence falls to **40% or below**

@@ -1,6 +1,6 @@
 # What We Learned & Design Decisions
 
-This is the "why" behind the system. Most of these decisions came from a real failure, a weird test result, or a match problem we did not want to repeat. It is mainly here for judges and for future students who inherit the codebase.
+This is the "why" behind the system. Most of these decisions came from a real failure, a weird test result, or a match problem we did not want to repeat. It's mainly here for future students who inherit the codebase, and for anyone who wants to understand the reasoning.
 
 ## Key Design Decisions
 
@@ -24,7 +24,7 @@ Without this split, one person has to simultaneously drive into position AND wat
 
 A naive approach is "aim at the target and fire." But that misses too often because it doesn't account for distance, velocity, flywheel stability, or vision quality.
 
-Our ShotConfidence system computes a physics-based score from 0-100% using five weighted components. The copilot feels this as progressive haptic feedback. At 30% confidence, there's a light rumble. At 80%, it's strong. At the threshold, the ReadyToShoot pulse fires. Over time, the copilot learns to feel when a shot is good without ever looking at a screen. The copilot stops thinking about numbers and just feels when the shot is ready.
+Our ShotConfidence system computes a physics-based score from 0-100% using five weighted components. The copilot feels this as progressive haptic feedback. At 30% confidence, there's a light rumble. At 80%, it's strong. At the threshold, the ReadyToShoot pulse fires. Over time, the copilot stops thinking about numbers and just feels when the shot is ready.
 
 ### 5. Why Four Feedback Channels (AMDA)
 

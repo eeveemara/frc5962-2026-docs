@@ -100,7 +100,7 @@ We built a 111-rule static analysis linter specifically for FRC Java code. It us
 
 The linter runs against our codebase and reports findings by severity tier. It's not a replacement for code review, but it catches the mechanical stuff so code review can focus on logic and design decisions.
 
-## The Takeaway
+## Why This Matters
 
 Our process is not there to look impressive. Each layer exists because skipping it already hurt us once. Week-0 taught us to trace weird behavior all the way to the root cause. Mutation testing showed us where our tests were weaker than we thought. FMEA caught at least one issue before it reached a field.
 

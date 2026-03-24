@@ -98,7 +98,7 @@ All physics constants are adjustable from the dashboard during simulation throug
 - **MagnusCoeff** (default 0.2): Magnus lift coefficient
 - **Enabled** (default true): master kill switch for the entire simulation
 
-This means we can experiment in real time. If we want to see what a heavier ball or more drag would do, we can change it and immediately watch the path change.
+We can experiment in real time. If we want to see what a heavier ball or more drag would do, we can change it and immediately watch the path change.
 
 ## MIT Licensed
 

@@ -2,7 +2,7 @@
 
 ## What Telemetry Means for Us
 
-Telemetry is how we see inside the robot while it is running. Motor current, velocity, temperature, jam detection, vision lock, scoring state, all of that gets captured and logged. If something goes wrong in a match, we do not have to guess from memory.
+Telemetry is how we see inside the robot while it runs. Every motor reading, sensor value, and detection state gets captured so we never have to guess what happened in a match.
 
 We log roughly 585 signals every 20 ms cycle. That covers every subsystem plus derived states like stall detection, shot confidence, and scoring readiness. Everything flows through AdvantageKit and can be replayed in AdvantageScope later.
 

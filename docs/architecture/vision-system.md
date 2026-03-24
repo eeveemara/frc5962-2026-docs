@@ -127,7 +127,7 @@ The 2026 field has 32 AprilTags. We partition them by alliance:
 - **IDs 1-16**: Blue alliance tags
 - **IDs 17-32**: Red alliance tags
 
-When we only see a single tag from the opposing alliance, we reject it entirely (gate 9). The reason is simple: one tag from across the field can give a heading estimate that points the wrong way, and we cannot fix that confidently without more geometry. Multi-tag observations from the opposing side are fine because the solve is much better constrained.
+When we only see a single tag from the opposing alliance, we reject it entirely (gate 9). One tag from across the field can give a heading that points the wrong way, and we can't fix that without more geometry. Multi-tag observations from the opposing side are fine because the solve is much better constrained.
 
 ## Diagnosing Vision Issues
 

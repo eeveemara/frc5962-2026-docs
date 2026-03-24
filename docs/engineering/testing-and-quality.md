@@ -1,6 +1,6 @@
 # Testing & Quality Assurance
 
-Here's how we test our robot code and why we care about it. If mutation testing is new to you, that is fine. We explain it step by step.
+Here's how we test our robot code and why we care about it. If mutation testing is new to you, that is fine. We'll walk through it.
 
 ## What is JUnit Testing?
 
@@ -62,7 +62,7 @@ Here's how a stall detection test works conceptually:
 
 5. **Verify clearing**: Check that `stalled` goes back to false.
 
-This pattern repeats across all our tests. Set up a known state, run the logic, check the result. The magic is that we can simulate any motor condition we want without a physical robot.
+This pattern repeats across all our tests. Set up a known state, run the logic, check the result. The key part is we can simulate any motor condition we want without a physical robot.
 
 ## Code Coverage (Jacoco)
 

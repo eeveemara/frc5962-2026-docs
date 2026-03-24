@@ -4,17 +4,17 @@
 
 FRC matches are loud, bright, and messy. If a feedback system only works when someone can calmly read a screen or hear a sound, it is probably going to fail at an event.
 
-We built ours so important information reaches the operator through at least two different senses. That way, if one channel gets lost in the environment, the other one still has a good chance of getting through.
+We built ours so important information reaches the operator through at least two different senses. That way, if one channel gets lost in the environment, the other still gets through.
 
 ## Mace's 7 Universal Design Principles
 
-Ronald Mace's Universal Design framework gives us a clear way to think about making our robot interface work for everyone. Here's how we apply each one:
+Ronald Mace's Universal Design framework shaped how we built our operator interface. Here's how we apply each one:
 
 1. **Equitable Use**: The same feedback system works for any operator, regardless of sensory differences. No special mode needed.
 2. **Flexibility in Use**: Operators can rely on whichever channel they perceive best (haptic, LED, or dashboard).
 3. **Simple and Intuitive**: Patterns are obvious. Stronger rumble = closer to target. Blue LED = ready. No manual to memorize.
 4. **Perceptible Information**: Every signal reaches at least 2 senses (touch + sight), so no information is locked behind a single channel.
-5. **Tolerance for Error**: Stale timeouts auto-clear haptic feedback, and FMS lockout prevents accidental tuning during a match. Even if something goes wrong, the system recovers gracefully.
+5. **Tolerance for Error**: Stale timeouts auto-clear haptic feedback, and FMS lockout prevents accidental tuning during a match. Even if something goes wrong, it recovers on its own.
 6. **Low Physical Effort**: The copilot doesn't need to press extra buttons or check a screen. The controller tells them what they need to know.
 7. **Size and Space for Approach**: We use standard Xbox HID layout, so any controller works, including the Xbox Adaptive Controller.
 
@@ -116,7 +116,7 @@ Our entire feedback system works without any audio cues. This was a deliberate c
 
 ## Accessibility as an Engineering Consequence
 
-We did not start with a big speech about accessibility. We started with a simpler goal: get the right information to the right person fast. A lot of the accessibility benefits came from making the system lower-stress and easier to use under pressure.
+We did not start with a big speech about accessibility. We started with a simpler goal: get the right information to the right person fast. Most of the accessibility benefits fell out of making the system lower-stress and easier to use under pressure.
 
 | Design Choice | Engineering Reason | Accessibility Consequence |
 |--------------|-------------------|--------------------------|
