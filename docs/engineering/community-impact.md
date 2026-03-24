@@ -26,9 +26,9 @@ The teams that know controls best chose our code. The back-to-back defending Inn
 
 ## The 2609 Story
 
-Team 2609 is a 2023 World Champion. Before our code, their shooting was about 15 lines: calculate the angle to the hub, turn the turret, spin the flywheel at a fixed RPM. No velocity compensation, no time-of-flight, no distance-based RPM.
+Team 2609 is a 2023 World Champion. They had a working turret shooter. On March 14, they integrated our fire control pipeline to add velocity compensation, drag-corrected time-of-flight, and distance-based RPM from the Newton solver.
 
-On March 14, they deleted that and replaced it with our Newton solver, our RK4 simulator, and our physics engine. They converted our chassis-aim output to turret-relative angles for their independent turret, plugged in their CAD measurements (71-degree launch angle, 3-inch wheels, 0.9 slip factor), added zone-based passing targets, and tuned for 6 days.
+They adapted it for their independent turret (converting our chassis-aim output to turret-relative angles), plugged in their CAD measurements (71-degree launch angle, 3-inch wheels, 0.9 slip factor), added zone-based passing targets, and tuned for 6 days.
 
 On March 20, they competed at North Bay. Rank 4. Alliance captain. Won Innovation in Control.
 
