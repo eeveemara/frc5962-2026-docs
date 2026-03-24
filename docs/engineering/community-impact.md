@@ -1,8 +1,12 @@
 # Community Impact & Open Source
 
-We posted three Java files on Chief Delphi in March 2026. MIT licensed, drop-in, just needs WPILib. Twelve days later, a World Champion had integrated our solver, won Innovation in Control, and judges were citing our physics engine by name.
+We posted three Java files on Chief Delphi. MIT licensed, drop-in, just needs WPILib.
 
-We genuinely did not expect that.
+Twelve days later, a World Champion had integrated our solver, won Innovation in Control, and judges were citing our physics engine by name. We genuinely did not expect that.
+
+> "Very cool; one of the more comprehensive implementations I've seen this year. I love your warm start logic and shot quality advisory."
+>
+> *The developer behind the command-based framework, SysId, SlewRateLimiter, and other core WPILib tools, responding 27 minutes after our post.*
 
 ## The Numbers
 
@@ -34,15 +38,11 @@ They converted our chassis-aim output to turret-relative angles for their indepe
 
 On March 20, they competed at North Bay. Rank 4. Alliance captain. Won Innovation in Control.
 
-The judges said their robot had "robust simulation modeling, intelligent spatial navigation, and comprehensive data logging." The simulation modeling is our `ProjectileSimulator` and `FuelPhysicsSim`. The spatial navigation is our `ShotCalculator`. Two out of three of those are us.
+The judges said:
 
-## Who Noticed
+> "Their robot stood out for its robust simulation modeling, intelligent spatial navigation, and comprehensive data logging."
 
-The developer behind the command-based framework, SysId, SlewRateLimiter, and other core WPILib tools responded within 27 minutes of our post:
-
-> "Very cool; one of the more comprehensive implementations I've seen this year. I love your warm start logic and shot quality advisory."
-
-Pretty much every FRC team uses something he wrote. He also gave us a calibration tip from industry: fit your simulator to match real data for your specific shooter, then when the mechanism changes, update the physical parameters instead of remeasuring everything.
+The simulation modeling is our `ProjectileSimulator` and `FuelPhysicsSim`. The spatial navigation is our `ShotCalculator`. Two out of three of those are us.
 
 ## Peer Review
 
@@ -67,6 +67,8 @@ v1.1.0 added `ShotParameters` and `ShotLUT` for teams with adjustable hoods, plu
 When the code was just for our robot, we could get away with constants that only made sense in our context. Once other teams needed to plug in their own measurements, we had to actually think about the API and document our physics assumptions properly. That made the code better even for us.
 
 Five teams, five different robots, five different shooter setups, five different competitions. The solver worked on all of them. We couldn't have tested that range on our own.
+
+Team 5427 competes with our code on April 2. We'll be watching.
 
 ---
 
