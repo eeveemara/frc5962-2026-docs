@@ -212,6 +212,72 @@ The driver handles positioning. They feel spin-up vibrations when the flywheel i
 
 The robot assesses. The copilot fires. The driver flies.
 
+## ProjectileSimulator: How We Generate the LUT
+
+The ShotLUT doesn't come from guessing or from a spreadsheet. We wrote a physics simulator that generates it from CAD measurements.
+
+`ProjectileSimulator` uses 4th-order Runge-Kutta integration to trace a ball's trajectory from the moment it leaves the shooter to the moment it hits hub height. The physics model includes:
+
+- **Gravity** (obviously)
+- **Aerodynamic drag**: Cd = 0.47 for a smooth sphere, air density 1.225 kg/m^3 at sea level. The drag force scales with the square of velocity, so fast shots slow down more than slow ones.
+- **Magnus lift**: Spinning balls curve. Topspin gives upward lift (extends range), backspin pushes the ball down. We use Cm = 0.2, which is a conservative estimate. Magnus is about 8x less sensitive than slip factor, so even if we're off by 2x on the coefficient, it only shifts RPM by 50-100.
+
+For each distance from 0.50m to 5.00m (at 0.05m steps), the simulator binary-searches for the RPM that lands the ball at hub height. That gives us ~90 entries, each with the exact RPM and time of flight for that distance. The whole table generates in about 200ms at startup.
+
+The key insight: you don't need a real robot to get a usable LUT on day one. Plug in your exit height, launch angle, wheel diameter, and a rough slip factor from the ProjectileSimulator, and you have physics-based shot parameters before the robot ever fires a ball. Then you tune from there.
+
+## Hardware Analysis Tools
+
+Before we wrote robot code, we wanted to understand the hardware constraints. We built three analysis tools:
+
+**FlywheelMassSweep**: Given a motor (NEO, stall torque, KV), a gear ratio, and a wheel diameter, this sweeps flywheel inertia to find the minimum mass that meets our performance targets. It models RPM drop on impact (Brettle impulse-momentum), battery voltage sag during recovery (open circuit voltage minus internal resistance times current), motor thermal rise (copper winding resistance goes up ~0.39% per degree), and SparkMax current limiting. It also simulates rapid-fire cadence (multiple shots in a row) to check if the motor can recover fast enough.
+
+We used this to tell our mechanical team: "for a 4-inch wheel at 60 degrees with a 1:1 ratio, the flywheel needs at least X moment of inertia to recover within 0.8 seconds per shot." That let them design the flywheel before the shooter was built.
+
+**AngleSweep**: Compares launch angles (45-70 degrees) across different shooter configurations. Shows RPM and time-of-flight at 10 key distances for each angle. We ran this when the team was deciding between the front flywheel (68 degrees) and the rear drum shooter (60 degrees). It showed the mechanical team exactly how RPM requirements change with angle.
+
+**SlipFactorSweep**: The ball doesn't leave the wheel at wheel speed. It slips. The slip factor (typically 0.5 to 0.85) depends on the wheel material, ball compression, and contact geometry. This tool sweeps across slip factor values and shows the RPM range you need at each distance. It answers the question: "if our slip factor is somewhere between 0.6 and 0.8, how much does that change the RPM we need?" The answer is a lot. Being off on slip factor by 0.1 shifts RPM by 400+. That's why field calibration matters more than getting the physics model perfect.
+
+All of these tools are in our open-source fire control repo alongside the three core files.
+
+## NN Coprocessor: How It Actually Works
+
+The neural network runs on an Orange Pi 5 Plus sitting on the robot. It's not a black box. We know exactly what it does because we trained it on data from our own ProjectileSimulator.
+
+**Training**: We generated 800K simulated trajectories using the RK4 physics model with domain randomization. Each trajectory used slightly different drag, Magnus, launch geometry, and ball mass to simulate real-world variation. The data was split into 10 training sets, and we trained 10 separate models. The ensemble averages their predictions, which smooths out any one model's mistakes.
+
+**Input**: 8 values every cycle: target distance X, target distance Y, robot velocity X, robot velocity Y, battery voltage, RPM ratio (current/target), motor temperature, and wheel slip estimate.
+
+**Output**: RPM, hood angle, and time of flight. At 50 Hz, the robot gets fresh shot parameters 50 times per second that account for battery sag and motor heating in ways a static LUT can't.
+
+**The 5-state fallback FSM** (for Mode A, the cached LUT path):
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> IDLE
+    IDLE --> PENDING : LUT received via NT
+    PENDING --> ACTIVE : validation passes
+    PENDING --> ERROR : validation fails
+    ACTIVE --> IDLE : heartbeat timeout
+    ERROR --> IDLE : retry timer
+    IDLE --> FALLBACK_TO_SIM : 3 missed heartbeats
+
+    classDef good fill:#059669,stroke:#047857,color:#fff
+    classDef wait fill:#d97706,stroke:#b45309,color:#fff
+    classDef bad fill:#dc2626,stroke:#b91c1c,color:#fff
+
+    class ACTIVE good
+    class PENDING,IDLE wait
+    class ERROR,FALLBACK_TO_SIM bad
+```
+
+If the coprocessor loses connection (3 missed heartbeats at 50 Hz = 150ms), the system falls back to the sim-generated LUT automatically. If the coprocessor comes back and sends 3 consecutive good heartbeats, the system trusts it again. The robot always has shot data. The NN just makes it better.
+
+**Why this matters for judges**: The NN adapts to things a LUT can't. Battery voltage drops from 12.5V to 11.8V over a match. Motor windings heat up and the torque curve shifts. Wheel surface wears down and slip factor changes. A static LUT ignores all of that. The NN sees it in real time and adjusts.
+
+We exported the models to ONNX format so they run efficiently on ARM64 (the Orange Pi's architecture). The Python service uses ONNX Runtime for inference and publishes results over NetworkTables 4. The whole pipeline from camera frame to updated shot parameters is under 5ms.
+
 ---
 
-**Related:** [Vision System](vision-system.md) | [Driver Feedback](../feedback/driver-feedback.md) | [Alliance Strategy](../feedback/alliance-strategy.md)
+**Related:** [Vision System](vision-system.md) | [Ball Physics Simulation](../engineering/fuel-simulation.md) | [Community Impact](../engineering/community-impact.md) | [Driver Feedback](../feedback/driver-feedback.md)
