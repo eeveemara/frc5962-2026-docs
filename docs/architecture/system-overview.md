@@ -1,6 +1,6 @@
 # System Architecture Overview
 
-Our control system does three jobs: it watches the robot in real time, it decides when scoring conditions are good enough, and it tells the right operator what they need to know. "The robot assesses, the copilot fires, the driver flies" is the short version of that flow.
+Our control system watches the robot in real time, figures out when it's safe to score, and tells the operators what's going on. "The robot assesses, the copilot fires, the driver flies" is the short version of that flow.
 
 We have 22 telemetry classes watching ~585 signals every loop cycle, a fire control pipeline that figures out shot parameters using physics solvers and neural networks, and a 4-channel feedback system that sends the right info to the right operator. Everything runs on WPILib's AdvantageKit logging framework, with crash isolation at every layer so one broken sensor can't take down the whole system.
 

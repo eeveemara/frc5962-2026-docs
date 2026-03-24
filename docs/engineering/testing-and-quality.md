@@ -1,6 +1,6 @@
 # Testing & Quality Assurance
 
-This page explains how we test our robot code and why we care so much about it. If mutation testing is new to you, that is fine. We explain it step by step.
+Here's how we test our robot code and why we care about it. If mutation testing is new to you, that is fine. We explain it step by step.
 
 ## What is JUnit Testing?
 

@@ -102,7 +102,7 @@ This means we can experiment in real time. If we want to see what a heavier ball
 
 ## MIT Licensed
 
-FuelPhysicsSim.java is designed to be shareable. It's a single file with an MIT license header, depends only on WPILib and the YAGSL vendordep, and has no references to our team-specific code. Any MapleSim team can drop it in and get drag, Magnus, and field collision physics for their ball simulation. The team-specific wiring (shot detection, SafeLog, TunableNumbers) lives in SimFuelManager, which is separate.
+We wrote FuelPhysicsSim.java to be shareable. It's a single file with an MIT license header, depends only on WPILib and the YAGSL vendordep, and has no references to our team-specific code. Any MapleSim team can drop it in and get drag, Magnus, and field collision physics for their ball simulation. The team-specific wiring (shot detection, SafeLog, TunableNumbers) lives in SimFuelManager, which is separate.
 
 ---
 

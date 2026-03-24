@@ -4,7 +4,7 @@
 
 We care less about "did it work once in the lab?" and more about "will it still work when the pit is loud and the next match is close?" This page is about how we work, not just what we built.
 
-We wanted a system where bugs get caught before they reach the field, where every feature is tested at multiple levels, and where we learn from both our own matches and other teams' approaches.
+We wanted bugs caught before they reach the field, features tested at multiple levels, and a way to learn from our own matches and other teams.
 
 ## Design Methodology
 
@@ -29,7 +29,7 @@ flowchart LR
     style L fill:#db2777,stroke:#be185d,color:#fff
 ```
 
-**Design**: We write a design spec before touching code. The spec defines what the feature does, why it exists, what signals it produces, what can go wrong, and how we'll test it. We have 14 design specs covering both robot code and our analytics platform.
+**Design**: We write a design spec before touching code. The spec covers what the feature does, what signals it produces, what could go wrong, and how to test it. We have 14 design specs covering both robot code and our analytics platform.
 
 **Implement**: Code follows strict patterns. Subsystems handle motors only. Telemetry classes handle all detection logic and logging. SafeLog wraps every log call with crash isolation. This separation means a bug in stall detection can't crash motor control.
 

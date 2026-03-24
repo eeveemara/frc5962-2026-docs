@@ -1,6 +1,6 @@
 # What We Learned & Design Decisions
 
-This page is the "why" behind the system. Most of these decisions came from a real failure, a weird test result, or a match problem we did not want to repeat. It is mainly here for judges and for future students who inherit the codebase.
+This is the "why" behind the system. Most of these decisions came from a real failure, a weird test result, or a match problem we did not want to repeat. It is mainly here for judges and for future students who inherit the codebase.
 
 ## Key Design Decisions
 
