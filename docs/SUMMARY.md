@@ -30,6 +30,7 @@
 
 ## Engineering
 
+* [Community Impact & Open Source](engineering/community-impact.md)
 * [Engineering Process](engineering/engineering-process.md)
 * [Testing & Quality](engineering/testing-and-quality.md)
 * [Ball Physics Simulation](engineering/fuel-simulation.md)
