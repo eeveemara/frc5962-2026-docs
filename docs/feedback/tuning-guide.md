@@ -98,7 +98,7 @@ If copilot controller is not connected, COPILOT signals fall back to DRIVER.
 ### Copilot
 - **Right side buzz = good news** (ready to shoot, hub active)
 - **Left side buzz = bad news** (hub deactivated, lost auto)
-- **Rocking buzz = jam**, wait for auto-reverse
+- **Rocking buzz = jam**, reverse the intake
 - **Progressive aim on right side while holding RT**, fire when it's strongest
 - **Countdown pulses get stronger** as hub shift approaches, finish shooting before it peaks
 
