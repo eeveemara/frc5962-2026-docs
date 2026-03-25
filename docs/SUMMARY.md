@@ -33,6 +33,8 @@
 * [Community Impact & Open Source](engineering/community-impact.md)
 * [Engineering Process](engineering/engineering-process.md)
 * [Testing & Quality](engineering/testing-and-quality.md)
+* [Projectile Physics & Hardware Tools](engineering/projectile-physics.md)
 * [Ball Physics Simulation](engineering/fuel-simulation.md)
+* [Neural Network Coprocessor](engineering/nn-coprocessor.md)
 * [FMEA Log](engineering/fmea-log.md)
 * [What We Learned](engineering/what-we-learned.md)
