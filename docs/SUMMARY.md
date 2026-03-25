@@ -14,6 +14,7 @@
 
 * [Universal Design](feedback/universal-design.md)
 * [AMDA Feedback System](feedback/driver-feedback.md)
+* [Tuning Guide](feedback/tuning-guide.md)
 * [Alliance Strategy](feedback/alliance-strategy.md)
 
 ## Operations
