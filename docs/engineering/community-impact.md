@@ -2,35 +2,60 @@
 
 We posted three Java files on Chief Delphi. MIT licensed, drop-in, just needs WPILib.
 
-Twelve days later, a World Champion had integrated our solver, won Innovation in Control, and judges were citing our physics engine by name. We genuinely did not expect that.
+Fifteen days later, sixteen teams were running our code, a World Champion had won Innovation in Control with our solver, and two of the most respected developers in FRC had endorsed it.
 
 > "Very cool; one of the more comprehensive implementations I've seen this year. I love your warm start logic and shot quality advisory."
 >
-> *The developer behind the command-based framework, SysId, SlewRateLimiter, and other core WPILib tools, responding 27 minutes after our post.*
+> *Eli Barnett (Oblarg), developer of the command-based framework, SysId, SlewRateLimiter, and other core WPILib tools. Responded 27 minutes after our post.*
+
+> "It's impressive!! I love how you combined everything. It is intuitive."
+>
+> *nstrike, creator of YAGSL, the swerve drive library used by hundreds of FRC teams. Asked us to build a fire control example for YAGSL after competition.*
 
 ## The Numbers
 
 | | |
 |---|---|
-| **9** | verified teams running our code with our MIT license in their repos (16 total adopters) |
-| **8** | combined Innovation in Control wins across those teams' careers |
-| **5** | awards won in 2026 by teams using our code, across 4 categories |
-| **3,300** | Chief Delphi views |
+| **16** | teams running our code (9 verified with MIT license in their repos, 7 reported on Chief Delphi) |
+| **5** | awards won in 2026 by teams using our code, across 4 different categories |
+| **8** | combined Innovation in Control wins across the verified adopters' careers |
+| **3,300** | Chief Delphi views (87 likes) |
+| **1,200+** | GitHub views, 45 unique cloners in 15 days |
 | **6 days** | from a World Champion integrating our code to winning Innovation in Control |
 
 ## Who Is Using It
 
-| Team | Career Highlights | What They Adopted | 2026 With Our Code |
-|------|-------------------|-------------------|--------------------|
-| **2609 BeaverworX** | 2023 World Champion (Einstein), 4x Innovation in Control | All 3 files | **Won Innovation in Control**, Rank 4, alliance captain |
-| **5427 Steel Talons** | 4x FIRST Impact, back-to-back Innovation in Control (2024, 2025) | All 3 files | Won Creativity. Competing April 2 with our code. |
-| **7461 Sushi Squad** | Innovation in Control (2023), Excellence in Engineering | ShotCalc + ProjectileSim + ShotLUT | 8-6-0, deep customization |
-| **5561 Raider Robotics** | Innovation in Control (2023), 2x Autonomous, District Champion | ShotCalculator | 11-5-0, alliance captain |
-| **10584 Ridge Robotics** | Rookie All-Star (2025) | All 3 files | **Rising All-Star**, Rank 6, alliance captain |
+### 9 Verified Adopters (MIT License in Code)
 
-The back-to-back defending Innovation in Control champions (2024 and 2025) adopted our pipeline for their next event. We're still processing that one.
+| Team | What They Adopted | 2026 Result |
+|------|-------------------|-------------|
+| **2609 BeaverworX** | All 3 files | **Won Innovation in Control**, 2023 World Champion, 4x Innovation winner |
+| **5427 Steel Talons** | All 3 files | **Won Creativity**, back-to-back Innovation in Control (2024-25) |
+| **10584 Pennridge Robotics** | All 3 files (lib/) | **Won Rising All-Star**, Rank 6, alliance captain |
+| **5010 Tiger Dynasty** | Full clone + variable-angle extension | **Event Finalist** |
+| **7461 Sushi Squad** | ShotCalc + ProjectileSim + ShotLUT | Deep customization |
+| **5561 Raider Robotics** | ShotCalculator | Alliance captain |
+| **2903 Neobots** | All 3 files (frc.firecontrol package) | |
+| **7160 O-Bots** | ShotCalc (adapted for turret) | |
+| **Juggernauts** | ShotCalc + ProjectileSim | Founding-era team, replaced their own working system |
 
-## The 2609 Story
+### 7 More Reported on Chief Delphi
+
+852 ARC Robotics (**Team Spirit Award**), 5113 Combustible Lemons (**Sustainability + Team Spirit**), 4322 Clockwork, 3566 Gone Fishin', 3211 The Y Team, 6619 GravitechX, 2022 Titan Robotics.
+
+### 5 Awards Won by 4 Adopter Teams
+
+| Award | Team |
+|-------|------|
+| **Innovation in Control** | 2609 BeaverworX |
+| **Creativity** | 5427 Steel Talons |
+| **Rising All-Star** | 10584 Pennridge Robotics |
+| **Sustainability** | 5113 Combustible Lemons |
+| **Team Spirit** | 852 ARC Robotics, 5113 Combustible Lemons |
+
+## The Stories
+
+### 2609 BeaverworX: World Champion Wins Innovation with Our Code
 
 Team 2609 is a 2023 World Champion. They had a working turret shooter. On March 14, they integrated our fire control pipeline to add velocity compensation, drag-corrected time-of-flight, and distance-based RPM from the Newton solver.
 
@@ -43,6 +68,14 @@ The judges said:
 > "Their robot stood out for its robust simulation modeling, intelligent spatial navigation, and comprehensive data logging."
 
 The simulation modeling is our `ProjectileSimulator` and `FuelPhysicsSim`. The spatial navigation is our `ShotCalculator`. Two out of three of those are us.
+
+### 5010 Tiger Dynasty: Adopted and Extended Between Events
+
+Team 5010 had no awards at their first event. Between events, their programmer cloned our repo, added a variable-angle solver on top of our projectile simulator, and integrated it into their robot. They didn't just copy and paste. They extended the math for their mechanism. Second event: Event Finalist.
+
+### The Juggernauts: 30-Year Team Replaced Their Own System
+
+A founding-era FRC team with about 30 years of history had their own shot calculator and velocity compensator. They found our code, adopted the Newton solver and projectile simulator, renamed the files to fit their naming convention, and kept their old system alongside for reference. Their commit history shows the before and after. Proper MIT attribution throughout.
 
 ## Peer Review
 
@@ -67,8 +100,6 @@ v1.1.0 added `ShotParameters` and `ShotLUT` for teams with adjustable hoods, plu
 When the code was just for our robot, we could get away with constants that only made sense in our context. Once other teams needed to plug in their own measurements, we had to actually think about the API and document our physics assumptions properly. That made the code better even for us.
 
 Sixteen teams, sixteen different robots, sixteen different shooter setups, multiple competitions. The solver worked on all of them. We couldn't have tested that range on our own.
-
-Team 5427 competes with our code on April 2. We'll be watching.
 
 ---
 
