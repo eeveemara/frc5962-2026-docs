@@ -10,7 +10,7 @@ Fifteen days later, sixteen teams were running our code, a World Champion had wo
 
 > "It's impressive!! I love how you combined everything. It is intuitive."
 >
-> *nstrike, creator of YAGSL, the swerve drive library used by hundreds of FRC teams. Asked us to build a fire control example for YAGSL after competition.*
+> *nstrike, creator of YAGSL, the swerve drive library used by hundreds of FRC teams. Asked us to build a fire control example for YAMS after competition.*
 
 ## The Numbers
 
