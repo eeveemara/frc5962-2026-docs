@@ -17,11 +17,11 @@ Fifteen days later, sixteen teams were running our code, a World Champion had wo
 | | |
 |---|---|
 | **16** | teams running our code (9 verified with MIT license in their repos, 7 reported on Chief Delphi) |
-| **5** | awards won in 2026 by teams using our code, across 4 different categories |
+| **5** | award-winning teams are running our code (across 4 different award categories) |
 | **8** | combined Innovation in Control wins across the verified adopters' careers |
 | **3,300** | Chief Delphi views (87 likes) |
 | **1,200+** | GitHub views, 45 unique cloners in 15 days |
-| **6 days** | from a World Champion integrating our code to winning Innovation in Control |
+| **5 days** | from a World Champion integrating our code to winning Innovation in Control |
 
 ## Who Is Using It
 
@@ -43,7 +43,7 @@ Fifteen days later, sixteen teams were running our code, a World Champion had wo
 
 852 ARC Robotics (**Team Spirit Award**), 5113 Combustible Lemons (**Sustainability + Team Spirit**), 4322 Clockwork, 3566 Gone Fishin', 3211 The Y Team, 6619 GravitechX, 2022 Titan Robotics.
 
-### 5 Awards Won by 4 Adopter Teams
+### Award-Winning Teams Running Our Code
 
 | Award | Team |
 |-------|------|
@@ -59,7 +59,7 @@ Fifteen days later, sixteen teams were running our code, a World Champion had wo
 
 Team 2609 is a 2023 World Champion. They had a working turret shooter. On March 14, they integrated our fire control pipeline to add velocity compensation, drag-corrected time-of-flight, and distance-based RPM from the Newton solver.
 
-They converted our chassis-aim output to turret-relative angles for their independent turret, plugged in their CAD measurements (71-degree launch angle, 3-inch wheels, 0.9 slip factor), added zone-based passing targets, and tuned for 6 days.
+They converted our chassis-aim output to turret-relative angles for their independent turret, plugged in their CAD measurements (71-degree launch angle, 3-inch wheels, 0.9 slip factor), and added zone-based passing targets.
 
 On March 20, they competed at North Bay. Rank 4. Alliance captain. Won Innovation in Control.
 
@@ -69,9 +69,9 @@ The judges said:
 
 The simulation modeling is our `ProjectileSimulator` and `FuelPhysicsSim`. The spatial navigation is our `ShotCalculator`. Two out of three of those are us.
 
-### 5010 Tiger Dynasty: Adopted and Extended Between Events
+### 5010 Tiger Dynasty: Adopted and Extended
 
-Team 5010 had no awards at their first event. Between events, their programmer cloned our repo, added a variable-angle solver on top of our projectile simulator, and integrated it into their robot. They didn't just copy and paste. They extended the math for their mechanism. Second event: Event Finalist.
+Team 5010's lead programmer cloned our repo and built a variable-angle solver on top of our projectile simulator. They didn't just copy and paste. They extended the math for their mechanism. The team made Event Finalist at their second competition.
 
 ### The Juggernauts: 30-Year Team Replaced Their Own System
 
