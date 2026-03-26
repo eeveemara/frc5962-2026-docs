@@ -69,10 +69,6 @@ The judges said:
 
 The simulation modeling is our `ProjectileSimulator` and `FuelPhysicsSim`. The spatial navigation is our `ShotCalculator`. Two out of three of those are us.
 
-### 5010 Tiger Dynasty: Adopted and Extended
-
-Team 5010's lead programmer cloned our repo and built a variable-angle solver on top of our projectile simulator. They didn't just copy and paste. They extended the math for their mechanism. The team made Event Finalist at their second competition.
-
 ### The Juggernauts: 30-Year Team Replaced Their Own System
 
 A founding-era FRC team with about 30 years of history had their own shot calculator and velocity compensator. They found our code, adopted the Newton solver and projectile simulator, renamed the files to fit their naming convention, and kept their old system alongside for reference. Their commit history shows the before and after. Proper MIT attribution throughout.
