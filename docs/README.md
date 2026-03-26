@@ -34,17 +34,17 @@ flowchart TB
 
 | Metric | Value |
 |--------|-------|
-| Telemetry signals monitored in real time | ~585 |
+| Telemetry signals monitored in real time | 745+ |
 | Core logic code coverage (Jacoco) | 76% |
 | Mutation testing kill rate | 53% across 10 classes |
-| FMEA failure entries tracked | 34 |
+| FMEA failure entries tracked | 40 |
 | Feedback channels (haptic, LED, HUD, dashboard) | 4 |
 | Conditions for automated scoring readiness | 8 |
 | Neural network ensemble models for shot prediction | 10 |
 | Collision elements in physics simulation | 43 |
 | Custom code linter rules | 111 |
-| Verified teams running our open-source fire control | 5 |
-| Awards won by teams using our code (2026) | 3 |
+| Verified teams running our open-source fire control | 9 verified (16 total) |
+| Awards won by teams using our code (2026) | 5 across 4 categories |
 
 ## Quick Start by Role
 

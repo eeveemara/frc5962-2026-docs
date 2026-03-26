@@ -43,11 +43,11 @@ flowchart TB
 
     Q2 -->|no| Q3{Single log call throws?}
     Q3 -->|yes| R3[Layer 3 catches it<br/>SafeLog records failure, skips that signal]
-    R3 --> OK3([Other ~584 signals log normally])
+    R3 --> OK3([Other 744+ signals log normally])
 
     Q3 -->|no| Q4{Whole telemetry class throws?}
     Q4 -->|yes| R4[Layer 4 catches it<br/>TelemetryManager logs which class failed]
-    R4 --> OK4([Other 21 classes still update and log])
+    R4 --> OK4([Other 25 classes still update and log])
 
     style FAIL fill:#dc2626,stroke:#b91c1c,color:#fff
     style Q1 fill:#d97706,stroke:#b45309,color:#fff
@@ -74,13 +74,13 @@ Inside each telemetry class's `update()` method, all hardware reads (encoder vel
 
 ### Layer 3: SafeLog Per-Signal Isolation
 
-`SafeLog` is our wrapper around AdvantageKit's `Logger.recordOutput()`. Every single log call in the codebase goes through `SafeLog.put()` instead of calling the logger directly. Each `put()` call has its own try-catch. If writing one signal throws (bad data type, null value, internal serialization error), SafeLog increments a failure counter and moves on. The other ~584 signals log normally. At the end of each cycle, `SafeLog.logAndReset()` writes the failure count and the last failed key to the log, then resets.
+`SafeLog` is our wrapper around AdvantageKit's `Logger.recordOutput()`. Every single log call in the codebase goes through `SafeLog.put()` instead of calling the logger directly. Each `put()` call has its own try-catch. If writing one signal throws (bad data type, null value, internal serialization error), SafeLog increments a failure counter and moves on. The other 744+ signals log normally. At the end of each cycle, `SafeLog.logAndReset()` writes the failure count and the last failed key to the log, then resets.
 
 SafeLog covers every data type we use: `double`, `boolean`, `int`, `long`, `String`, arrays of those types, `Pose2d`, `Pose3d`, `Pose3d[]`, and `SwerveModuleState[]`. Each overload is its own isolated try-catch. There's also `SafeLog.run(Runnable)` for wrapping non-logging actions (like EventMarker calls or CycleTracker updates) with the same isolation.
 
 ### Layer 4: TelemetryManager Class-Level Isolation
 
-`TelemetryManager.updateAll()` iterates through all 22 telemetry classes and calls `update()` then `log()` on each one. Both calls go through `runSafely()`, which wraps the action in a try-catch for `Throwable`. If an entire telemetry class throws an uncaught exception that slipped past layers 1 through 3, only that class fails. The other 21 classes still update and log normally. The failure gets recorded under `Health/Telemetry/Failures` and `Health/Telemetry/LastFailed` so we can find it in the log.
+`TelemetryManager.updateAll()` iterates through all 26 telemetry classes and calls `update()` then `log()` on each one. Both calls go through `runSafely()`, which wraps the action in a try-catch for `Throwable`. If an entire telemetry class throws an uncaught exception that slipped past layers 1 through 3, only that class fails. The other 25 classes still update and log normally. The failure gets recorded under `Health/Telemetry/Failures` and `Health/Telemetry/LastFailed` so we can find it in the log.
 
 ## Zone Isolation in Telemetry Classes
 

@@ -2,7 +2,7 @@
 
 Our control system watches the robot in real time, figures out when it's safe to score, and tells the operators what's going on. "The robot assesses, the copilot fires, the driver flies" is the short version of that flow.
 
-We have 22 telemetry classes watching ~585 signals every loop cycle, a fire control pipeline that figures out shot parameters using physics solvers and neural networks, and a 4-channel feedback system that sends the right info to the right operator. Everything runs on WPILib's AdvantageKit logging framework, with crash isolation at every layer so one broken sensor can't take down the whole system.
+We have 26 telemetry classes watching 745+ signals every loop cycle, a fire control pipeline that figures out shot parameters using physics solvers and neural networks, and a 4-channel feedback system that sends the right info to the right operator. Everything runs on WPILib's AdvantageKit logging framework, with crash isolation at every layer so one broken sensor can't take down the whole system.
 
 ## Data Flow: Subsystems to Dashboards
 
@@ -17,9 +17,9 @@ flowchart TB
 
     TM[TelemetryManager — updateAll once per cycle]
 
-    subgraph TEL ["Telemetry Layer (22 classes)"]
+    subgraph TEL ["Telemetry Layer (26 classes)"]
         direction LR
-        T1[ShooterTelemetry] ~~~ T2[IntakeTelemetry] ~~~ T3[IndexerTelemetry] ~~~ T4[DriveTelemetry] ~~~ T5[18 more...]
+        T1[ShooterTelemetry] ~~~ T2[IntakeTelemetry] ~~~ T3[IndexerTelemetry] ~~~ T4[DriveTelemetry] ~~~ T5[22 more...]
     end
 
     SL[SafeLog — per-signal crash isolation]
@@ -116,7 +116,7 @@ Why? Crash isolation. If a sensor read goes bad, the telemetry class catches it 
 
 ### SafeLog wraps every log call
 
-Every single `Logger.recordOutput()` call goes through `SafeLog.put()` instead of being called directly. SafeLog wraps each call in its own try-catch so that if one signal crashes (bad data type, null pointer, whatever), only that one signal dies. The other ~584 signals keep logging normally.
+Every single `Logger.recordOutput()` call goes through `SafeLog.put()` instead of being called directly. SafeLog wraps each call in its own try-catch so that if one signal crashes (bad data type, null pointer, whatever), only that one signal dies. The other 744+ signals keep logging normally.
 
 We learned this one the hard way. A single bad signal used to crash the entire logging pipeline. Now the worst case is usually one missing signal instead of losing the whole log.
 
@@ -124,7 +124,7 @@ We learned this one the hard way. A single bad signal used to crash the entire l
 
 ### TelemetryManager runs everything in one place
 
-`TelemetryManager.updateAll()` gets called once per `robotPeriodic()` cycle. It loops through all 22 telemetry classes and calls `update()` then `log()` on each one, in a consistent order, every single cycle.
+`TelemetryManager.updateAll()` gets called once per `robotPeriodic()` cycle. It loops through all 26 telemetry classes and calls `update()` then `log()` on each one, in a consistent order, every single cycle.
 
 So there's exactly one place to look when you want to know what runs when. Telemetry classes can also read from each other safely (through TelemetryManager's accessors) because the update order is deterministic.
 
@@ -148,13 +148,13 @@ When the shooter flywheel is spinning, the drive automatically drops to 40% max 
 
 ## Ball Physics Simulation (FuelPhysicsSim)
 
-We built a full-field ball physics simulator called FuelPhysicsSim (2,167 lines, MIT-licensed, designed to be shareable). It models projectile flight with drag and Magnus spin effects, 43 collision elements (floor bumps, trench pillars, trench ceilings, tower structure, outposts, hub ramps, guardrails), hub scoring detection, intake pickup, robot bumper collisions, and ball-to-ball collisions using spatial hashing. It runs symplectic Euler integration at 4ms subticks with a sequential impulse solver (4 iterations, warm starting, Baumgarte stabilization). There's also CCD for fast projectiles so balls don't clip through thin walls.
+We built a full-field ball physics simulator called FuelPhysicsSim (2,285 lines, MIT-licensed, designed to be shareable). It models projectile flight with drag and Magnus spin effects, 43 collision elements (floor bumps, trench pillars, trench ceilings, tower structure, outposts, hub ramps, guardrails), hub scoring detection, intake pickup, robot bumper collisions, and ball-to-ball collisions using spatial hashing. It runs symplectic Euler integration at 4ms subticks with a sequential impulse solver (4 iterations, warm starting, Baumgarte stabilization). There's also CCD for fast projectiles so balls don't clip through thin walls.
 
-We can test shooting from any position on the field, check that balls bounce off walls and obstacles the way they should, and validate fire control solutions without having the actual robot. It has 64 tests and a deterministic mode for reproducible test runs.
+We can test shooting from any position on the field, check that balls bounce off walls and obstacles the way they should, and validate fire control solutions without having the actual robot. It has 76 tests and a deterministic mode for reproducible test runs.
 
 ## Safety and Crash Isolation
 
-The system has four layers of crash protection so one broken sensor never takes down the whole robot. First, every telemetry class re-acquires its subsystem reference if it's null, so a subsystem that fails to initialize doesn't crash the telemetry layer. Second, all hardware reads (encoder values, temperatures, currents) happen inside a try-catch, so a CAN bus glitch just zeros out that reading instead of propagating. Third, SafeLog wraps every individual log call in its own try-catch, so one bad signal can't kill the other ~584. Fourth, TelemetryManager wraps each telemetry class's update/log cycle, so even if an entire telemetry class throws an uncaught exception, the other 21 classes still run normally.
+The system has four layers of crash protection so one broken sensor never takes down the whole robot. First, every telemetry class re-acquires its subsystem reference if it's null, so a subsystem that fails to initialize doesn't crash the telemetry layer. Second, all hardware reads (encoder values, temperatures, currents) happen inside a try-catch, so a CAN bus glitch just zeros out that reading instead of propagating. Third, SafeLog wraps every individual log call in its own try-catch, so one bad signal can't kill the other 744+. Fourth, TelemetryManager wraps each telemetry class's update/log cycle, so even if an entire telemetry class throws an uncaught exception, the other 25 classes still run normally.
 
 For more details, see the [Safety Architecture](safety-architecture.md) document.
 
@@ -229,7 +229,7 @@ The pipeline supports 4 auto routines built from 8 PathPlanner paths. Some paths
 ## What's Next
 
 The rest of this documentation goes deeper into each piece:
-- [Telemetry System](telemetry-system.md) for the 22-class architecture and signal conventions
+- [Telemetry System](telemetry-system.md) for the 26-class architecture and signal conventions
 - [Fire Control Pipeline](fire-control-pipeline.md) for the full solver, confidence, and NN details
 - [Safety Architecture](safety-architecture.md) for the 4-layer crash isolation design
 - [Vision System](vision-system.md) for the 10-gate filtering pipeline

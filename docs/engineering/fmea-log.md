@@ -8,7 +8,7 @@ We keep a log of everything that breaks. Sensor glitches, logic errors, weird on
 
 | # | Component | What Went Wrong | Found By | Fix | Severity |
 |---|-----------|----------------|----------|-----|----------|
-| 1 | Telemetry | One bad signal crashed all ~585 signals' logging | Code review | Built 4-layer crash isolation (SafeLog) | Critical |
+| 1 | Telemetry | One bad signal crashed all 745+ signals' logging | Code review | Built 4-layer crash isolation (SafeLog) | Critical |
 | 2 | Simulator | YAGSL physics silently overwrote our manual voltage in brownout scenarios | Debugging | Disabled SimulatedBattery before manual voltage control | High |
 | 3 | CAN bus | Motor controllers randomly didn't respond after boot (CAN overload) | Hardware testing | Sequential initialization with retry logic | High |
 | 4 | JamProtection | False JAM alerts every time a motor starts (startup current spike) | Sim testing | 0.5s startup ignore window in JamProtection state machine | High |

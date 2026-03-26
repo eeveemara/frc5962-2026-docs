@@ -12,10 +12,10 @@ Twelve days later, a World Champion had integrated our solver, won Innovation in
 
 | | |
 |---|---|
-| **5** | verified teams running our code with our MIT license in their repos |
+| **9** | verified teams running our code with our MIT license in their repos (16 total adopters) |
 | **8** | combined Innovation in Control wins across those teams' careers |
-| **3** | awards won in 2026 by teams using our code |
-| **3,068** | Chief Delphi views in 12 days |
+| **5** | awards won in 2026 by teams using our code, across 4 categories |
+| **3,300** | Chief Delphi views |
 | **6 days** | from a World Champion integrating our code to winning Innovation in Control |
 
 ## Who Is Using It
@@ -58,7 +58,7 @@ Three files, MIT licensed, only needs wpimath and ntcore (already in GradleRIO):
 |------|-------|-------------|
 | `ShotCalculator` | 623 | Newton-method shoot-on-the-move solver. Warm start convergence in 1-2 iterations. Drag compensation, second-order pose prediction, 5-component confidence scoring. |
 | `ProjectileSimulator` | 375 | RK4 projectile physics with drag (Cd=0.47) and Magnus lift. Generates 91-point shooter LUTs from CAD measurements in ~200ms. |
-| `FuelPhysicsSim` | 2,167 | Full-field ball physics: 43 collision elements, spatial hashing, ball sleeping, CCD for fast projectiles, symplectic Euler with sequential impulse solver. |
+| `FuelPhysicsSim` | 2,285 | Full-field ball physics: 43 collision elements, spatial hashing, ball sleeping, CCD for fast projectiles, symplectic Euler with sequential impulse solver. |
 
 v1.1.0 added `ShotParameters` and `ShotLUT` for teams with adjustable hoods, plus rear-facing shooter support, backspin, variable-angle LUT generation, unit conversion helpers, and custom distance ranges. All seven came from community requests.
 
@@ -66,7 +66,7 @@ v1.1.0 added `ShotParameters` and `ShotLUT` for teams with adjustable hoods, plu
 
 When the code was just for our robot, we could get away with constants that only made sense in our context. Once other teams needed to plug in their own measurements, we had to actually think about the API and document our physics assumptions properly. That made the code better even for us.
 
-Five teams, five different robots, five different shooter setups, five different competitions. The solver worked on all of them. We couldn't have tested that range on our own.
+Sixteen teams, sixteen different robots, sixteen different shooter setups, multiple competitions. The solver worked on all of them. We couldn't have tested that range on our own.
 
 Team 5427 competes with our code on April 2. We'll be watching.
 

@@ -29,7 +29,7 @@ flowchart LR
     style L fill:#db2777,stroke:#be185d,color:#fff
 ```
 
-**Design**: We write a design spec before touching code. The spec covers what the feature does, what signals it produces, what could go wrong, and how to test it. We have 14 design specs covering both robot code and our analytics platform.
+**Design**: We write a design spec before touching code. The spec covers what the feature does, what signals it produces, what could go wrong, and how to test it. We have 32 design specs covering both robot code and our analytics platform.
 
 **Implement**: Code follows strict patterns. Subsystems handle motors only. Telemetry classes handle all detection logic and logging. SafeLog wraps every log call with crash isolation. This separation means a bug in stall detection can't crash motor control.
 
@@ -55,7 +55,7 @@ Before building a feature, we brainstorm what could go wrong. This is Failure Mo
 3. Multiply them: **RPN = Severity x Occurrence x Detection**
 4. High RPN items get mitigations designed in from the start
 
-We have 34 FMEA entries covering mechanical failures, software bugs, sensor dropouts, and communication issues. The full log is in [FMEA Log](fmea-log.md). Here's an example of how this works in practice:
+We have 40 FMEA entries covering mechanical failures, software bugs, sensor dropouts, and communication issues. The full log is in [FMEA Log](fmea-log.md). Here's an example of how this works in practice:
 
 | Failure | S | O | D | RPN | Mitigation | New RPN |
 |---------|---|---|---|-----|-----------|---------|
@@ -79,10 +79,10 @@ We test at four levels:
 
 | Level | What | Scale |
 |-------|------|-------|
-| **Unit tests** | JUnit tests for individual classes. Does VisionFilter reject a pose 3m outside the field? Does JamProtection transition from MONITORING to REVERSING correctly? | 50+ test files, runs in ~10 seconds |
+| **Unit tests** | JUnit tests for individual classes. Does VisionFilter reject a pose 3m outside the field? Does JamProtection transition from MONITORING to REVERSING correctly? | 74 test files, runs in ~10 seconds |
 | **Code coverage** | Jacoco measures which lines and branches our tests actually exercise. We focus on core logic classes, not hardware wiring. | 76% core logic coverage |
 | **Mutation testing** | PITest injects artificial bugs (flip a `>` to `<`, change `true` to `false`) and checks if our tests catch them. If a mutant survives, we have a testing gap. | 10 target classes, 53% kill rate, 75% test strength |
-| **Simulation** | Full robot simulation with YAGSL MapleSim physics, PhotonVision simulated cameras, and our custom FuelPhysicsSim ball physics engine. 18 scenarios test different match situations. | 18 scenarios, ~22ms loop time in sim |
+| **Simulation** | Full robot simulation with YAGSL MapleSim physics, PhotonVision simulated cameras, and our custom FuelPhysicsSim ball physics engine. 19 scenarios test different match situations. | 19 scenarios, ~22ms loop time in sim |
 | **Dashboard validation** | 4 Elastic layouts and 11 AdvantageScope layouts for visual verification of signals, state machines, and subsystem behavior | 15 layout files |
 
 The tests run on every build (`./gradlew build` includes test). Mutation testing runs separately (`./gradlew pitest`) because it takes longer. For the full deep dive, see [Testing & Quality](testing-and-quality.md).

@@ -16,7 +16,7 @@ For example, say we have code that detects whether a motor is stalled. A test fo
 
 If someone accidentally breaks the stall detection logic later, this test catches it immediately instead of letting the bug ride all the way to competition.
 
-We have hundreds of these tests across 53 test files, and they all run in about 10 seconds.
+We have hundreds of these tests across 74 test files, and they all run in about 10 seconds.
 
 ## Why We Care More About Test Quality Than Test Count
 
@@ -141,7 +141,7 @@ JUnit results land in `build/reports/tests/test/index.html`. PITest results in `
 
 ## Simulation Scenarios
 
-We have 18 simulation scenarios that test different match situations. Here are the most commonly used ones:
+We have 19 simulation scenarios that test different match situations. Here are the most commonly used ones:
 
 | Scenario | CLI Flag | What It Tests |
 |----------|----------|---------------|

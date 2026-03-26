@@ -4,9 +4,9 @@
 
 Telemetry is how we see inside the robot while it runs. Every motor reading, sensor value, and detection state gets captured so we never have to guess what happened in a match.
 
-We log roughly 585 signals every 20 ms cycle. That covers every subsystem plus derived states like stall detection, shot confidence, and scoring readiness. Everything flows through AdvantageKit and can be replayed in AdvantageScope later.
+We log roughly 745 signals every 20 ms cycle. That covers every subsystem plus derived states like stall detection, shot confidence, and scoring readiness. Everything flows through AdvantageKit and can be replayed in AdvantageScope later.
 
-## The 22 Telemetry Classes
+## The 26 Telemetry Classes
 
 Every telemetry class implements the `SubsystemTelemetry` interface, which defines three methods: `update()`, `log()`, and `getName()`. TelemetryManager instantiates and orchestrates all of them.
 
@@ -66,7 +66,7 @@ These classes directly monitor physical subsystems on the robot.
 
 ## How TelemetryManager Orchestrates Everything
 
-`TelemetryManager` is a singleton. It creates all 22 telemetry instances in its constructor and stores them in a `telemetryList`. The constructor order matters because some classes depend on others. For example, `ScoringTelemetry` takes `ShooterTelemetry`, `IndexerTelemetry`, and `VisionTelemetry` as constructor arguments so it can read their state.
+`TelemetryManager` is a singleton. It creates all 26 telemetry instances in its constructor and stores them in a `telemetryList`. The constructor order matters because some classes depend on others. For example, `ScoringTelemetry` takes `ShooterTelemetry`, `IndexerTelemetry`, and `VisionTelemetry` as constructor arguments so it can read their state.
 
 After construction, `RobotContainer` calls setter methods to inject runtime dependencies:
 - `setVision(vision)` gives VisionTelemetry access to the camera system
@@ -127,7 +127,7 @@ Signals follow a `Category/SignalName` pattern:
 
 The naming is hierarchical, so in AdvantageScope you can expand `Scoring/` to see all scoring signals, or `Shooter/` to see everything about the flywheel.
 
-## What ~585 Signals Means Practically
+## What 745+ Signals Means Practically
 
 For every motor on the robot, we log: velocity, temperature, applied output, output current, bus voltage, device connected, sticky faults raw, and stall state. That's 8+ signals per motor, and we have 7 motors (shooter, indexer, intake, intake actuator, agitator, hanger, plus swerve modules).
 
