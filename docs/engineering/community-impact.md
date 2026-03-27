@@ -20,7 +20,7 @@ Fifteen days later, sixteen teams were running our code, a World Champion had wo
 | **5** | award-winning teams are running our code (across 4 different award categories) |
 | **8** | combined Innovation in Control wins across the verified adopters' careers |
 | **3,300** | Chief Delphi views (87 likes) |
-| **1,200+** | GitHub views, 45 unique cloners in 15 days |
+| **1,300+** | GitHub views, 60+ cloners |
 | **5 days** | from a World Champion integrating our code to winning Innovation in Control |
 
 ## Who Is Using It
