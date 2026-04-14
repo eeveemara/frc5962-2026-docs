@@ -2,7 +2,7 @@
 
 We posted three Java files on Chief Delphi. MIT licensed, drop-in, just needs WPILib.
 
-Fifteen days later, sixteen teams were running our code, a World Champion had won Innovation in Control with our solver, and two of the most respected developers in FRC had endorsed it.
+Five weeks later, twenty-three teams were running our code, four of them had won Innovation in Control with our solver in production, and two of the most respected developers in FRC had endorsed it.
 
 > "Very cool; one of the more comprehensive implementations I've seen this year. I love your warm start logic and shot quality advisory."
 >
@@ -16,42 +16,41 @@ Fifteen days later, sixteen teams were running our code, a World Champion had wo
 
 | | |
 |---|---|
-| **16** | teams running our code (9 verified with MIT license in their repos, 7 reported on Chief Delphi) |
-| **5** | award-winning teams are running our code (across 4 different award categories) |
-| **8** | combined Innovation in Control wins across the verified adopters' careers |
-| **3,300** | Chief Delphi views (87 likes) |
+| **23** | verified adopter teams across 11 US states and 3 countries |
+| **3,700** | Chief Delphi views (87 likes) |
 | **1,300+** | GitHub views, 60+ cloners |
-| **5 days** | from a World Champion integrating our code to winning Innovation in Control |
 
 ## Who Is Using It
 
-### 9 Verified Adopters (MIT License in Code)
+All 23 adopters. 
 
-| Team | What They Adopted | 2026 Result |
-|------|-------------------|-------------|
-| **2609 BeaverworX** | All 3 files | **Won Innovation in Control**, 2023 World Champion, 4x Innovation winner |
-| **5427 Steel Talons** | All 3 files | **Won Creativity**, back-to-back Innovation in Control (2024-25) |
-| **10584 Pennridge Robotics** | All 3 files (lib/) | **Won Rising All-Star**, Rank 6, alliance captain |
-| **5010 Tiger Dynasty** | Full clone + variable-angle extension | **Event Finalist** |
-| **7461 Sushi Squad** | ShotCalc + ProjectileSim + ShotLUT | Deep customization |
-| **5561 Raider Robotics** | ShotCalculator | Alliance captain |
-| **2903 Neobots** | All 3 files (frc.firecontrol package) | |
-| **7160 O-Bots** | ShotCalc (adapted for turret) | |
-| **Juggernauts** | ShotCalc + ProjectileSim | Founding-era team, replaced their own working system |
+| Team | Name | Region | Awards (since Mar 6) |
+|------|------|--------|----------------------|
+| 571 | Paragon Robotics | Connecticut | District Event Winner |
+| 4322 | Clockwork | California | Innovation in Control + Event Finalist |
+| 4512 | Otter Chaos | Washington | Leadership Semi-Finalist |
+| 8048 | ChurroBots | California | Event Finalist + Team Spirit |
+| 5010 | Tiger Dynasty | Indiana | Event Finalist + Engineering Inspiration |
+| 5572 | Rosbots | Texas | Creativity + Quality + Event Finalist |
+| 8032 | SAASquatch | Washington | none yet |
+| 2609 | Beaverworx | Ontario | Innovation in Control x2 (2023 World Champion) |
+| 6619 | GravitechX | California | none yet |
+| 5427 | Steel Talons | Texas | FIRST Impact + Creativity |
+| 7160 | O-Bots | Michigan | District Event Winner + Judges' Award x2 |
+| 5561 | Raider Robotics | Michigan | Sustainability |
+| 7461 | Sushi Squad | Washington | Leadership Semi-Finalist |
+| 3566 | Gone Fishin' | Massachusetts | NE DCMP qualifier |
+| 3211 | The Y Team | Israel | none yet |
+| 10584 | Ridge Robotics | Pennsylvania | Rising All-Star x2 |
+| 5113 | Combustible Lemons | New Jersey | Sustainability + Team Spirit |
+| 852 | ARC Robotics | California | Team Spirit + Imagery |
+| 5655 | KelRot | Turkey | none yet |
+| 2022 | Titan Robotics | Illinois | Leadership Finalist + Sustainability |
+| 2903 | Neobots | Washington | none yet |
+| 6004 | f(x) Robotics | North Carolina | Excellence in Engineering x2 + FIRST Impact + Leadership x2 + DCMP Finalist |
+| 1 | Juggernauts | Michigan | Creativity |
 
-### 7 More Reported on Chief Delphi
 
-852 ARC Robotics (**Team Spirit Award**), 5113 Combustible Lemons (**Sustainability + Team Spirit**), 4322 Clockwork, 3566 Gone Fishin', 3211 The Y Team, 6619 GravitechX, 2022 Titan Robotics.
-
-### Award-Winning Teams Running Our Code
-
-| Award | Team |
-|-------|------|
-| **Innovation in Control** | 2609 BeaverworX |
-| **Creativity** | 5427 Steel Talons |
-| **Rising All-Star** | 10584 Pennridge Robotics |
-| **Sustainability** | 5113 Combustible Lemons |
-| **Team Spirit** | 852 ARC Robotics, 5113 Combustible Lemons |
 
 ## The Stories
 
@@ -95,7 +94,7 @@ v1.1.0 added `ShotParameters` and `ShotLUT` for teams with adjustable hoods, plu
 
 When the code was just for our robot, we could get away with constants that only made sense in our context. Once other teams needed to plug in their own measurements, we had to actually think about the API and document our physics assumptions properly. That made the code better even for us.
 
-Sixteen teams, sixteen different robots, sixteen different shooter setups, multiple competitions. The solver worked on all of them. We couldn't have tested that range on our own.
+Twenty-three teams, twenty-three different robots, twenty-three different shooter setups, multiple competitions. The solver worked on all of them. We couldn't have tested that range on our own.
 
 ---
 
