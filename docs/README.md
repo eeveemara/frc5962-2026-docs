@@ -1,14 +1,14 @@
-<p align="center">
-  <img src="team_logo.png" alt="Team 5962 perSEVERE" width="150">
-</p>
+# Home
 
-# Control System Documentation
+<div align="center"><img src=".gitbook/assets/team_logo.png" alt="Team 5962 perSEVERE" width="150"></div>
 
-> *The robot assesses. The copilot fires. The driver flies.*
+## Control System Documentation
+
+> _The robot assesses. The copilot fires. The driver flies._
 
 This is our control system reference for the 2026 FRC season and REBUILT. It covers the robot's telemetry, fire control, feedback systems, dashboards, and the process we used to build and test everything.
 
-## Site Map
+### Site Map
 
 ```mermaid
 flowchart TB
@@ -30,40 +30,40 @@ flowchart TB
     style ENG fill:#db2777,stroke:#be185d,color:#fff
 ```
 
-## By the Numbers
+### By the Numbers
 
-| Metric | Value |
-|--------|-------|
-| Telemetry signals monitored in real time | 745+ |
-| Core logic code coverage (Jacoco) | 76% |
-| Mutation testing kill rate | 53% across 10 classes |
-| FMEA failure entries tracked | 40 |
-| Feedback channels (haptic, LED, HUD, dashboard) | 4 |
-| Conditions for automated scoring readiness | 8 |
-| Neural network ensemble models for shot prediction | 10 |
-| Collision elements in physics simulation | 43 |
-| Custom code linter rules | 111 |
-| Verified teams running our open-source fire control | 9 verified (16 total) |
-| Awards won by teams using our code (2026) | 5 across 4 categories |
+| Metric                                              | Value                                 |
+| --------------------------------------------------- | ------------------------------------- |
+| Telemetry signals monitored in real time            | 745+                                  |
+| Core logic code coverage (Jacoco)                   | 76%                                   |
+| Mutation testing kill rate                          | 53% across 10 classes                 |
+| FMEA failure entries tracked                        | 40                                    |
+| Feedback channels (haptic, LED, HUD, dashboard)     | 4                                     |
+| Conditions for automated scoring readiness          | 8                                     |
+| Neural network ensemble models for shot prediction  | 10                                    |
+| Collision elements in physics simulation            | 43                                    |
+| Custom code linter rules                            | 111                                   |
+| Verified teams running our open-source fire control | 25 teams. 5 @ 2026 World Championship |
+| Awards won by teams using our code (2026)           | 5 across 4 categories                 |
 
-## Quick Start by Role
+### Quick Start by Role
 
-**Drivers & Copilots** \
+**Drivers & Copilots**\
 [Driver Feedback](feedback/driver-feedback.md) | [Competition Playbook](operations/competition-playbook.md) | [Alliance Strategy](feedback/alliance-strategy.md)
 
-**Programmers** \
+**Programmers**\
 [System Overview](architecture/system-overview.md) | [Telemetry System](architecture/telemetry-system.md) | [Testing & Quality](engineering/testing-and-quality.md) | [Ball Physics](engineering/fuel-simulation.md)
 
-**Coaches** \
+**Coaches**\
 [Competition Playbook](operations/competition-playbook.md) | [Alliance Strategy](feedback/alliance-strategy.md) | [Quick Reference](dashboards/quick-reference.md)
 
-**Judges & Mentors** \
+**Judges & Mentors**\
 [System Overview](architecture/system-overview.md) | [Fire Control](architecture/fire-control-pipeline.md) | [Community Impact](engineering/community-impact.md) | [FMEA Log](engineering/fmea-log.md) | [Engineering Process](engineering/engineering-process.md) | [Universal Design](feedback/universal-design.md) | [What We Learned](engineering/what-we-learned.md)
 
-**Debugging** \
+**Debugging**\
 [Troubleshooting](operations/troubleshooting.md) | [Elastic Guide](dashboards/elastic-guide.md) | [AdvantageScope Guide](dashboards/advantagescope-guide.md)
 
-## System Architecture
+### System Architecture
 
 ```mermaid
 flowchart TB
@@ -102,6 +102,6 @@ flowchart TB
     style HUD fill:#fbbf24,stroke:#f59e0b,color:#000
 ```
 
----
+***
 
 <sub>FRC Team 5962 perSEVERE, 2026 Season</sub>
