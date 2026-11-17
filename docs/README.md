@@ -32,19 +32,19 @@ flowchart TB
 
 ### By the Numbers
 
-| Metric                                              | Value                                 |
-| --------------------------------------------------- | ------------------------------------- |
-| Telemetry signals monitored in real time            | 745+                                  |
-| Core logic code coverage (Jacoco)                   | 76%                                   |
-| Mutation testing kill rate                          | 53% across 10 classes                 |
-| FMEA failure entries tracked                        | 40                                    |
-| Feedback channels (haptic, LED, HUD, dashboard)     | 4                                     |
-| Conditions for automated scoring readiness          | 8                                     |
-| Neural network ensemble models for shot prediction  | 10                                    |
-| Collision elements in physics simulation            | 43                                    |
-| Custom code linter rules                            | 111                                   |
-| Verified teams running our open-source fire control | 25 teams. 5 @ 2026 World Championship |
-| Awards won by teams using our code (2026)           | 5 across 4 categories                 |
+| Metric                                             | Value                                                                                  |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Telemetry signals monitored in real time           | 745+                                                                                   |
+| Core logic code coverage (Jacoco)                  | 76%                                                                                    |
+| Mutation testing kill rate                         | 53% across 10 classes                                                                  |
+| FMEA failure entries tracked                       | 40                                                                                     |
+| Feedback channels (haptic, LED, HUD, dashboard)    | 4                                                                                      |
+| Conditions for automated scoring readiness         | 8                                                                                      |
+| Neural network ensemble models for shot prediction | 10                                                                                     |
+| Collision elements in physics simulation           | 43                                                                                     |
+| Custom code linter rules                           | 111                                                                                    |
+| Teams running our open-source fire control         | 39 teams in 4 countries (34 verified in their code); 10 at the 2026 FIRST Championship |
+| Awards won by teams using our code (2026)          | 67 across 17 categories, incl. 5 event wins                                            |
 
 ### Quick Start by Role
 
